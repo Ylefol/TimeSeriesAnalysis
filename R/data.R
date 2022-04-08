@@ -1,0 +1,13 @@
+#' @title RNAseq counts for AID activation cocktail in PBMC time series experiment
+#'
+#' @description A data set with RNAseq results for various AID activation cocktails on a PBMC cell line.
+#' Four groups exist: Control (no cocktail), LPS, IgM activation, and TGFb activation. Every group
+#' has two replicates per timepoint. Timepoints are days 1, 3, and 9.
+#'
+#' @format A list containing a dataframe and another list of count dataframes
+#' \describe{
+#'   \item{sample_dta}{File indicating which count files belong to which group, timepoint, and replicate}
+#'   \item{counts}{A list of all the count files}
+#' }
+#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
+"AID_TS_data"
