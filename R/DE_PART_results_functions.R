@@ -411,9 +411,8 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     pdf(file=NULL)#Prevent plotting of the MDS, just want the values
     arraydata.pca <- plotMDS(matrix_to_use, pch = 16, gene.selection = "common")
     dev.off()
-    abc <- cmdscale(as.dist(arraydata.pca$distance.matrix), eig=T)
-    PC1 <- round(abc$eig[1]/sum(abc$eig)*100, 1)
-    PC2 <- round(abc$eig[2]/sum(abc$eig)*100, 1)
+    PC1 <- round(arraydata.pca$var.explained[1]*100, 1)
+    PC2 <- round(arraydata.pca$var.explained[2]*100, 1)
     percentVar<-c(PC1,PC2)
 
     pca_data<-data.frame(PC1=arraydata.pca$x,PC2=arraydata.pca$y,
