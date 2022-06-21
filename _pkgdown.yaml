@@ -3,9 +3,10 @@ title: Messing around
 destination: docs
 development:
   mode: release
-template:
+template: 
   params:
     bootswatch: spacelab
+    boostrap: 5
 navbar:
   structure:
     left:  [home, articles, reference, news]
