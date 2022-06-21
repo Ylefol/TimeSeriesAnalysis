@@ -406,19 +406,18 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     }
     sample_data_used<-time_object@sample_data[time_object@sample_data$sample %in% samples_interest,]
     sample_data_used<-sample_data_used[order(match(sample_data_used$sample,samples_interest)),]
-    matrix_to_use<-log2(time_object@count_matrix$norm[,samples_interest])
 
-    pdf(file=NULL)#Prevent plotting of the MDS, just want the values
-    arraydata.pca <- plotMDS(matrix_to_use, pch = 16, gene.selection = "common")
-    dev.off()
-    PC1 <- round(arraydata.pca$var.explained[1]*100, 1)
-    PC2 <- round(arraydata.pca$var.explained[2]*100, 1)
-    percentVar<-c(PC1,PC2)
 
-    pca_data<-data.frame(PC1=arraydata.pca$x,PC2=arraydata.pca$y,
-                        group=sample_data_used$group,
-                        timepoint=factor(sample_data_used$timepoint,levels=unique(sample_data_used$timepoint)),
-                        name=sample_data_used$sample)
+    matrix_to_use<-time_object@count_matrix$norm[,samples_interest]
+    pca_res <- prcomp(t(matrix_to_use))
+    axis_labels <- sprintf('%.1f', 1:length(pca_res$sdev), (pca_res$sdev^2 / sum(pca_res$sdev^2))*100)
+
+    percentVar<-c(axis_labels[1],axis_labels[2])
+
+    pca_data<-data.frame(PC1=pca_res$x[,'PC1'],PC2=pca_res$x[,'PC2'],
+                         group=sample_data_used$group,
+                         timepoint=factor(sample_data_used$timepoint,levels=unique(sample_data_used$timepoint)),
+                         name=sample_data_used$sample)
 
   }
   if(DE_type=='temporal'){
@@ -1230,13 +1229,23 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #' The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 #' @param num_col Integer stating the number of columns for the plots.
 #' @param rem_legend_axis Boolean indicating if the legend and axis titles should be removed
+#' @param log_TP Boolean indicating if timepoints should be log transformed
 #'
 #' @return A ggplot2 object for the cluster trajectory plot performed
 #'
 #'
 #' @export
 #'
-plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=F){
+plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=F,log_TP=F){
+
+  if(log_TP==T){
+    ts_data$log10_timepoint<-log10(ts_data$timepoint)
+    ts_data$log10_timepoint[ts_data$log10_timepoint=='-Inf']<-0
+    ts_mean_data$log10_timepoint<-log10(ts_mean_data$timepoint)
+    ts_mean_data$log10_timepoint[ts_mean_data$log10_timepoint=='-Inf']<-0
+  }
+
+
   if('log10_timepoint' %in% colnames(ts_data)){
     plt <- ggplot(ts_data, aes(y = trans_mean , x = `log10_timepoint`, color = group))
   }else{
@@ -1284,7 +1293,11 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=F){
 
   my_dta<-reshape2::melt(my_dta,id.vars = NULL)
   my_dta$sample<-row.names(my_dta)
-  colnames(my_dta)=c('sample','reads')
+  if(time_object@DE_method=='limma'){
+    colnames(my_dta)=c('reads','sample')
+  }else{
+    colnames(my_dta)=c('sample','reads')
+  }
   my_dta<-merge(my_dta,time_object@sample_data,by='sample')
   mean_data_list<-list()
   for (group in unique(my_dta$group)){

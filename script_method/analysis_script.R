@@ -3,8 +3,9 @@ packages_for_loading<-c('DESeq2','limma','clusterGenomics','gprofiler2','tictoc'
                         'tibble','GOSemSim','dplyr','tibble')
 lapply(packages_for_loading, require, character.only = TRUE)
 
-#Set up physical data in repository
-write_example_data_to_dir()
+#Set up physical data in repository for example dataset
+#This line of code can be removed if the example dataset is not used
+write_example_data_to_dir(example_data='PBMC') #MURINE or PBMC
 
 ########### PARAM SET-UP ###########
 
@@ -13,8 +14,8 @@ name_result_folder<-'script_method/TS_results_example/'
 obj_name<-'timeSeries_obj_example.Rdata'
 
 # data
-my_path_data<-'data/AID_TS/raw_counts_TS'
-my_path_sample_dta<-'data/AID_TS/sample_file.csv'
+my_path_data<-'data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'data/PBMC/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
@@ -27,9 +28,6 @@ graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare and install organism if necessary
 org_sem_sim='org.Hs.eg.db'
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install(org_sem_sim)
 
 my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 

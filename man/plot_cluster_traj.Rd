@@ -9,7 +9,8 @@ plot_cluster_traj(
   ts_data,
   ts_mean_data,
   num_col = 4,
-  rem_legend_axis = F
+  rem_legend_axis = F,
+  log_TP = F
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 \item{num_col}{Integer stating the number of columns for the plots.}
 
 \item{rem_legend_axis}{Boolean indicating if the legend and axis titles should be removed}
+
+\item{log_TP}{Boolean indicating if timepoints should be log transformed}
 }
 \value{
 A ggplot2 object for the cluster trajectory plot performed

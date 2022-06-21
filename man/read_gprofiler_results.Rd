@@ -4,7 +4,11 @@
 \alias{read_gprofiler_results}
 \title{Read gprofiler data from results folder}
 \usage{
-read_gprofiler_results(res_location = "TS_results", ont = "REAC", top_n = NULL)
+read_gprofiler_results(
+  res_location = "TS_results/",
+  ont = "REAC",
+  top_n = NULL
+)
 }
 \arguments{
 \item{res_location}{The location of the gprofiler_results folder}

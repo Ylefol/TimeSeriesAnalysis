@@ -1,8 +1,12 @@
 #This is the .gitignore file
 
 #Ignore results from example
-rmarkdown_method/TS_results_example
+rmarkdown_method/TS_results_murine_example
+rmarkdown_method/TS_results_PBMC_example
+rmarkdown_method/data
 
+#Ignore non-example results
+result_not_example
 
 #Ignore project file
 TimeSeriesAnalysis.Rproj
@@ -11,11 +15,14 @@ README.Rmd
 #Ignore all data in data folder
 data/TS_covid
 data/Tanima_RNAseq
-data/AID_Robin
 data/mouse_brain_data
-data/genes_copt1.txt
-data/raw_counts_TS
-sample_file.csv
+
+
+#REMOVE WHEN PUBLIC
+data-raw
+data/AID_TS_data.rda
+data/murine_TS_data.rda
+
 
 
 #Ignore standard stuff

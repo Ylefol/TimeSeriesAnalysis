@@ -45,16 +45,6 @@ bio_pkgs <- c(PACKAGES HERE)
 BiocManager::install(bio_pkgs)
 ```
 
-The github for this repository is currently set to private. To download
-this package do the following:
-
-``` r
-install.packages("devtools")
-devtools::install_github("Ylefol/TimeSeriesAnalysis",ref="master",auth_token="******")
-```
-
-The authentication will be sent separately by Ylefol
-
 ## Rmarkdown format
 
 TimeSeriesAnalysis was developed with user-friendliness in mind, the

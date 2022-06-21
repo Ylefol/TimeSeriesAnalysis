@@ -1,5 +1,5 @@
 ---
-title: "TimeSeries Analysis – TS example"
+title: "TimeSeries Analysis – Murine example run"
 author: "Yohan Lefol"
 date: '`r format(Sys.Date(), "%d. %B %Y")`'
 bibliography: references.bib
@@ -14,7 +14,7 @@ output:
 
 ```{r knitr_setup, include=FALSE}
 # NOTE: This script can be run from the CLI using the below command
-# Rscript -e "rmarkdown::render('TS_analysis.Rmd',output_file='TS_analysis.html')"
+# Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS_analysis.html')"
 library(knitr)
 library(TimeSeriesAnalysis)
 packages_for_loading<-c('DESeq2','limma','clusterGenomics','gprofiler2','tictoc',
@@ -24,8 +24,10 @@ packages_for_loading<-c('DESeq2','limma','clusterGenomics','gprofiler2','tictoc'
 suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 knitr::opts_chunk$set(echo = TRUE)
 
-#Set up physical data in repository
-write_example_data_to_dir()
+#Set up physical data in repository for example dataset
+#This line of code can be removed if the example dataset is not used
+write_example_data_to_dir(example_data='MURINE') #MURINE or PBMC
+
 ```
 
 # TimeSeries analysis
@@ -34,36 +36,42 @@ write_example_data_to_dir()
 Set the below parameters for the downstream analysis
 
 ```{r parameter_setup}
+
 #Give names to saved object and name of results repository
-name_result_folder<-'TS_results_example/'
-obj_name<-'timeSeries_obj_example.Rdata'
+name_result_folder<-'TS_results_murine_example/'
+obj_name<-'timeSeries_obj_murine_example.Rdata'
 
 #Path to count data and sample data respectively
-my_path_data<-'data/raw_counts_TS'
-my_path_sample_dta<-'data/sample_file.csv'
+my_path_data<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/rmarkdown_method/data/murine/raw_counts_TS'
+my_path_sample_dta<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/rmarkdown_method/data/murine/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
 p_val_filter_type<-'padj' #Either padj or pvalue, used to filter for significance
 p_thresh<-0.05 #pvalue or padj value threshold for significance
 l2fc_thresh<-1 #log(2)foldChange threshold for significance
-name_control<-'LPS' #Name of experiment as seen in the sample file
-name_experiment<-'IgM' #Name of control as seen in the sample file
+name_control<-'Control' #Name of experiment as seen in the sample file
+name_experiment<-'Treated' #Name of control as seen in the sample file
 graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare organism
-org_sem_sim='org.Hs.eg.db'
+org_sem_sim='org.Mm.eg.db'
 
-my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
+#mmusculus
+#hsapiens
+#celegans
+my_org_gpro='mmusculus' #Set the species for the gprofiler analysis
 
-PART_l2fc<-2 #log(2)foldChange threshold for PART clustering
+PART_l2fc<-1 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
 PART_recursion<-100 #Number of recursions, default is 100, using 10 for example
 
+log_tp_traj<-T #Defines if timepoints should be log transformed for illustration purposes
+
 #Used to highlight specific genes regardless of differential gene expression significance
-genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
-
-
+genes_of_interest<-c()
+# genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
+# genes_of_interest<-read.table('~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/Tanima_RNAseq/tanima_genes_interest.txt')$V2
 #Some extra set-up
 name_save_obj<-paste0(name_result_folder,obj_name)#The object will be saved in result folder
 #Create main directory for results
@@ -72,13 +80,6 @@ dir.create(name_result_folder)
 my_group_names<-c(name_experiment,name_control) 
 names(graphic_vector)<-c(name_experiment,name_control)
 
-```
-
-```{r organism_installation, echo=FALSE, message=FALSE, warning=FALSE}
-#Installs the organism declared 
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install(org_sem_sim)
 ```
 
 ## Create TimeSeries object
@@ -218,7 +219,6 @@ row.names(sample_dta)=NULL
 **PCA of sample data\:**    
    `r knitr::include_graphics(paste0(name_result_folder,"PCA_plot.png"))`  
 ```{r DE_results ,echo=FALSE,message=FALSE,warning=FALSE}
-log_tp_traj<-F #Defines if timepoints should be log transformed for illustration purposes
 
 #Create results for conditional and temporal differential gene expression results
 plot_wrapper_DE_results(object=TS_object,DE_type='conditional',genes_of_interest=genes_of_interest,results_folder=name_result_folder)
@@ -311,7 +311,6 @@ another time point at 24 hours (1440 minutes) will result in the first two time 
 being very compressed and possibly indistinguishable from each other.
 
 ```{r PART_results ,message=FALSE,warning=FALSE}
-log_tp_traj<-F #Defines if timepoints should be log transformed for illustration purposes
 
 dir.create(paste0(name_result_folder,'PART_results')) #create the directory to store results
 PART_heat_map(TS_object,paste0(name_result_folder,'PART_results/PART_heat')) #Create a summary heatmap
@@ -326,7 +325,7 @@ wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=log_tp_traj,plo
 target_clust<-find_most_variable_cluster(TS_object,mean_ts_data)
 sub_ts<-ts_data[ts_data$cluster==target_clust,]
 sub_mean<-mean_ts_data[mean_ts_data$cluster==target_clust,]
-plt_clust<-plot_cluster_traj(object = TS_object,ts_data = sub_ts,ts_mean_data = sub_mean, num_col=1,rem_legend_axis=T)
+plt_clust<-plot_cluster_traj(object = TS_object,ts_data = sub_ts,ts_mean_data = sub_mean, num_col=1,rem_legend_axis=T,log_TP=log_tp_traj)
 cluster_map_sum<-t(as.data.frame(table(TS_object@PART_results$cluster_map[,c(1)])))
 row.names(cluster_map_sum)=c('Cluster name','Number of genes')
 colnames(cluster_map_sum)=NULL
@@ -451,6 +450,7 @@ order to offer a better visualization, with most significant being in red and le
 ```{r Gpro_results_alt ,message=FALSE,warning=FALSE}
 target_top=10
 
+library(TimeSeriesAnalysis)
 
 select_ontology<-'GO:BP'
 GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
@@ -459,6 +459,9 @@ select_ontology<-'REAC'
 GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
 
 select_ontology<-'KEGG'
+GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+
+select_ontology<-'HP'
 GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
 
 ```

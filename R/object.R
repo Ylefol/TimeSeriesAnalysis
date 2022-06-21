@@ -276,16 +276,31 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' Having these files written as tab delimited and csv allows users to open them
 #' and see the formatting expected by TimeSeriesAnalysis
 #'
+#' @param example_data Either 'PBMC' or 'MURINE' to select one of the two example
+#' datasets available
+#'
 #' @export
-write_example_data_to_dir<-function(){
+write_example_data_to_dir<-function(example_data){
   #If data folder does not exist, create it
   if(!'data' %in% list.files()){
     dir.create('data')
   }
-  dir.create('data/raw_counts_TS')
-  for(dta in names(AID_TS_data[['counts']])){
-    write.table(AID_TS_data[['counts']][[dta]],paste0('data/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+  if(example_data=='PBMC'){
+    dir.create('data/PBMC')
+    dir.create('data/PBMC/raw_counts_TS')
+    for(dta in names(AID_TS_data[['counts']])){
+      write.table(AID_TS_data[['counts']][[dta]],paste0('data/PBMC/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+    }
+    write.csv(AID_TS_data[['sample_dta']],'data/PBMC/sample_file.csv',row.names = F)
+  }else if (example_data=='MURINE'){
+    dir.create('data/murine')
+    dir.create('data/murine/raw_counts_TS')
+    for(dta in names(murine_TS_data[['counts']])){
+      write.table(murine_TS_data[['counts']][[dta]],paste0('data/murine/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+    }
+    write.csv(murine_TS_data[['sample_dta']],'data/murine/sample_file.csv',row.names = F)
+  }else{
+    message("Please use 'PBMC' or 'MURINE' as a parameter to this function.")
   }
-  write.csv(AID_TS_data[['sample_dta']],'data/sample_file.csv',row.names = F)
 }
 

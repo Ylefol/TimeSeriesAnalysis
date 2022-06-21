@@ -20,6 +20,3 @@ Function which clusters GO terms and returns the result in dataframe format
 This function uses the Wang measurement method with the ward.D2 aggregation method
 clustering parameters are pre-set within the function.
 }
-\examples{
-
-}

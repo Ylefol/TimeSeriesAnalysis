@@ -552,43 +552,43 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #' @return A dataframe with the requested information
 #'
 #' @export
-read_gprofiler_results<-function(res_location='TS_results',ont='REAC',top_n=NULL){
+read_gprofiler_results<-function(res_location='TS_results/',ont='REAC',top_n=NULL){
   GO_cluster<-data.frame(NULL)
   for(file in list.files(paste0(res_location,'gprofiler_results/data_files'))){
     read_path<-paste0(res_location,'gprofiler_results/data_files/',file)
     cluster<-strsplit(file,'_')[[1]][1]
-    #Using a try catch in the event of bad data files.
     sub_df<-read.csv(read_path)
     sub_df<-sub_df[sub_df$source==ont,]
     sub_df$group_name<-rep(cluster,nrow(sub_df))
+
     sub_df<-sub_df[,c('term_id','term_name','p_value','source','term_size','group_name')]
     if(nrow(GO_cluster)==0){
       GO_cluster<-sub_df
     }else{
       GO_cluster<-rbind(GO_cluster,sub_df)
     }
+
   }
+  if(nrow(GO_cluster)>0){
+    if(is.null(top_n)==F){
+      new_GO_df<-data.frame(NULL)
+      for(clust in unique(GO_cluster$group_name)){
+        sub_df<-GO_cluster[GO_cluster$group_name==clust,]
+        if(nrow(sub_df)>top_n){
+          sub_df<-sub_df[1:top_n,]
+        }
 
-  if(is.null(top_n)==F){
-    new_GO_df<-data.frame(NULL)
-    for(clust in unique(GO_cluster$group_name)){
-      sub_df<-GO_cluster[GO_cluster$group_name==clust,]
-      if(nrow(sub_df)>top_n){
-        sub_df<-sub_df[1:top_n,]
+        if(nrow(new_GO_df)==0){
+          new_GO_df<-sub_df
+        }else{
+          new_GO_df<-rbind(new_GO_df,sub_df)
+        }
       }
-
-      if(nrow(new_GO_df)==0){
-        new_GO_df<-sub_df
-      }else{
-        new_GO_df<-rbind(new_GO_df,sub_df)
-      }
+      GO_cluster<-new_GO_df
     }
-    GO_cluster<-new_GO_df
+    GO_cluster[['-log10(padj)']]<--log10(p.adjust(GO_cluster$p_value, method = p.adjust.methods, n = length(GO_cluster$p_value)))
+    GO_cluster<-GO_cluster[,c('term_id','term_name','p_value','-log10(padj)','term_size','group_name')]
   }
-
-  GO_cluster[['-log10(padj)']]<--log10(p.adjust(GO_cluster$p_value, method = p.adjust.methods, n = length(GO_cluster$p_value)))
-
-  GO_cluster<-GO_cluster[,c('term_id','term_name','p_value','-log10(padj)','term_size','group_name')]
   return(GO_cluster)
 }
 

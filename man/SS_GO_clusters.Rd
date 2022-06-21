@@ -28,6 +28,3 @@ clustering parameters are pre-set within the function.
 
 Function was adapted from the calculate_SS function from the visEAGO package
 }
-\examples{
-
-}

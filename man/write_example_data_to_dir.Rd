@@ -4,7 +4,11 @@
 \alias{write_example_data_to_dir}
 \title{Prep example data in directory}
 \usage{
-write_example_data_to_dir()
+write_example_data_to_dir(example_data)
+}
+\arguments{
+\item{example_data}{Either 'PBMC' or 'MURINE' to select one of the two example
+datasets available}
 }
 \description{
 This function writes the example dataset to the 'data' directory

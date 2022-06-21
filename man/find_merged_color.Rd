@@ -19,6 +19,3 @@ The function takes pairs of two colors, finds the 6th in between color using
 coloRampPalette, and continues doing so until all colors in the group have
 been included
 }
-\examples{
-
-}
