@@ -19,8 +19,10 @@ data/mouse_brain_data
 
 
 #REMOVE WHEN PUBLIC
-data
-data-raw
+
+data-raw/
+data/PBMC
+data/murine
 data/AID_TS_data.rda
 data/murine_TS_data.rda
 
@@ -33,6 +35,3 @@ data/murine_TS_data.rda
 .Ruserdata
 
 
-
-
-docs
