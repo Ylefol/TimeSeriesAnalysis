@@ -1,18 +1,17 @@
 url: http://Ylefol.github.io/TimeSeriesAnalysis
-title: bloop
+title: blarg
 destination: docs
 development:
   mode: release
 template:
   params:
+    bootstrap: 5
     bootswatch: spacelab
 navbar:
-  structure:
-    left:  [home, articles, reference, news]
-    right: [github]
-components:
-  home: ~
-  articles:
-    text: Articles
-    menu:
-    - text: Example analysis
+  components:
+    home: ~
+    articles:
+      text: Articles
+      menu:
+      - text: TEST
+      href: articles/TS_PBMC_analysis.html
