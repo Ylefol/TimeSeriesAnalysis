@@ -1,0 +1,18 @@
+url: http://Ylefol.github.io/TimeSeriesAnalysis
+title: bloop
+destination: docs
+development:
+  mode: release
+template:
+  params:
+    bootswatch: spacelab
+navbar:
+  structure:
+    left:  [home, articles, reference, news]
+    right: [github]
+components:
+  home: ~
+  articles:
+    text: Articles
+    menu:
+    - text: Example analysis

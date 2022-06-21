@@ -34,3 +34,6 @@ Suggests:
 	knitr,
 	rmarkdown,
 RoxygenNote: 7.2.0
+VignetteBuilder: knitr
+URL: https://github.com/Ylefol/TimeSeriesAnalysis
+BugReports: https://github.com/Ylefol/TimeSeriesAnalysis/issues
