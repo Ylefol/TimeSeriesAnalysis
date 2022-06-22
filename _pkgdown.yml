@@ -17,6 +17,8 @@ navbar:
       text: Examples
       menu:
       - text: PBMC analysis
-
+        href: articles/TS_analysis_PBMC.html
+      - text: Murine analysis
+        href: articles/TS_analysis_murine.html
 
 
