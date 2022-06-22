@@ -9,7 +9,7 @@ template:
     bootswatch: spacelab
 navbar:
   structure:
-    left: [articles, reference]
+    left: [articles, tutorials, reference]
     right: [github]
   components:
     home: ~
@@ -18,4 +18,13 @@ navbar:
       menu:
       - text: Example analysis
         href: articles/testing.html
+    tutorials:
+      text: Examples
+      menu:
+      - text: PBMC
+        href: tutorials/TS_PBMC_analysis.html
+      - text: Murine
+        href: tutorials/TS_analysis_murine.html
+      - text: Covid
+        href: tutorials/TS_analysis_covid.html
 

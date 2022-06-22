@@ -3,7 +3,7 @@ pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
   testing: testing.html
-last_built: 2022-06-22T09:03Z
+last_built: 2022-06-22T09:07Z
 urls:
   reference: http://Ylefol.github.io/TimeSeriesAnalysis/reference
   article: http://Ylefol.github.io/TimeSeriesAnalysis/articles
