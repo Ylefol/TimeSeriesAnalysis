@@ -4,10 +4,25 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404.html</loc>
   </url>
   <url>
-    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/index.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404_BACKUP_3500088.html</loc>
   </url>
   <url>
-    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/testing.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404_BASE_3500088.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404_LOCAL_3500088.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404_REMOTE_3500088.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/TS_analysis_PBMC.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/TS_analysis_murine.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/index.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/authors.html</loc>
@@ -200,14 +215,5 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/write_example_data_to_dir.html</loc>
-  </url>
-  <url>
-    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/tutorials/TS_PBMC_analysis.html</loc>
-  </url>
-  <url>
-    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/tutorials/TS_analysis_covid.html</loc>
-  </url>
-  <url>
-    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/tutorials/TS_analysis_murine.html</loc>
   </url>
 </urlset>

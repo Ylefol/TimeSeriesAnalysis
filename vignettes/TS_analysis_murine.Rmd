@@ -379,7 +379,6 @@ is then used with the semantic distance to create two versions of the MDS plot.
 
 ```{r Gpro_results ,message=FALSE,warning=FALSE}
 #Define specimen and ontology parameters
-library(TS_object@sem_sim_org,character.only = T)
 my_ont_gpro='GO:BP'
 my_ont_sem_sim='BP'
 
