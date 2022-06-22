@@ -27,6 +27,8 @@ vignettes/TS_results_murine_example
 vignettes/data
 vignettes/TS_results_PBMC_example
 
+vignettes_nope
+
 
 #Ignore standard stuff
 .Rproj.user
