@@ -13,9 +13,9 @@ navbar:
     right: [github]
   components:
     home: ~
-  articles:
-    text: Articles
-    menu:
-    - text: Example analysis
-      href: articles/testing.html
+    articles:
+      text: Articles
+      menu:
+      - text: Example analysis
+        href: articles/testing.html
 
