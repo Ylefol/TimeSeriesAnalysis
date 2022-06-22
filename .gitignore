@@ -22,6 +22,10 @@ data/mouse_brain_data
 data
 data-raw
 
+#Ignore vignettes
+vignettes/TS_results_murine_example
+vignettes/data
+vignettes/TS_results_PBMC_example
 
 
 #Ignore standard stuff
