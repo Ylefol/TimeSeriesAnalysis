@@ -9,7 +9,7 @@ template:
     bootswatch: spacelab
 navbar:
   structure:
-    left: [articles, tutorials, reference]
+    left: [articles, reference]
     right: [github]
   components:
     home: ~
