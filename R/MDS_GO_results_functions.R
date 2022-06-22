@@ -507,7 +507,8 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
   }
 
   if(nrow(relations_found)==0){
-    stop('NO terms associated with given ancestors were found')
+    message('NO terms associated with given ancestors were found')
+    return(NULL)
   }
 
   #Give colors to each ancestor
@@ -992,7 +993,9 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' @export
 wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=T,target_dir='TS_results/',return_plot=F){
 
-  if(nrow(GO_df)>0){
+  if(is.null(GO_df)==T){
+    return(NULL)
+  }else if(nrow(GO_df)>0){
     dir.create(paste0(target_dir,'ancestor_plots'))
 
     custom_width<-8+(length(unique(GO_df$group_name))*0.30)
