@@ -17,12 +17,12 @@ navbar:
       text: Articles
       menu:
       - text: Example analysis
-        href: docs/articles/testing.html
+        href: articles/testing.html
     tutorials:
       text: Examples
       menu:
       - text: PBMC
-        href: docs/tutorials/TS_PBMC_analysis.html
+        href: tutorials/TS_PBMC_analysis.html
       - text: Murine
         href: tutorials/TS_analysis_murine.html
       - text: Covid
