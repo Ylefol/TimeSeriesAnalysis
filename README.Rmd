@@ -1,16 +1,26 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # TimeSeriesAnalysis
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-Longitudinal Transcriptomic TimeSeriesAnalysis is a transcriptomic
-analysis tool for both RNA sequencing and microarray data
+Longitudinal Transcriptomic TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA sequencing and microarray data
 
 ## Overview
-
 TimeSeries (TS) is an analysis and visualization package for RNAseq and
 microarray data. TS extracts significant genes from time course
 transcriptomic data by performing differential gene expression on both
@@ -19,11 +29,14 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
-MAKE INTO LIST TS performs: data normalization and processing PCA plots
-Differential gene expression (conditional and temporal) PART clustering
-Heatmaps Trajectory of identified clusters Gprofiler (functional
-enrichment) analysis of clusters Dotplots and MDS plots of Gprofiler
-results Nearest ancestor clustering of GOs GO ancestor queries
+
+MAKE INTO LIST
+TS performs: data normalization and processing PCA plots Differential
+gene expression (conditional and temporal) PART clustering Heatmaps
+Trajectory of identified clusters Gprofiler (functional enrichment)
+analysis of clusters Dotplots and MDS plots of Gprofiler results Nearest
+ancestor clustering of GOs GO ancestor queries
+
 
 ## Installation
 
@@ -63,27 +76,22 @@ the analyses. These two scripts are found in the ‘script_method’ folder.
 
 ## Data
 
-Three different datasets have been used as example datasets for this
-pipeline, all while this pipeline serves as a platform to publish and
-share these datasets.
+Three different datasets have been used as example datasets for this pipeline,
+all while this pipeline serves as a platform to publish and share these datasets.
 
-The PBMC dataset is a time series experiment with three time points that
-explores and compares three AICDA/AID (Activation Induced Cytidine
-DeAminase) activation cocktails. The experiment seeked to identify which
-activation cocktail properly activated AID through both the expression
-of the AID gene and the activation of class switch recombination.
+The PBMC dataset is a time series experiment with three time points that explores 
+and compares three AICDA/AID (Activation Induced Cytidine DeAminase) activation cocktails.
+The experiment seeked to identify which activation cocktail properly activated AID
+through both the expression of the AID gene and the activation of class switch recombination.
 
-The MURINE dataset is another AID related time series experiment, where
-mice were generated and one was given an AID activation cocktail. The
-experiment contains one replicate per condition and 10 timepoints. Due
-to only having one replicate per condition per timepoint, subsequent
-timepoints were combined to create an intermediary timepoint with two
-replicates in each condition.
+The MURINE dataset is another AID related time series experiment, where mice were generated and
+one was given an AID activation cocktail. The experiment contains one replicate per condition and
+10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints
+were combined to create an intermediary timepoint with two replicates in each condition.
 
-The Celegans dataset is an ageing related experiment. Two celegans
-models were used: BY372 and N2. The first being a parkinsons model and
-the second being a wild type. Each model was split into two groups, one
-that would be fed krill oil and the other not (control). Each experiment
+The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2.
+The first being a parkinsons model and the second being a wild type. Each model was split into
+two groups, one that would be fed krill oil and the other not (control). Each experiment
 has three timepoints: Days 1, 3, and 6.
 
 ## Publications

@@ -10,7 +10,7 @@ result_not_example
 
 #Ignore project file
 TimeSeriesAnalysis.Rproj
-README.Rmd
+
 
 #Ignore all data in data folder
 data/TS_covid
