@@ -83,12 +83,12 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA sequencing and microarray data</p>
+<p>Longitudinal Transcriptomic TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA sequencing and microarray data</p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>TimeSeries (TS) is an analysis and visualization package for RNAseq and microarray data. TS extracts significant genes from time course transcriptomic data by performing differential gene expression on both the conditional and temporal axes. It then employs partitioning algorithm based on recursive thresholding (PART) clustering to identify small genomic clusters of relevance, followed by running the clusters through gprofiler to reveal the biological relevance of each cluster.</p>
-<p>TS performs: data normalization and processing PCA plots Differential gene expression (conditional and temporal) PART clustering Heatmaps Trajectory of identified clusters Gprofiler (functional enrichment) analysis of clusters Dotplots and MDS plots of Gprofiler results Nearest ancestor clustering of GOs GO ancestor queries</p>
+<p>MAKE INTO LIST TS performs: data normalization and processing PCA plots Differential gene expression (conditional and temporal) PART clustering Heatmaps Trajectory of identified clusters Gprofiler (functional enrichment) analysis of clusters Dotplots and MDS plots of Gprofiler results Nearest ancestor clustering of GOs GO ancestor queries</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -111,7 +111,15 @@
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p>The data used as an example is data generated from the LEMONAID consortium More info about the data?</p>
+<p>Three different datasets have been used as example datasets for this pipeline, all while this pipeline serves as a platform to publish and share these datasets.</p>
+<p>The PBMC dataset is a time series experiment with three time points that explores and compares three AICDA/AID (Activation Induced Cytidine DeAminase) activation cocktails. The experiment seeked to identify which activation cocktail properly activated AID through both the expression of the AID gene and the activation of class switch recombination.</p>
+<p>The MURINE dataset is another AID related time series experiment, where mice were generated and one was given an AID activation cocktail. The experiment contains one replicate per condition and 10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints were combined to create an intermediary timepoint with two replicates in each condition.</p>
+<p>The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2. The first being a parkinsons model and the second being a wild type. Each model was split into two groups, one that would be fed krill oil and the other not (control). Each experiment has three timepoints: Days 1, 3, and 6.</p>
+</div>
+<div class="section level2">
+<h2 id="publications">Publications<a class="anchor" aria-label="anchor" href="#publications"></a>
+</h2>
+<p>The pipeline itself can be cited by using THIS(REF) article.</p>
 </div>
 </div>
   </div>
