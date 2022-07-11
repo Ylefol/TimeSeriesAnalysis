@@ -20,5 +20,7 @@ navbar:
         href: articles/TS_analysis_PBMC.html
       - text: Murine analysis
         href: articles/TS_analysis_murine.html
-
-
+      - text: Celegans analysis
+        href: articles/TS_analysis_celegans.html
+    reference:
+      text: Documentation

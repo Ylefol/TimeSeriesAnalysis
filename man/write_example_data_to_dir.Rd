@@ -7,7 +7,7 @@
 write_example_data_to_dir(example_data)
 }
 \arguments{
-\item{example_data}{Either 'PBMC' or 'MURINE' to select one of the two example
+\item{example_data}{Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
 datasets available}
 }
 \description{

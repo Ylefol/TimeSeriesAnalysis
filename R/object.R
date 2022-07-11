@@ -276,7 +276,7 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' Having these files written as tab delimited and csv allows users to open them
 #' and see the formatting expected by TimeSeriesAnalysis
 #'
-#' @param example_data Either 'PBMC' or 'MURINE' to select one of the two example
+#' @param example_data Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
 #' datasets available
 #'
 #' @export
@@ -299,8 +299,15 @@ write_example_data_to_dir<-function(example_data){
       write.table(murine_TS_data[['counts']][[dta]],paste0('data/murine/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
     }
     write.csv(murine_TS_data[['sample_dta']],'data/murine/sample_file.csv',row.names = F)
+  }else if(example_data=='CELEGANS'){
+    dir.create('data/celegans')
+    dir.create('data/celegans/raw_counts_TS')
+    for(dta in names(Celegans_TS_data[['counts']])){
+      write.table(Celegans_TS_data[['counts']][[dta]],paste0('data/celegans/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+    }
+    write.csv(Celegans_TS_data[['sample_dta']],'data/celegans/sample_file.csv',row.names = F)
   }else{
-    message("Please use 'PBMC' or 'MURINE' as a parameter to this function.")
+    message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
   }
 }
 

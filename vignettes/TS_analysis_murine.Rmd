@@ -40,8 +40,8 @@ name_result_folder<-'TS_results_murine_example/'
 obj_name<-'timeSeries_obj_murine_example.Rdata'
 
 #Path to count data and sample data respectively
-my_path_data<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/rmarkdown_method/data/murine/raw_counts_TS'
-my_path_sample_dta<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/rmarkdown_method/data/murine/sample_file.csv'
+my_path_data<-'data/murine/raw_counts_TS'
+my_path_sample_dta<-'data/murine/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
@@ -445,8 +445,6 @@ order to offer a better visualization, with most significant being in red and le
 
 ```{r Gpro_results_alt ,message=FALSE,warning=FALSE}
 target_top=10
-
-library(TimeSeriesAnalysis)
 
 select_ontology<-'GO:BP'
 GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
