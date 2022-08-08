@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Longitudinal Transcriptomic TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA sequencing and microarray data
+TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA sequencing and microarray data
 
 ## Overview
-TimeSeries (TS) is an analysis and visualization package for RNAseq and
+TimeSeriesAnalysis (TSA) is an analysis and visualization package for RNAseq and
 microarray data. TS extracts significant genes from time course
 transcriptomic data by performing differential gene expression on both
 the conditional and temporal axes. It then employs partitioning
@@ -102,5 +102,5 @@ documentation can be found in the references tab.
 
 ## Publication
 
-An manuscript detailing the TimeSeriesPipeline has been submitted for publication. Both the ReadMe and
+An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and
 the website will be updated when updates are available.
