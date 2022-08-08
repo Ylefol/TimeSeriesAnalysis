@@ -1,0 +1,39 @@
+#This is the .gitignore file
+
+#Ignore results from example
+rmarkdown_method/TS_results_murine_example
+rmarkdown_method/TS_results_PBMC_example
+rmarkdown_method/data
+
+#Ignore non-example results
+result_not_example
+
+#Ignore project file
+TimeSeriesAnalysis.Rproj
+
+
+#Ignore all data in data folder
+data/TS_covid
+data/Tanima_RNAseq
+data/mouse_brain_data
+
+
+#REMOVE WHEN PUBLIC
+data
+data-raw
+
+#Ignore vignettes
+vignettes/TS_results_murine_example
+vignettes/data
+vignettes/TS_results_PBMC_example
+vignettes/TS_results_celegans_example
+
+
+#Ignore standard stuff
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+
+inst/doc

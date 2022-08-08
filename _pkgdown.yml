@@ -1,0 +1,24 @@
+url: http://Ylefol.github.io/TimeSeriesAnalysis
+title: TimeSeriesAnalysis
+destination: docs
+development:
+  mode: release
+template:
+  params:
+    bootstrap: 5
+    bootswatch: spacelab
+navbar:
+  structure:
+    left: [articles, reference]
+    right: [github]
+  components:
+    home: ~
+    articles:
+      text: Examples
+      menu:
+      - text: PBMC analysis
+        href: articles/TS_analysis_PBMC.html
+      - text: Murine analysis
+        href: articles/TS_analysis_murine.html
+      - text: Celegans analysis
+        href: articles/TS_analysis_celegans.html

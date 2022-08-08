@@ -1,0 +1,39 @@
+Package: TimeSeriesAnalysis
+Type: Package
+Title: Transcriptomic TimeSeries (longitudinal) analysis
+Version: 0.1.0
+Authors@R: person("Yohan", "Lefol", email = "yohan.lefol@gmail.com",
+                  role = c("aut", "cre"))
+Description: Examples and documentation for the TimeSeriesAnalysis R pipeline
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 4.1)
+Imports:
+	stringr,
+	DESeq2,
+	limma,
+	grid,
+	ggrepel,
+	ggplot2,
+	ComplexHeatmap,
+	reshape2,
+	tibble,
+	dplyr,
+	rstudioapi,
+	clusterGenomics,
+	gprofiler2,
+	tictoc,
+	GOSemSim,
+	plotly,
+	GO.db,
+	data.table,
+	htmlwidgets,
+	dynamicTreeCut,
+Suggests:
+	knitr,
+	rmarkdown,
+RoxygenNote: 7.2.0
+VignetteBuilder: knitr
+URL: https://github.com/Ylefol/TimeSeriesAnalysis
+BugReports: https://github.com/Ylefol/TimeSeriesAnalysis/issues
