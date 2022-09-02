@@ -19,15 +19,12 @@ data/mouse_brain_data
 data/Diana_data
 data/PBMC
 data/murine
-data/Celegans_TS_data.rda
-data/murine_TS_data.rda
+#data/Celegans_TS_data.rda
+#data/murine_TS_data.rda
 
 
 #Hide raw data
-data-raw/Celegans_example
-data-raw/Murine_example
-data-raw/Celegans_example.R
-data-raw/Murine_example.R
+
 
 #Ignore vignettes
 vignettes/TS_results_murine_example
