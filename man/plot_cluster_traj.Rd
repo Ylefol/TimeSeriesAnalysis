@@ -10,7 +10,8 @@ plot_cluster_traj(
   ts_mean_data,
   num_col = 4,
   rem_legend_axis = F,
-  log_TP = F
+  log_TP = F,
+  title_text_size = 14
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 \item{rem_legend_axis}{Boolean indicating if the legend and axis titles should be removed}
 
 \item{log_TP}{Boolean indicating if timepoints should be log transformed}
+
+\item{title_text_size}{Integer indicating what the font size of the titles should be in the facets}
 }
 \value{
 A ggplot2 object for the cluster trajectory plot performed

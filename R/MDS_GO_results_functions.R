@@ -779,7 +779,8 @@ dotplot_ancestors<-function(ancestor_df,use_names=F,enrichment_dta=T){
                  breaks = c(min(ancestor_df$term_size),max(ancestor_df$term_size)),
                  labels = c(min(ancestor_df$term_size),max(ancestor_df$term_size))) +
       scale_y_discrete(labels = function(x) str_wrap(str_replace_all(x, "foo" , "\n"),width = 60))+
-      theme_bw() +
+      theme_bw(base_size=15) +
+      theme(axis.text.x=element_text(angle=-45,vjust=0)) +
       ylab("") +
       xlab("") +
       ggtitle("Ancestor analysis")
@@ -793,7 +794,8 @@ dotplot_ancestors<-function(ancestor_df,use_names=F,enrichment_dta=T){
       #            breaks = c(min(ancestor_df$term_size),max(ancestor_df$term_size)),
       #            labels = c(min(ancestor_df$term_size),max(ancestor_df$term_size))) +
       scale_y_discrete(labels = function(x) str_wrap(str_replace_all(x, "foo" , "\n"),width = 60))+
-      theme_bw() +
+      theme_bw(base_size=15) +
+      theme(axis.text.x=element_text(angle=-45,vjust=0)) +
       ylab("") +
       xlab("") +
       ggtitle("Ancestor analysis")
@@ -829,7 +831,8 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
   }
   plt<-plt+
     scale_y_discrete(labels = function(x) str_wrap(str_replace_all(x, "foo" , "\n"),width = 60)) +
-    theme_bw() +
+    theme_bw(base_size=15) +
+    theme(axis.text.x=element_text(angle=-45,vjust=0)) +
     ylab("") +
     xlab("") +
     ggtitle(paste0(ont,", top ",top_n))

@@ -69,6 +69,16 @@ log_tp_traj<-T #Defines if timepoints should be log transformed for illustration
 
 #Used to highlight specific genes regardless of differential gene expression significance
 genes_of_interest<-c()
+
+#The ancestors that will be queried, the ontology must be specified (BP,MF,or CC)
+#Set to an empty vector c() if not required by the analysis
+target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+                    'GO:0045058','GO:0002507')
+ancestor_ontology<-'BP'
+
 #Some extra set-up
 name_save_obj<-paste0(name_result_folder,obj_name)#The object will be saved in result folder
 #Create main directory for results
@@ -499,15 +509,16 @@ colors on the dotplot.
 
 ```{r ancestor_results ,message=FALSE,warning=FALSE,out.width='100%'}
 #Dotplot for terms relating to specific ancestors
-target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
-                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
-                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
-                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
-                    'GO:0045058','GO:0002507')
-ancestor_ontology<-'BP'
+#Check if analysis is required, if not, set to null or empty
+if(length(target_ancestors)==0){
+  ancestor_plots<-list()
+  ancestor_plots[['MDS']]<-NULL
+  GOs_ancestors_clust<-data.frame(NULL)
+}else{
+  GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,return_plot=T,target_dir=name_result_folder)
+}
 
-GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,return_plot=T,target_dir=name_result_folder)
 ```
 
 Two formats are generated for the ancestor plot. The first is a MDS plot. The second

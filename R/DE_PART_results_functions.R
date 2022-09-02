@@ -1230,13 +1230,14 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #' @param num_col Integer stating the number of columns for the plots.
 #' @param rem_legend_axis Boolean indicating if the legend and axis titles should be removed
 #' @param log_TP Boolean indicating if timepoints should be log transformed
+#' @param title_text_size Integer indicating what the font size of the titles should be in the facets
 #'
 #' @return A ggplot2 object for the cluster trajectory plot performed
 #'
 #'
 #' @export
 #'
-plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=F,log_TP=F){
+plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=F,log_TP=F,title_text_size=14){
 
   if(log_TP==T){
     ts_data$log10_timepoint<-log10(ts_data$timepoint)
@@ -1260,6 +1261,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
       ) +
       scale_x_continuous(expand = c(0, 0)) +
       # scale_y_continuous(expand = c(0, 0))+
+      ylab('scaled expression') +
       facet_wrap(~labels, scales = 'free_x', ncol = num_col)
 
       if(rem_legend_axis==T){
@@ -1267,6 +1269,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
           theme(axis.title.x = element_blank()) +
           theme(axis.title.y = element_blank())
       }
+      plt <- plt + theme(strip.text.x = element_text(size = title_text_size))
 
   return(plt)
 }

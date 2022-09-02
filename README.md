@@ -19,11 +19,19 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
-MAKE INTO LIST TS performs: data normalization and processing PCA plots
-Differential gene expression (conditional and temporal) PART clustering
-Heatmaps Trajectory of identified clusters Gprofiler (functional
-enrichment) analysis of clusters Dotplots and MDS plots of Gprofiler
-results Nearest ancestor clustering of GOs GO ancestor queries
+## TS performs:
+
+-   data normalization and processing
+-   PCA plots
+-   Differential gene expression (conditional and temporal)
+-   PART clustering
+-   Heatmaps for both differential expression summary and clustering
+    results
+-   Trajectory of identified clusters
+-   Gprofiler (functional enrichment) analysis of clusters
+-   Dotplots and MDS plots of Gprofiler results
+-   Nearest ancestor clustering of GOs
+-   GO ancestor queries
 
 ## Installation
 
@@ -33,6 +41,13 @@ You can install the development version of TimeSeriesAnalysis like so:
 install.packages("devtools")
 devtools::install_github("Ylefol/TimeSeriesAnalysis")
 ```
+
+The installation of devtools can sometimes be problematic where certain
+dependencies required by devtools are not installed. The approach to
+solve this is to identify the missing dependencies and install them
+separately, then re-attempt the installation of devtools. Repeat until
+this works. [Devtools main
+page](https://www.r-project.org/nosvn/pandoc/devtools.html)
 
 Certain bioconductor packages may have to be installed before
 installation of TimeSeriesAnalysis. This can be done with the following
@@ -44,6 +59,11 @@ if (!require("BiocManager", quietly = TRUE))
 bio_pkgs <- c(PACKAGES HERE)
 BiocManager::install(bio_pkgs)
 ```
+
+On linux and MAC distributions, it may be possible that the installation
+of pandoc and pandoc-cite be done separately. This has not bee tested on
+windows. pandoc and pandoc-cite are necessary for the use of the
+Rmarkdown format, if this will not be used, they are not required.
 
 ## Rmarkdown format
 
@@ -93,8 +113,58 @@ website](https://ylefol.github.io/TimeSeriesAnalysis/). Tutorials using
 all three data sets can be found in the examples tab of the website.
 Additionally the documentation can be found in the references tab.
 
+## Microarray based data
+
+For microarray data, a streamlined method is in the works. Currently
+microarray data needs to be inputed as a Elist, specifically an E list
+saved as a rds object.
+
+``` r
+my_path_data<-'data/micro_arr/my_limma_dta.rds'
+my_path_sample_dta<-'data/micro_arr/sample_file.csv'
+
+#Set-up time series object parameters
+diff_exp_type<-'limma' 
+```
+
+The rds file given to ‘my_path_data’ contains the Elist produced by
+limma processing of microarray data. It is also important to set the
+differential gene expression type (diff_exp_type) to ‘limma’.
+
+## Using the pipeline
+
+NOTE: You must still install the TimeSeriesAnalysis package as defined
+above
+
+Since the pipeline’s source code is available, individuals are free to
+take the code and adapt it as needed. However for users who would like
+the easiest approach to use the pipeline as is, it is recommended to
+clone or download this github repository to your local computer and work
+from the Rmarkdown method folder within the repository. Cloning or
+downloading can be done from the [TimeSeriesAnalysis github
+page](https://github.com/Ylefol/TimeSeriesAnalysis) by using the green
+button called ‘code’. From there, the Rmarkdown file can be edited.
+
+To edit the file, it is recommended to use rstudio, which can be
+downloaded [here](https://www.rstudio.com/products/rstudio/download/).
+Note that it is recommended to download the free version of RStudio
+Desktop, not RStudio Server.
+
+The only code block of code is the parameter set-up block (2nd) as well
+as the title at the very top of the Rmarkdown document.
+
+## Launching the pipeline
+
+The pipeline can be launched from rstudio itself by using the ‘knit’
+button, or it can be launched from a command line using the following
+command from the TimeSeriesAnalysis repository:
+
+``` bash
+Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS_analysis.html')"
+```
+
 ## Publication
 
 An manuscript detailing the TimeSeriesAnalysis pipeline has been
 submitted for publication. Both the ReadMe and the website will be
-updated when updates are available.
+updated when the manuscript is publicly available.

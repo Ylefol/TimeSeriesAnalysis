@@ -16,10 +16,14 @@ TimeSeriesAnalysis.Rproj
 data/TS_covid
 data/Tanima_RNAseq
 data/mouse_brain_data
+data/Diana_data
+data/PBMC
+data/murine
+data/Celegans_TS_data.rda
+data/murine_TS_data.rda
 
 
 #REMOVE WHEN PUBLIC
-data
 data-raw
 
 #Ignore vignettes
@@ -27,6 +31,7 @@ vignettes/TS_results_murine_example
 vignettes/data
 vignettes/TS_results_PBMC_example
 vignettes/TS_results_celegans_example
+
 
 
 #Ignore standard stuff

@@ -90,7 +90,22 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>TimeSeriesAnalysis (TSA) is an analysis and visualization package for RNAseq and microarray data. TS extracts significant genes from time course transcriptomic data by performing differential gene expression on both the conditional and temporal axes. It then employs partitioning algorithm based on recursive thresholding (PART) clustering to identify small genomic clusters of relevance, followed by running the clusters through gprofiler to reveal the biological relevance of each cluster.</p>
-<p>MAKE INTO LIST TS performs: data normalization and processing PCA plots Differential gene expression (conditional and temporal) PART clustering Heatmaps Trajectory of identified clusters Gprofiler (functional enrichment) analysis of clusters Dotplots and MDS plots of Gprofiler results Nearest ancestor clustering of GOs GO ancestor queries</p>
+</div>
+<div class="section level2">
+<h2 id="ts-performs">TS performs:<a class="anchor" aria-label="anchor" href="#ts-performs"></a>
+</h2>
+<ul>
+<li>data normalization and processing</li>
+<li>PCA plots</li>
+<li>Differential gene expression (conditional and temporal)</li>
+<li>PART clustering</li>
+<li>Heatmaps for both differential expression summary and clustering results</li>
+<li>Trajectory of identified clusters</li>
+<li>Gprofiler (functional enrichment) analysis of clusters</li>
+<li>Dotplots and MDS plots of Gprofiler results</li>
+<li>Nearest ancestor clustering of GOs</li>
+<li>GO ancestor queries</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -99,11 +114,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis"</span><span class="op">)</span></code></pre></div>
+<p>The installation of devtools can sometimes be problematic where certain dependencies required by devtools are not installed. The approach to solve this is to identify the missing dependencies and install them separately, then re-attempt the installation of devtools. Repeat until this works. <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a></p>
 <p>Certain bioconductor packages may have to be installed before installation of TimeSeriesAnalysis. This can be done with the following code snippet:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>bio_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(PACKAGES HERE)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(bio_pkgs)</span></code></pre></div>
+<p>On linux and MAC distributions, it may be possible that the installation of pandoc and pandoc-cite be done separately. This has not bee tested on windows. pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this will not be used, they are not required.</p>
 </div>
 <div class="section level2">
 <h2 id="rmarkdown-format">Rmarkdown format<a class="anchor" aria-label="anchor" href="#rmarkdown-format"></a>
@@ -124,9 +141,35 @@
 <p>A tutorial can be found within the <a href="https://ylefol.github.io/TimeSeriesAnalysis/" class="external-link">pipelines website</a>. Tutorials using all three data sets can be found in the examples tab of the website. Additionally the documentation can be found in the references tab.</p>
 </div>
 <div class="section level2">
+<h2 id="microarray-based-data">Microarray based data<a class="anchor" aria-label="anchor" href="#microarray-based-data"></a>
+</h2>
+<p>For microarray data, a streamlined method is in the works. Currently microarray data needs to be inputed as a Elist, specifically an E list saved as a rds object.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/my_limma_dta.rds'</span>
+<span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/sample_file.csv'</span>
+
+<span class="co">#Set-up time series object parameters</span>
+<span class="va">diff_exp_type</span><span class="op">&lt;-</span><span class="st">'limma'</span> </code></pre></div>
+<p>The rds file given to ‘my_path_data’ contains the Elist produced by limma processing of microarray data. It is also important to set the differential gene expression type (diff_exp_type) to ‘limma’.</p>
+</div>
+<div class="section level2">
+<h2 id="using-the-pipeline">Using the pipeline<a class="anchor" aria-label="anchor" href="#using-the-pipeline"></a>
+</h2>
+<p>NOTE: You must still install the TimeSeriesAnalysis package as defined above</p>
+<p>Since the pipeline’s source code is available, individuals are free to take the code and adapt it as needed. However for users who would like the easiest approach to use the pipeline as is, it is recommended to clone or download this github repository to your local computer and work from the Rmarkdown method folder within the repository. Cloning or downloading can be done from the <a href="https://github.com/Ylefol/TimeSeriesAnalysis" class="external-link">TimeSeriesAnalysis github page</a> by using the green button called ‘code’. From there, the Rmarkdown file can be edited.</p>
+<p>To edit the file, it is recommended to use rstudio, which can be downloaded <a href="https://www.rstudio.com/products/rstudio/download/" class="external-link">here</a>. Note that it is recommended to download the free version of RStudio Desktop, not RStudio Server.</p>
+<p>The only code block of code is the parameter set-up block (2nd) as well as the title at the very top of the Rmarkdown document.</p>
+</div>
+<div class="section level2">
+<h2 id="launching-the-pipeline">Launching the pipeline<a class="anchor" aria-label="anchor" href="#launching-the-pipeline"></a>
+</h2>
+<p>The pipeline can be launched from rstudio itself by using the ‘knit’ button, or it can be launched from a command line using the following command from the TimeSeriesAnalysis repository:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">"rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS_analysis.html')"</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="publication">Publication<a class="anchor" aria-label="anchor" href="#publication"></a>
 </h2>
-<p>An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and the website will be updated when updates are available.</p>
+<p>An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and the website will be updated when the manuscript is publicly available.</p>
 </div>
 </div>
   </div>
