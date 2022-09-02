@@ -24,7 +24,7 @@ data/murine
 
 
 #Hide raw data
-
+data_raw
 
 #Ignore vignettes
 vignettes/TS_results_murine_example
