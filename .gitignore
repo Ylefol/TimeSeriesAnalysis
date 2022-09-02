@@ -19,8 +19,8 @@ data/mouse_brain_data
 data/Diana_data
 data/PBMC
 data/murine
-#data/Celegans_TS_data.rda
-#data/murine_TS_data.rda
+data/Celegans_TS_data.rda
+data/murine_TS_data.rda
 
 
 #Hide raw data
