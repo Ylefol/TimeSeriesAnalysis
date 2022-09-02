@@ -23,8 +23,11 @@ data/Celegans_TS_data.rda
 data/murine_TS_data.rda
 
 
-#REMOVE WHEN PUBLIC
-data-raw
+#Hide raw data
+data-raw/Celegans_example
+data-raw/Murine_example
+data-raw/Celegans_example.R
+data-raw/Murine_example.R
 
 #Ignore vignettes
 vignettes/TS_results_murine_example
