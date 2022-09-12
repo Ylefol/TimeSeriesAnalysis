@@ -17,7 +17,7 @@ output:
 # Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS_analysis.html')"
 library(knitr)
 library(TimeSeriesAnalysis)
-packages_for_loading<-c('DESeq2','limma','clusterGenomics','gprofiler2','tictoc',
+packages_for_loading<-c('DESeq2','limma','gprofiler2','tictoc',
                         'tibble','GOSemSim','dplyr','tibble','grid','ggrepel',
                         'ggplot2','ComplexHeatmap','reshape2','plotly',
                         'GO.db','data.table','htmlwidgets','dynamicTreeCut','stringr')

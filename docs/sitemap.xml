@@ -43,6 +43,9 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PART_heat_map.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PartRec.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/SS_GO_clusters.html</loc>
   </url>
   <url>
@@ -100,7 +103,19 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/custom_heatmap_wrapper.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/doHclust.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/doKmeans.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/dotplot_ancestors.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findPartition.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findW.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_clusters_from_termdist.html</loc>
@@ -113,6 +128,21 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_relation_to_ancestors.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/gap.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/get.threshold.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getDist.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getPARTlabels.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getReferenceW.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/gprofiler_cluster_analysis.html</loc>
@@ -137,6 +167,9 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/normalize_timeSeries_with_deseq2.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_MDS.html</loc>
@@ -194,6 +227,9 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/select_genes_with_l2fc.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/sim.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/temporal_DE_wrapper.html</loc>

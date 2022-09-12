@@ -21,7 +21,6 @@ Imports:
 	tibble,
 	dplyr,
 	rstudioapi,
-	clusterGenomics,
 	gprofiler2,
 	tictoc,
 	GOSemSim,

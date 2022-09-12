@@ -1,9 +1,8 @@
-# library(clusterGenomics)
 # library(gprofiler2)
 # library(tictoc)
 # library('GOSemSim')
 
-packages_for_loading<-c('clusterGenomics','gprofiler2','tictoc','tibble','GOSemSim')
+packages_for_loading<-c('gprofiler2','tictoc','tibble','GOSemSim')
 suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 #' @title Format data for PART

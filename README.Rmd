@@ -58,21 +58,24 @@ required by devtools are not installed. The approach to solve this is to identif
 the missing dependencies and install them separately, then re-attempt the installation
 of devtools. Repeat until this works.
 [Devtools main page](https://www.r-project.org/nosvn/pandoc/devtools.html)
+Note that when installing devtools (or most R packages) on a MAC or Linux distribution, it 
+if beneficial to install it from an R terminal that was launched using sudo rights. This is
+often due to non-R libraries being located in sudo-accessible areas of the computer.
 
-Certain bioconductor packages may have to be installed before
-installation of TimeSeriesAnalysis. This can be done with the following
-code snippet:
+Certain bioconductor packages will have to be installed before
+installation of TimeSeriesAnalysis. The code snippet below gives the method along with
+some of the packages that should be installed via this method.
 
 ``` r
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-bio_pkgs <- c(PACKAGES HERE)
+bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap')
 BiocManager::install(bio_pkgs)
 ```
 
 On linux and MAC distributions, it may be possible that the installation of pandoc
 and pandoc-cite be done separately. This has not bee tested on windows.
-pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this
+Pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this
 will not be used, they are not required.
 
 ## Rmarkdown format
@@ -162,3 +165,12 @@ Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS
 
 An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and
 the website will be updated when the manuscript is publicly available.
+
+
+## Additional information
+The 'clusterGenomics' package was no longer maintained on CRAN and therefore the necessary
+scripts were brought over to this package for it's implementation without the need
+to download the clusterGenomics package from source.
+Within this package, in the 'R/clusterGenomics.R' code was written by the authors of 
+clusterGenomics. It was imported to TimeSeriesAnalysis by the authors of
+TimeSeriesAnalysis.
