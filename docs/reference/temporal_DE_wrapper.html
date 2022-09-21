@@ -78,13 +78,19 @@ the condition of the object to reflect the comparison being done</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">temporal_DE_wrapper</span><span class="op">(</span><span class="va">time_object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">temporal_DE_wrapper</span><span class="op">(</span><span class="va">time_object</span>, do_all_combinations <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>time_object</dt>
 <dd><p>A timeseries object containing a DESeq2_obj</p></dd>
+
+
+<dt>do_all_combinations</dt>
+<dd><p>Allows for all temporal combinations to be done instead
+of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
+only the first two comparison of the example would be run.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -6,8 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-TimeSeriesAnalysis is a transcriptomic analysis tool for both RNA
-sequencing and microarray data
+TiSA: TimeSeriesAnalysis - Is a transcriptomic analysis tool for both
+RNA sequencing and microarray data
 
 ## Overview
 

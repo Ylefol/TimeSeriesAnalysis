@@ -50,7 +50,6 @@ conditional_DE_wrapper<-function(time_object){
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 #' @title Create temporal DE results
 #'
 #' @description Wrapper function which performs the temporal differential gene expression analyses
@@ -65,13 +64,16 @@ conditional_DE_wrapper<-function(time_object){
 #'
 #'
 #' @param time_object A timeseries object containing a DESeq2_obj
+#' @param do_all_combinations Allows for all temporal combinations to be done instead
+#' of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
+#' only the first two comparison of the example would be run.
 #'
 #' @return The timeseries object with the temporal differential expression results
 #' added to the DE_results slot of the object.
 #'
 #' @export
 #'
-temporal_DE_wrapper<-function(time_object){
+temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
 
   if ('temporal' %in% names(time_object@DE_results)){
     message('Temporal differential expression results already exist')
@@ -79,43 +81,63 @@ temporal_DE_wrapper<-function(time_object){
   }else{
     time_object@DE_results[['temporal']]<-list()
   }
-
-  all_timepoints<-unique(time_object@sample_data$timepoint)
-  for (tp_idx in 1:length(all_timepoints)){
-    if ((tp_idx)==length(all_timepoints)){#Stop iteration at second last one
-      break
+  #Sort the timepoints to ensure that they are in sequential order
+  all_timepoints<-sort(unique(time_object@sample_data$timepoint))
+  if(do_all_combinations==TRUE){
+    possible_TPs<-expand.grid(all_timepoints,all_timepoints)
+    for (row in 1:nrow(possible_TPs)){
+      row<-as.character(row)
+      if(possible_TPs[row,'Var1'] <= possible_TPs[row,'Var2']){
+        possible_TPs<-possible_TPs[!row.names(possible_TPs) %in% c(row),]
+      }
     }
-    tps_interest<-c(all_timepoints[tp_idx],all_timepoints[tp_idx+1])
-    tp_labels<-paste0('TP_',tps_interest)
-    exp_name<-paste0(tp_labels[2],'_vs_',tp_labels[1])
+  }else{ #Do all combinations is False
+    possible_TPs<-data.frame(NULL)
+    for (tp_idx in 1:length(all_timepoints)){
+      if ((tp_idx)==length(all_timepoints)){#Stop iteration at second last one
+        break
+      }
+      found_tps<-rev(c(all_timepoints[tp_idx],all_timepoints[tp_idx+1]))
+      if(nrow(possible_TPs)==0){
+        possible_TPs<-data.frame('Var1'=found_tps[1],'Var2'=found_tps[2])
+      }else{
+        possible_TPs<-rbind(possible_TPs,found_tps)
+      }
+    }
+  }
 
+  #Iterate over possible comparison and run them
+  for(exp in 1:nrow(possible_TPs)){
+    tps_interest<-as.numeric(possible_TPs[exp,])
+    tp_labels<-paste0('TP_',tps_interest)
+    exp_name<-paste0(tp_labels[1],'_vs_',tp_labels[2])
     if (time_object@DE_method=='DESeq2'){
-      #Reverse the labels to get the appropriate comparison from the differential gene expression
-      rev_tp_labes<-rev(tp_labels)
 
       samps_interest<-time_object@sample_data$sample[time_object@sample_data$timepoint %in% tps_interest]
 
-      samp_group_1<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[1]]
-      samp_group_2<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[2]]
+      samp_group_1<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[2]]
+      samp_group_2<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[1]]
       sample_order<-row.names(time_object@DESeq2_obj@colData)
       sample_order<-sample_order[sample_order %in% samps_interest]
 
+      #The labels show the highest tp first then the lowest. To build the comparison
+      #Vectors we need to put the lowest as sample 1 and highest as sample 2
       cond_vect<-c()
       for(samp in sample_order){
         if (samp %in% samp_group_1){
-          cond_vect<-c(cond_vect,tp_labels[1])
-        }else if (samp %in% samp_group_2)
           cond_vect<-c(cond_vect,tp_labels[2])
+        }else if (samp %in% samp_group_2)
+          cond_vect<-c(cond_vect,tp_labels[1])
       }
-      cond_vect<-factor(cond_vect,levels = c(tp_labels[2],tp_labels[1]))
+      cond_vect<-factor(cond_vect,levels = c(tp_labels[1],tp_labels[2]))
 
-      time_object<-DE_using_DESeq2(time_object,rev_tp_labes,sample_order,exp_name,'temporal',condition_factor=cond_vect)
+      time_object<-DE_using_DESeq2(time_object,tp_labels,sample_order,exp_name,'temporal',condition_factor=cond_vect)
     }else if(time_object@DE_method=='limma'){
       time_object<-DE_using_limma(time_object,group_names=tps_interest,exp_name,do_temporal=T)
     }
 
-
   }
+
   return(time_object)
 }
 

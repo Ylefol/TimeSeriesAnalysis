@@ -67,6 +67,11 @@ PART_recursion<-100 #Number of recursions, default is 100, using 10 for example
 
 log_tp_traj<-T #Defines if timepoints should be log transformed for illustration purposes
 
+# Allows for all temporal combinations to be done instead
+# of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
+# only the first two comparison of the example would be run.
+do_all_temporal_comparisons=F
+
 #Used to highlight specific genes regardless of differential gene expression significance
 genes_of_interest<-c()
 
@@ -127,7 +132,7 @@ if (TS_object@DE_method=='DESeq2' & 'norm' %in% names(TS_object@count_matrix)!=T
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
 #Perform temporal differential gene expression analysis
-TS_object<-temporal_DE_wrapper(TS_object)
+TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=do_all_temporal_comparisons)
 
 #save the timeseries object
 save(TS_object,file=name_save_obj)

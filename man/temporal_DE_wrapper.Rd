@@ -4,10 +4,14 @@
 \alias{temporal_DE_wrapper}
 \title{Create temporal DE results}
 \usage{
-temporal_DE_wrapper(time_object)
+temporal_DE_wrapper(time_object, do_all_combinations = F)
 }
 \arguments{
 \item{time_object}{A timeseries object containing a DESeq2_obj}
+
+\item{do_all_combinations}{Allows for all temporal combinations to be done instead
+of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
+only the first two comparison of the example would be run.}
 }
 \value{
 The timeseries object with the temporal differential expression results

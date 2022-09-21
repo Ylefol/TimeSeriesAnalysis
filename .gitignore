@@ -5,6 +5,9 @@ rmarkdown_method/TS_results_murine_example
 rmarkdown_method/TS_results_PBMC_example
 rmarkdown_method/data
 
+#Ignore EBSC folder
+EBSC_folder
+
 #Ignore non-example results
 result_not_example
 

@@ -1414,6 +1414,12 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #'
 create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_location,DE_type=c('conditional','temporal'),log_tp=F){
 
+  for(DE in DE_type){
+    if(!(DE %in% names(object@DE_results))){
+      message(paste0(DE,' not found, removing from genes of interest analysis'))
+      DE_type<-DE_type[!DE_type==DE]
+    }
+  }
   list_interest<-list()
   for (DE in DE_type){
     if (DE %in% names(object@DE_results)){
@@ -1457,6 +1463,11 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
       #Capture output to prevent useless warnings
       ggsave(plot=gene_traj_plot,filename = paste0(save_location,gene,'_trajectory.png'))
     }
+  }
+  upstream_save_loc<-strsplit(save_location,'/')[[1]][1]
+  genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(TS_object@count_matrix$norm)]
+  if(length(genes_not_found)>0){
+    write.csv(genes_not_found,paste0(upstream_save_loc,'/','genes_of_interest_not_found.csv'),row.names=F)
   }
 }
 
