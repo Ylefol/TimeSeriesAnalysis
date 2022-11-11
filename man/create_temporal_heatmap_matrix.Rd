@@ -4,10 +4,14 @@
 \alias{create_temporal_heatmap_matrix}
 \title{Create data for temporal heatmap}
 \usage{
-create_temporal_heatmap_matrix(time_object)
+create_temporal_heatmap_matrix(time_object, adjust_for_missing_samples = T)
 }
 \arguments{
 \item{time_object}{A time series object}
+
+\item{adjust_for_missing_samples}{Boolean indicating if missing samples should be
+compensated for (NA introduced). Currently, there is no reason to have this set to
+False.}
 }
 \value{
 A list containing the main data matrix (count values) and the

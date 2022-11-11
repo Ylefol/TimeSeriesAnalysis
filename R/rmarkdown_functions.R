@@ -34,7 +34,7 @@ find_most_variable_cluster<-function(time_object,mean_ts_data){
   }
   names(dif_clust)=unique(mean_ts_data$cluster)
   target_clust<-names(dif_clust)[unname(dif_clust)==max(dif_clust)]
-
+  target_clust<-target_clust[1]
   return(target_clust)
 
 }

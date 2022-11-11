@@ -8,7 +8,7 @@
 # library(limma, include.only = c("plotMDS"))
 # library(reshape2)
 
-packages_for_loading<-c('DESeq2','limma','grid','ggrepel','ggplot2','ComplexHeatmap','reshape2','stringr')
+packages_for_loading<-c('DESeq2','limma','grid','ggrepel','ggplot2','ComplexHeatmap','reshape2','stringr','stringi')
 suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 # wrapper for result creation -------------------
@@ -33,11 +33,14 @@ suppressPackageStartupMessages(lapply(packages_for_loading, require, character.o
 #' will use to create results. Either conditional or temporal
 #' @param genes_of_interest A vector of genes of interest, can be empty (c())
 #' @param results_folder The main folder where the results will be stored
+#' @param adjust_missing_temp_samples Boolean indicating if missing temporal samples should be
+#' compensated for (NA introduced). Currently, there is no reason to have this set to
+#' False.
 #'
 #' @return None
 #'
 #' @export
-plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/'){
+plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=T){
   #Create path to DE type and create directory
   main_path<-paste0(results_folder,'DE_results_',DE_type,'/')
   dir.create(main_path)
@@ -45,7 +48,7 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
   message('Creating summary heat map')
   #Create a overview heatmap of the differential expression results for that type
   custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=T,
-                         plot_file_name = paste0(main_path,'custom_heat_',DE_type))
+                         plot_file_name = paste0(main_path,'custom_heat_',DE_type),adjust_missing_temp_samples)
 
   DE_res<-object@DE_results[[DE_type]]
 
@@ -469,18 +472,20 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #' @param log_transform Boolean indicating if the results should be log transformed
 #' on the heatmap
 #' @param plot_file_name The file name to be given to the heatmap once it is saved
-#'
+#' @param adjust_missing_temp_samples Boolean indicating if missing temporal samples should be
+#' compensated for (NA introduced). Currently, there is no reason to have this set to
+#' False.
 #' @return none
 #'
 #' @export
 #'
-custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=T,plot_file_name='custom_DEG_heatmap'){
+custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=T,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=T){
 
   #Create the matrix
   if (DE_type=='conditional'){
     my_heat_list<-create_conditional_heatmap_matrix(time_object)
   }else if (DE_type=='temporal'){
-    my_heat_list<-create_temporal_heatmap_matrix(time_object)
+    my_heat_list<-create_temporal_heatmap_matrix(time_object,adjust_for_missing_samples = adjust_missing_temp_samples)
   }
 
   #Format the data for the plotting function
@@ -647,13 +652,16 @@ create_conditional_heatmap_matrix<-function(time_object){
 #'
 #'
 #' @param time_object A time series object
+#' @param adjust_for_missing_samples Boolean indicating if missing samples should be
+#' compensated for (NA introduced). Currently, there is no reason to have this set to
+#' False.
 #'
 #' @return A list containing the main data matrix (count values) and the
 #' three vectors described above.
 #'
 #' @export
 #'
-create_temporal_heatmap_matrix<-function(time_object){
+create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=T){
   DE_list<-time_object@DE_results$temporal
   DEG_list<-list()
   all_replicates<-c()
@@ -696,18 +704,20 @@ create_temporal_heatmap_matrix<-function(time_object){
     colnames(temp_df)=sample_data_used$replicate
 
     #Works
-    if(all(rep_template_temporal %in% sample_data_used$replicate)==F){
-      missing_replicates<-rep_template_temporal[!rep_template_temporal %in% sample_data_used$replicate]
-      missing_rep_list<-list()
-      for (replicate in missing_replicates){
-        missing_rep_list[[replicate]]<-rep(NA,nrow(temp_df))
-      }
-      missing_rep_cols<-as.data.frame(missing_rep_list)
-      colnames(missing_rep_cols)=names(missing_rep_list)
+    if(adjust_for_missing_samples==T){
+      if(all(rep_template_temporal %in% sample_data_used$replicate)==F){
+        missing_replicates<-rep_template_temporal[!rep_template_temporal %in% sample_data_used$replicate]
+        missing_rep_list<-list()
+        for (replicate in missing_replicates){
+          missing_rep_list[[replicate]]<-rep(NA,nrow(temp_df))
+        }
+        missing_rep_cols<-as.data.frame(missing_rep_list)
+        colnames(missing_rep_cols)=names(missing_rep_list)
 
-      temp_df<-cbind(temp_df,missing_rep_cols)
+        temp_df<-cbind(temp_df,missing_rep_cols)
+      }
+      temp_df<-temp_df[,rep_template_temporal]#Ensure format agreement
     }
-    temp_df<-temp_df[,rep_template_temporal]#Ensure format agreement
 
     row.names(temp_df)=genes_mod
     temp_df<-t(temp_df)#transpose
@@ -1152,9 +1162,17 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=T){
   # ts_df<-merge(ts_df,for_merge,by='sample')
   #
   # ts_df<-ts_df[,c('gene_id','group','timepoint','trans_mean')]
-  ts_df<-cbind(ts_df,str_split_fixed(ts_df$variable, "_", 2))
-  # View(ts_df)
-  colnames(ts_df)=c('gene_id','replicate','trans_mean','group','timepoint')
+
+  # the column is reversed before splitting to ensure that the '_' being split
+  # on is the one before the timepoint
+  ts_df<-cbind(ts_df,str_split_fixed(stri_reverse(ts_df$variable), "_", 2))
+
+  colnames(ts_df)=c('gene_id','replicate','trans_mean','timepoint','group')
+
+  #Re-reverse the groups and timepoints to ensure proper order following split
+  ts_df$group<-stri_reverse(ts_df$group)
+  ts_df$timepoint<-stri_reverse(ts_df$timepoint)
+
   ts_df<-ts_df[,c('gene_id','group','timepoint','trans_mean')]
   ts_df$timepoint<-as.numeric(ts_df$timepoint)
   #Add cluster association

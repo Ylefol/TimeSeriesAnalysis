@@ -8,7 +8,8 @@ plot_wrapper_DE_results(
   object,
   DE_type,
   genes_of_interest = c(),
-  results_folder = "TS_results/"
+  results_folder = "TS_results/",
+  adjust_missing_temp_samples = T
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ will use to create results. Either conditional or temporal}
 \item{genes_of_interest}{A vector of genes of interest, can be empty (c())}
 
 \item{results_folder}{The main folder where the results will be stored}
+
+\item{adjust_missing_temp_samples}{Boolean indicating if missing temporal samples should be
+compensated for (NA introduced). Currently, there is no reason to have this set to
+False.}
 }
 \value{
 None

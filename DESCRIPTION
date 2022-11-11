@@ -27,12 +27,13 @@ Imports:
 	plotly,
 	GO.db,
 	data.table,
-	htmlwidgets,
+	htmltools,
 	dynamicTreeCut,
+	stringi
 Suggests:
 	knitr,
 	rmarkdown,
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 URL: https://github.com/Ylefol/TimeSeriesAnalysis
 BugReports: https://github.com/Ylefol/TimeSeriesAnalysis/issues

@@ -3,12 +3,12 @@
 # library('GOSemSim')
 # library(data.table)
 # library(gprofiler2)
-# library(htmlwidgets)
+# library(htmltools)
 # library(dynamicTreeCut)
 # library(stringr)
 
 packages_for_loading<-c('plotly','GO.db','GOSemSim','data.table','gprofiler2',
-                        'htmlwidgets','dynamicTreeCut','stringr')
+                        'htmltools','dynamicTreeCut','stringr')
 suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 # pipeline/calculation functions  -------------------
@@ -69,7 +69,8 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
       save_name_fig<-paste0(save_fig_location,'/',cluster_name,'_overview.html')
       save_name_data<-paste0(save_data_location,'/',cluster_name,'_data.csv')
       #save plot
-      saveWidget(p,file=save_name_fig)
+      p$sizingPolicy$defaultHeight<-p$sizingPolicy$defaultHeight*2
+      save_html(p,save_name_fig)
       #If CORUM results, there may be some term names with commas
       gprof_dta$term_name<-gsub(",",".",gprof_dta$term_name)
       write.csv(x=gprof_dta,file=save_name_data,quote=FALSE)

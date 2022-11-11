@@ -8,6 +8,9 @@ rmarkdown_method/data
 #Ignore EBSC folder
 EBSC_folder
 
+#Ignore Fran's folder
+Fran_folder
+
 #Ignore non-example results
 result_not_example
 

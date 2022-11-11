@@ -20,7 +20,8 @@ library(TimeSeriesAnalysis)
 packages_for_loading<-c('DESeq2','limma','gprofiler2','tictoc',
                         'tibble','GOSemSim','dplyr','tibble','grid','ggrepel',
                         'ggplot2','ComplexHeatmap','reshape2','plotly',
-                        'GO.db','data.table','htmlwidgets','dynamicTreeCut','stringr')
+                        'GO.db','data.table','htmltools','dynamicTreeCut','stringr',
+                        'stringi')
 suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 knitr::opts_chunk$set(echo = TRUE)
 

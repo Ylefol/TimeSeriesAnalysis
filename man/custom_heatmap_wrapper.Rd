@@ -8,7 +8,8 @@ custom_heatmap_wrapper(
   time_object,
   DE_type,
   log_transform = T,
-  plot_file_name = "custom_DEG_heatmap"
+  plot_file_name = "custom_DEG_heatmap",
+  adjust_missing_temp_samples = T
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ custom_heatmap_wrapper(
 on the heatmap}
 
 \item{plot_file_name}{The file name to be given to the heatmap once it is saved}
+
+\item{adjust_missing_temp_samples}{Boolean indicating if missing temporal samples should be
+compensated for (NA introduced). Currently, there is no reason to have this set to
+False.}
 }
 \value{
 none

@@ -114,7 +114,6 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
     if (time_object@DE_method=='DESeq2'){
 
       samps_interest<-time_object@sample_data$sample[time_object@sample_data$timepoint %in% tps_interest]
-
       samp_group_1<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[2]]
       samp_group_2<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[1]]
       sample_order<-row.names(time_object@DESeq2_obj@colData)
@@ -130,8 +129,8 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
           cond_vect<-c(cond_vect,tp_labels[1])
       }
       cond_vect<-factor(cond_vect,levels = c(tp_labels[1],tp_labels[2]))
-
       time_object<-DE_using_DESeq2(time_object,tp_labels,sample_order,exp_name,'temporal',condition_factor=cond_vect)
+
     }else if(time_object@DE_method=='limma'){
       time_object<-DE_using_limma(time_object,group_names=tps_interest,exp_name,do_temporal=T)
     }
@@ -140,6 +139,7 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
 
   return(time_object)
 }
+
 
 # DESeq2 functions  -------------------
 
@@ -358,6 +358,7 @@ calculate_EB <- function(micro_arr_dta,matrix_model,comparison){
 #' @param exp_name The name of the expriment that will be used to store the results
 #' @param target_tp The timepoint being targeted in the case of conditional analysis
 #' @param do_temporal If the analysis is temporal or conditional
+#' @param specific_temporal_group Makes the temporal analysis group specific
 #'
 #' @return The updated timeseries object
 #'

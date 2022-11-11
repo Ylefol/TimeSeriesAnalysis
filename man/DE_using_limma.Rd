@@ -22,6 +22,8 @@ DE_using_limma(
 \item{target_tp}{The timepoint being targeted in the case of conditional analysis}
 
 \item{do_temporal}{If the analysis is temporal or conditional}
+
+\item{specific_temporal_group}{Makes the temporal analysis group specific}
 }
 \value{
 The updated timeseries object
