@@ -112,15 +112,15 @@
 </h2>
 <p>You can install the development version of TimeSeriesAnalysis like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis"</span><span class="op">)</span></span></code></pre></div>
 <p>The installation of devtools can sometimes be problematic where certain dependencies required by devtools are not installed. The approach to solve this is to identify the missing dependencies and install them separately, then re-attempt the installation of devtools. Repeat until this works. <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a> Note that when installing devtools (or most R packages) on a MAC or Linux distribution, it if beneficial to install it from an R terminal that was launched using sudo rights. This is often due to non-R libraries being located in sudo-accessible areas of the computer.</p>
 <p>Certain bioconductor packages will have to be installed before installation of TimeSeriesAnalysis. The code snippet below gives the method along with some of the packages that should be installed via this method.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="va">bio_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'DESeq2'</span>,<span class="st">'GOSemSim'</span>,<span class="st">'GO.db'</span>,<span class="st">'limma'</span>,<span class="st">'ComplexHeatmap'</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">bio_pkgs</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="va">bio_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'DESeq2'</span>,<span class="st">'GOSemSim'</span>,<span class="st">'GO.db'</span>,<span class="st">'limma'</span>,<span class="st">'ComplexHeatmap'</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">bio_pkgs</span><span class="op">)</span></span></code></pre></div>
 <p>On linux and MAC distributions, it may be possible that the installation of pandoc and pandoc-cite be done separately. This has not bee tested on windows. Pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this will not be used, they are not required.</p>
 </div>
 <div class="section level2">
@@ -146,11 +146,11 @@
 </h2>
 <p>For microarray data, a streamlined method is in the works. Currently microarray data needs to be inputed as a Elist, specifically an E list saved as a rds object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/my_limma_dta.rds'</span>
-<span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/sample_file.csv'</span>
-
-<span class="co">#Set-up time series object parameters</span>
-<span class="va">diff_exp_type</span><span class="op">&lt;-</span><span class="st">'limma'</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/my_limma_dta.rds'</span></span>
+<span><span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="st">'data/micro_arr/sample_file.csv'</span></span>
+<span></span>
+<span><span class="co">#Set-up time series object parameters</span></span>
+<span><span class="va">diff_exp_type</span><span class="op">&lt;-</span><span class="st">'limma'</span> </span></code></pre></div>
 <p>The rds file given to ‘my_path_data’ contains the Elist produced by limma processing of microarray data. It is also important to set the differential gene expression type (diff_exp_type) to ‘limma’.</p>
 </div>
 <div class="section level2">
@@ -224,7 +224,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

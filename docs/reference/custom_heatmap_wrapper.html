@@ -68,12 +68,13 @@ illustrating the significant DEGs of a given differential expression type (DE_ty
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">custom_heatmap_wrapper</span><span class="op">(</span>
-  <span class="va">time_object</span>,
-  <span class="va">DE_type</span>,
-  log_transform <span class="op">=</span> <span class="cn">T</span>,
-  plot_file_name <span class="op">=</span> <span class="st">"custom_DEG_heatmap"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">custom_heatmap_wrapper</span><span class="op">(</span></span>
+<span>  <span class="va">time_object</span>,</span>
+<span>  <span class="va">DE_type</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  plot_file_name <span class="op">=</span> <span class="st">"custom_DEG_heatmap"</span>,</span>
+<span>  adjust_missing_temp_samples <span class="op">=</span> <span class="cn">T</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,6 +94,12 @@ on the heatmap</p></dd>
 
 <dt>plot_file_name</dt>
 <dd><p>The file name to be given to the heatmap once it is saved</p></dd>
+
+
+<dt>adjust_missing_temp_samples</dt>
+<dd><p>Boolean indicating if missing temporal samples should be
+compensated for (NA introduced). Currently, there is no reason to have this set to
+False.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -114,7 +121,7 @@ on the heatmap</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -3,6 +3,7 @@
 #Ignore results from example
 rmarkdown_method/TS_results_murine_example
 rmarkdown_method/TS_results_PBMC_example
+
 rmarkdown_method/data
 
 #Ignore EBSC folder

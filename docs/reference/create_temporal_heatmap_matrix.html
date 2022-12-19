@@ -86,13 +86,19 @@ in order to enable them to have different values if necessary.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_temporal_heatmap_matrix</span><span class="op">(</span><span class="va">time_object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_temporal_heatmap_matrix</span><span class="op">(</span><span class="va">time_object</span>, adjust_for_missing_samples <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>time_object</dt>
 <dd><p>A time series object</p></dd>
+
+
+<dt>adjust_for_missing_samples</dt>
+<dd><p>Boolean indicating if missing samples should be
+compensated for (NA introduced). Currently, there is no reason to have this set to
+False.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -115,7 +121,7 @@ three vectors described above.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

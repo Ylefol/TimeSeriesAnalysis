@@ -41,7 +41,9 @@ within the submitted object or as a list}
 The timeseries object with the PART results added
 }
 \description{
-The function set's a see for reproducibility of results, it then uses the
+The function set's a seed for reproducibility of results, it then uses the
 part function from the clusterGenomics package to establish which genes belong
-to what clusters.
+to what clusters. The clusters are then ordered using hierarchical clustering.
+This may result in some PART cluster being split, therefore the order is adjusted
+to put them together. We first order using hierarchical clustering for visual purposes.
 }

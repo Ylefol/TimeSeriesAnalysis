@@ -49,9 +49,11 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @title compute PART clusters
 #'
-#' @description The function set's a see for reproducibility of results, it then uses the
+#' @description The function set's a seed for reproducibility of results, it then uses the
 #' part function from the clusterGenomics package to establish which genes belong
-#' to what clusters.
+#' to what clusters. The clusters are then ordered using hierarchical clustering.
+#' This may result in some PART cluster being split, therefore the order is adjusted
+#' to put them together. We first order using hierarchical clustering for visual purposes.
 #'
 #' @param object A timeseries object
 #' @param save_name the file name to save the PART data, if NULL no saving
@@ -96,43 +98,52 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   tic()#Start a timer for PART computation
 
   #Calculates the clustering using the 'part' algorithm
-  calculated_clusters = part(main_matrix,B=part_recursion,minSize=part_min_clust)
+  calculated_clusters = part(main_matrix,B=part_recursion,minSize=part_min_clust,linkage=hclust_param)
   rowclust = hclust(dist(main_matrix,method=dist_param),method=hclust_param)
 
   clust_ordered <- unique(as.character(calculated_clusters$lab.hatK[rowclust$order]))
 
   #Rename clusters so they appear in order (i.e. 1,2,3,4)
   my_iter<-1
-  new_vect<-c()
+  clust_swap_df<-NULL
   for(val in unique(calculated_clusters$lab.hatK[rowclust$order])){
-    rep_value<-unname(table(calculated_clusters$lab.hatK[rowclust$order])[as.character(val)])
-    new_vect<-c(new_vect,rep(as.character(my_iter),rep_value))
-    my_iter<-my_iter+1
+    if(is.null(clust_swap_df)==T){
+      clust_swap_df<-data.frame('original'=val,'replacement'=paste0('C',my_iter))
+    }else{
+      new_row<-c(val,paste0('C',my_iter))
+      clust_swap_df<-rbind(clust_swap_df,new_row)
+    }
+    my_iter=my_iter+1
   }
+
+  #Creates a save file for PART clusters
+  part_data <- main_matrix[rowclust$order,]
+  part_data <- as.data.frame(part_data)
+  part_data <- add_column(part_data, gene_cluster = calculated_clusters$lab.hatK[rowclust$order], .before = 1)
+  for(val in clust_swap_df$original){
+    part_data$gene_cluster[part_data$gene_cluster==val]<-clust_swap_df$replacement[clust_swap_df$original==val]
+  }
+  #Re-order the data to fit the keep each cluster together
+  part_data<-part_data[order(part_data$gene_cluster),]
 
   #Sets up the format for the color bar which will illustrate the different clusters found
   num_clusts <- length(unique(calculated_clusters$lab.hatK))
   cols <- RColorBrewer::brewer.pal(8, name = "Set3")[seq_len(min(8, num_clusts))]
   clust_cols <- grDevices::colorRampPalette(colors = cols)(num_clusts)
-  names(clust_cols) <- unique(as.character(calculated_clusters$lab.hatK))
+  names(clust_cols) <- unique(part_data$gene_cluster)
 
   #Create the color vector to add to file
-  col_vect<-clust_cols[clust_ordered]
-  names(col_vect)=seq(1,length(col_vect))
-  color_vector<-c()
+  col_vect<-clust_cols
+  color_vector<-part_data$gene_cluster
 
-  #Creates a save file for PART clusters
-  part_data <- main_matrix[rowclust$order,]
-  part_data <- as.data.frame(part_data)
-  part_data <- add_column(part_data, gene_cluster = new_vect, .before = 1)
-  for (clust in unique(part_data$gene_cluster)){
-    color_vector<-c(color_vector,rep(col_vect[clust],nrow(part_data[part_data$gene_cluster==clust,])))
+  for (clust in unique(color_vector)){
+    color_vector[color_vector==clust]<-col_vect[clust]
   }
-  part_data <- add_column(part_data, cluster_col = color_vector, .after = 1)
+
+  part_data <- add_column(part_data, cluster_col = color_vector, .before = 2)
 
   #Create cluster_map
   cluster_map <- part_data[,c(1,2)]
-  cluster_map$gene_cluster <- paste("C", cluster_map$gene_cluster,sep='')
   colnames(cluster_map)=c('cluster','cluster_col')
 
   clust_info_list<-list(calculated_clusters=calculated_clusters,
@@ -162,7 +173,6 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
     return_list[['params_used']]<-PART_params
     return(return_list)
   }
-
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

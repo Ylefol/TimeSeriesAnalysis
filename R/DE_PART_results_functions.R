@@ -1040,12 +1040,11 @@ prepare_top_annotation_PART_heat<-function(object){
 #'
 PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
-  clust_ordered <- unique(as.character(object@PART_results$cluster_info[['calculated_clusters']]$lab.hatK[object@PART_results$cluster_info[['clustered_rows']]$order]))
   #Cluster illustration stored as rowAnnotation
-  row_annot <- ComplexHeatmap::rowAnnotation(gene_cluster = as.character(object@PART_results$cluster_info[['calculated_clusters']]$lab.hatK),
+  row_annot <- ComplexHeatmap::rowAnnotation(gene_cluster = object@PART_results$part_data$gene_cluster,
                                              col = list(gene_cluster=object@PART_results$cluster_info[['colored_clust_rows']]),
                                              show_annotation_name=F,
-                                             annotation_legend_param = list(title = "clusters", at = clust_ordered,
+                                             annotation_legend_param = list(title = "clusters", at = unique(object@PART_results$part_data$gene_cluster),
                                                                             labels = unique(object@PART_results$cluster_map$cluster)))
 
   #Create top annotations
@@ -1073,20 +1072,28 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
   lgd = Legend(labels = names(object@group_colors), title = "groups",
                legend_gp = gpar(fill = unname(object@group_colors)))
 
+
+
   PART_save_data<-paste0(heat_name,'_data.csv')
   PART_save_cmap<-paste0(heat_name,'_cmap.csv')
   write.csv(object@PART_results$part_matrix,PART_save_data)
   write.csv(object@PART_results$cluster_map,PART_save_cmap)
+
+  #Extract matrix for plotting
+  sorted_matrix<-as.matrix(object@PART_results$part_data[,3:ncol(object@PART_results$part_data)])
+
   #Plot the heatmap
 
   svg(paste0(heat_name,"_with_names.svg"),height=30,width=20)
   draw(
     ComplexHeatmap::Heatmap(
-      object@PART_results$part_matrix, name = "Z-score", cluster_columns = F,
-      cluster_rows=object@PART_results$cluster_info[['clustered_rows']], show_column_dend = T,
-      row_names_gp = grid::gpar(fontsize = 2),left_annotation = row_annot,
+      sorted_matrix, name = "Z-score", cluster_columns = F,
+      cluster_rows=F,#object@PART_results$cluster_info[['clustered_rows']],
+      show_column_dend = T,show_row_dend = F,
+      row_names_gp = grid::gpar(fontsize = 8), left_annotation = row_annot,
+      row_order = row.names(object@PART_results$part_data),
       show_row_names = T,top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = T,
-      column_gap = unit(gap_vect, "mm"),show_column_names = T,border=F,column_title = NULL),
+      column_gap = unit(gap_vect, "mm"),show_column_names = F,border=F,column_title = NULL),
     annotation_legend_list = lgd
   )
   trash<-capture.output(dev.off())#Capture output to prevent print
@@ -1095,9 +1102,11 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
   svg(paste0(heat_name,".svg"))
   draw(
     ComplexHeatmap::Heatmap(
-      object@PART_results$part_matrix, name = "Z-score", cluster_columns = F,
-      cluster_rows=object@PART_results$cluster_info[['clustered_rows']], show_column_dend = T,
-      row_names_gp = grid::gpar(fontsize = 8),left_annotation = row_annot,
+      sorted_matrix, name = "Z-score", cluster_columns = F,
+      cluster_rows=F,#object@PART_results$cluster_info[['clustered_rows']],
+      show_column_dend = T,show_row_dend = F,
+      row_names_gp = grid::gpar(fontsize = 8), left_annotation = row_annot,
+      row_order = row.names(object@PART_results$part_data),
       show_row_names = F,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = T,
       column_gap = unit(gap_vect, "mm"),show_column_names = F,border=F,column_title = NULL),
     annotation_legend_list = lgd
