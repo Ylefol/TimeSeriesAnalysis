@@ -1,5 +1,5 @@
 ---
-title: "TimeSeries Analysis – Covid critical versus non critical patients"
+title: "TimeSeries Analysis – PBMC TGF vs LPS"
 author: "Yohan Lefol"
 date: '`r format(Sys.Date(), "%d. %B %Y")`'
 bibliography: references.bib
@@ -26,7 +26,7 @@ suppressPackageStartupMessages(lapply(packages_for_loading, require, character.o
 knitr::opts_chunk$set(echo = TRUE)
 
 #COMMENT OUT IF NOT USING EXAMPLES
-# write_example_data_to_dir('PBMC')
+write_example_data_to_dir('PBMC')
 
 ```
 
@@ -38,20 +38,20 @@ Set the below parameters for the downstream analysis
 ```{r parameter_setup}
 
 #Give names to saved object and name of results repository
-name_result_folder<-'TS_results_Covid/'
-obj_name<-'timeSeries_obj_cov.Rdata'
+name_result_folder<-'TS_results_PBMC_example/'
+obj_name<-'timeSeries_obj_PBMC.Rdata'
 
 #Path to count data and sample data respectively
-my_path_data<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/TS_covid/processed_adjusted_cov_dta.rds'
-my_path_sample_dta<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/TS_covid/sample_file_adjusted_w_healthy.csv'
+my_path_data<-'data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'data/PBMC/sample_file.csv'
 
 #Set-up time series object parameters
-diff_exp_type<-'limma' #package used for DE – can also be 'limma'
-p_val_filter_type<-'pvalue' #Either padj or pvalue, used to filter for significance
+diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
+p_val_filter_type<-'padj' #Either padj or pvalue, used to filter for significance
 p_thresh<-0.05 #pvalue or padj value threshold for significance
 l2fc_thresh<-1 #log(2)foldChange threshold for significance
-name_control<-'Non.critical' #Name of experiment as seen in the sample file
-name_experiment<-'Critical' #Name of control as seen in the sample file
+name_control<-'LPS' #Name of experiment as seen in the sample file
+name_experiment<-'IgM' #Name of control as seen in the sample file
 graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare organism and load library
@@ -63,7 +63,7 @@ library('org.Hs.eg.db')
 #celegans
 my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 
-PART_l2fc<-1 #log(2)foldChange threshold for PART clustering
+PART_l2fc<-2 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
 PART_recursion<-100 #Number of recursions, default is 100
 
@@ -75,8 +75,8 @@ log_tp_traj<-F #Defines if timepoints should be log transformed for illustration
 do_all_temporal_comparisons=F
 
 #Used to highlight specific genes regardless of differential gene expression significance
-genes_of_interest<-c()
-# genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
+# genes_of_interest<-c()
+genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
 
 #The ancestors that will be queried, the ontology must be specified (BP,MF,or CC)
 #Set to an empty vector c() if not required by the analysis
