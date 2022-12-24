@@ -4,7 +4,7 @@
 \alias{dotplot_ancestors}
 \title{Create dotplot for ancestor query results}
 \usage{
-dotplot_ancestors(ancestor_df, use_names = F, enrichment_dta = T)
+dotplot_ancestors(ancestor_df, use_names = FALSE, enrichment_dta = TRUE)
 }
 \arguments{
 \item{ancestor_df}{The dataframe obtained from \code{find_relation_to_ancestors}}

@@ -15,5 +15,5 @@ plot_clustered_mds(main_matrix, cluster_info)
 the plotly object for the MDS plot
 }
 \description{
-This function was adapted from the MDSplot() function from the visEAGO package
+This function was adapted from the \code{MDSplot()} function from the visEAGO package
 }

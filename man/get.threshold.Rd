@@ -6,6 +6,14 @@
 \usage{
 get.threshold(X, q, ...)
 }
+\arguments{
+\item{X}{value matrix}
+
+\item{q}{q}
+}
+\value{
+threshold
+}
 \description{
 Help-functions only used by part:
 Find a stopping threshold given the percentage of heights to be used in the dendrogram

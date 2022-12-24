@@ -4,7 +4,7 @@
 \alias{calculate_gene_traj_data}
 \title{Calculate trajectory of a single gene}
 \usage{
-calculate_gene_traj_data(time_object, target_gene, log_timepoint = F)
+calculate_gene_traj_data(time_object, target_gene, log_timepoint = FALSE)
 }
 \arguments{
 \item{time_object}{A timeseries object}

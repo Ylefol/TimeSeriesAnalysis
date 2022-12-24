@@ -17,6 +17,9 @@ gap(X, Kmax = 10, B = 100, ref.gen = "PC", cl.lab = NULL, ...)
 
 \item{cl.lab}{cluster labels}
 }
+\value{
+list of gaps found
+}
 \description{
 gap finds the optimal number of clusters based on the "gap statistic" (Tibshirani et al. 2001)
 }

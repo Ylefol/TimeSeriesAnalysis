@@ -9,7 +9,7 @@ create_tables_genes_of_interest_DE(
   genes_of_interest,
   save_location,
   DE_type = c("conditional", "temporal"),
-  log_tp = F
+  log_tp = FALSE
 )
 }
 \arguments{
@@ -22,6 +22,9 @@ create_tables_genes_of_interest_DE(
 \item{DE_type}{The differential gene expression axes for which the results will be retrieved}
 
 \item{log_tp}{Boolean indicating if timepoints should be log10 transformed for the plot}
+}
+\value{
+None
 }
 \description{
 Function which retrieves, processes, and saves information regarding

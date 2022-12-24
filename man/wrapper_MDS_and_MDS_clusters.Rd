@@ -9,7 +9,7 @@ wrapper_MDS_and_MDS_clusters(
   sem_data,
   sem_ontology,
   target_dir = "TS_results/gprofiler_results/",
-  return_plot = F
+  return_plot = FALSE
 )
 }
 \arguments{

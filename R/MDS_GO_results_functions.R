@@ -306,9 +306,7 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #'
 #' @return values A matrix of semantic distance for the clustered GOs
 #'
-#' @importClassesFrom data.table data.table
-#' @importFrom data.table ":=" data.table
-#' @importFrom data.table as.data.table
+#' @import data.table
 #' @importFrom AnnotationDbi as.list select
 #' @importFrom stats as.dist
 #' @importFrom utils stack
@@ -667,14 +665,14 @@ plot_ancestor_clust_MDS<-function(the_data,use_name=FALSE){
 
 #' @title plot clustered MDS
 #'
-#' @description This function was adapted from the MDSplot() function from the visEAGO package
+#' @description This function was adapted from the \code{MDSplot()} function from the visEAGO package
 #'
 #' @param main_matrix Matrix containing the data to be plotted as created by  \code{SS_GO_clusters}
 #' @param cluster_info A dataframe with cluster names and the number of GOs in each cluster
 #'
 #' @return the plotly object for the MDS plot
 #'
-#' @importFrom data.table ":="
+#' @import data.table
 #' @importFrom stats cmdscale as.dist
 #' @importFrom plotly plot_ly add_markers
 #'

@@ -7,9 +7,9 @@
 custom_heatmap_wrapper(
   time_object,
   DE_type,
-  log_transform = T,
+  log_transform = TRUE,
   plot_file_name = "custom_DEG_heatmap",
-  adjust_missing_temp_samples = T
+  adjust_missing_temp_samples = TRUE
 )
 }
 \arguments{

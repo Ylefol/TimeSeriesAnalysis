@@ -10,7 +10,7 @@ GO_dotplot_wrapper(
   top_n,
   custom_width = NULL,
   custom_height = NULL,
-  return_plot = F
+  return_plot = FALSE
 )
 }
 \arguments{

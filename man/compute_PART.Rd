@@ -12,7 +12,7 @@ compute_PART(
   hclust_param = "average",
   custom_seed = NULL,
   custom_matrix = NULL,
-  return_as_object = T
+  return_as_object = TRUE
 )
 }
 \arguments{

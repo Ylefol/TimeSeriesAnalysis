@@ -13,6 +13,9 @@ doKmeans(X, k, nstart)
 
 \item{nstart}{Where to start}
 }
+\value{
+list of clusters and labels
+}
 \description{
 Perform K-means clustering into k clusters
 }

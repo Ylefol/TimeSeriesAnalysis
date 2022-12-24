@@ -13,6 +13,9 @@ doHclust(d, k, linkage)
 
 \item{linkage}{the agglomeration method to be used.}
 }
+\value{
+list of clusters and labels
+}
 \description{
 Perform hierarchical clustering with given linkage, and apply horizontal cutting of tree into k clusters
 }

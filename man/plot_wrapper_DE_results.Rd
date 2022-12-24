@@ -9,7 +9,7 @@ plot_wrapper_DE_results(
   DE_type,
   genes_of_interest = c(),
   results_folder = "TS_results/",
-  adjust_missing_temp_samples = T
+  adjust_missing_temp_samples = TRUE
 )
 }
 \arguments{

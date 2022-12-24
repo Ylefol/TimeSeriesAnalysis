@@ -11,6 +11,9 @@ add_semantic_similarity_data(object, ont_sem_sim)
 
 \item{ont_sem_sim}{An ontology for the semantic similarity. EX: 'BP','MF','CC'}
 }
+\value{
+The updated time object
+}
 \description{
 This function calculates the semantic similarity object for an
 organism. It then stores this within the TimeSeries object and returns it

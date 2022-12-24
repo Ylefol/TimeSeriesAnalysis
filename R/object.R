@@ -47,6 +47,8 @@
 #' @importClassesFrom limma EList
 #' @importClassesFrom GOSemSim GOSemSimDATA
 #'
+#' @import rstudioapi	AnnotationDbi BiocGenerics GenomicRanges RColorBrewer grDevices htmlwidgets stats utils
+#'
 #' @exportClass TimeSeries_Object
 #'
 TimeSeries_Object<-setClass(
@@ -286,6 +288,8 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @param example_data Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
 #' datasets available
 #'
+#' @return None
+#'
 #' @export
 write_example_data_to_dir<-function(example_data){
   #If data folder does not exist, create it
@@ -325,6 +329,8 @@ write_example_data_to_dir<-function(example_data){
 #'
 #' @param object A timeseries object
 #' @param ont_sem_sim An ontology for the semantic similarity. EX: 'BP','MF','CC'
+#'
+#' @return The updated time object
 #'
 #' @importFrom GOSemSim godata
 #'

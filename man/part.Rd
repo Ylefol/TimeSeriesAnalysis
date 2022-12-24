@@ -17,6 +17,9 @@ part(X, Kmax = 10, minSize = 8, minDist = NULL, cl.lab = NULL, ...)
 
 \item{kmax}{maximum number of clusters}
 }
+\value{
+list of identified clusters
+}
 \description{
 Main function for PART:
 }

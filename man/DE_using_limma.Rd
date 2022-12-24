@@ -9,7 +9,7 @@ DE_using_limma(
   group_names,
   exp_name,
   target_tp = NULL,
-  do_temporal = F
+  do_temporal = FALSE
 )
 }
 \arguments{

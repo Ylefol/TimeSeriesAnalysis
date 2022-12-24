@@ -4,7 +4,7 @@
 \alias{create_temporal_heatmap_matrix}
 \title{Create data for temporal heatmap}
 \usage{
-create_temporal_heatmap_matrix(time_object, adjust_for_missing_samples = T)
+create_temporal_heatmap_matrix(time_object, adjust_for_missing_samples = TRUE)
 }
 \arguments{
 \item{time_object}{A time series object}

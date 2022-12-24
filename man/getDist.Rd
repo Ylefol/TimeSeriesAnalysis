@@ -13,6 +13,9 @@ getDist(X, dist.method, cor.method = "pearson")
 
 \item{cor.method}{The correlation method to use. 'pearson' is the default,}
 }
+\value{
+the found distance
+}
 \description{
 Compute distance matrix for given distance measure; note: distance between rows!
 }

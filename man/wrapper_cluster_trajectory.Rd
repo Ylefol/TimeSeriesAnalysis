@@ -8,7 +8,7 @@ wrapper_cluster_trajectory(
   object,
   cluster_traj_dta,
   mean_cluster_traj_dta,
-  log_TP = F,
+  log_TP = FALSE,
   plot_name = "Ctraj"
 )
 }
@@ -20,6 +20,9 @@ The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 
 \item{mean_cluster_traj_data}{The mean value for each clusters trajectory,
 the data is calculated/obtained from \code{calculated_mean_cluster_traj} function}
+}
+\value{
+None
 }
 \description{
 Function which plots the trajectory of all the clusters given

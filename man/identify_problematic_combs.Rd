@@ -12,6 +12,9 @@ identify_problematic_combs(mat, min_shared_fields = 1)
 \item{min_shared_fields}{Minimum number of positions that are not NA in both
 vectors in order not to flag the vector pair as problematic}
 }
+\value{
+list of problematic combs
+}
 \description{
 Hclust cannot handle matrices in which for some pairs of rows and columns,
 only 1 or fewer shared values are non-NA. This function recurrently

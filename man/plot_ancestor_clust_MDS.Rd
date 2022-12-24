@@ -4,7 +4,7 @@
 \alias{plot_ancestor_clust_MDS}
 \title{Plot nearest ancestor MDS (clustered GOs)}
 \usage{
-plot_ancestor_clust_MDS(the_data, use_name = F)
+plot_ancestor_clust_MDS(the_data, use_name = FALSE)
 }
 \arguments{
 \item{the_data}{The dataframe as created by \code{calculate_and_format_MDS}}

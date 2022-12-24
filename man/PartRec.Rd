@@ -15,6 +15,9 @@ PartRec(X, Kmax, ind, cl.lab = NULL, ...)
 
 \item{cl.lab}{cluster label}
 }
+\value{
+Either cluster results or recursion elements
+}
 \description{
 The recursive function used by PART clustering
 }

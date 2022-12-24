@@ -6,6 +6,9 @@
 \usage{
 sim(Xcol)
 }
+\value{
+Simulated uniform distribution
+}
 \description{
 helper-functions only used by GAP:
 Simulate from a uniform distribution according to min and max of the feature vector:

@@ -21,5 +21,5 @@ The timeseries object with the added PART count matrix
 \description{
 The function retrieves the counts from the time series object and filters
 it to only contain relevant genes and samples. The data can also be scaled
-if the parameter 'scale' is set to T
+if the parameter 'scale' is set to TRUE
 }

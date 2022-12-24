@@ -4,7 +4,7 @@
 \alias{temporal_DE_wrapper}
 \title{Create temporal DE results}
 \usage{
-temporal_DE_wrapper(time_object, do_all_combinations = F)
+temporal_DE_wrapper(time_object, do_all_combinations = FALSE)
 }
 \arguments{
 \item{time_object}{A timeseries object containing a DESeq2_obj}

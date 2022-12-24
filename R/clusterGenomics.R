@@ -15,6 +15,8 @@
 #' @param dist.method The distance method to use in the calculation
 #' @param cor.method The correlation method to use. 'pearson' is the default,
 #'
+#' @return the found distance
+#'
 #' @importFrom stats as.dist dist
 #'
 #' @export
@@ -42,6 +44,8 @@ getDist <- function(X,dist.method,cor.method="pearson"){
 #' @param k an integer scalar or vector with the desired number of groups
 #' @param linkage the agglomeration method to be used.
 #'
+#' @return list of clusters and labels
+#'
 #' @importFrom stats hclust cutree
 #'
 #' @export
@@ -59,6 +63,8 @@ doHclust <- function(d,k,linkage){
 #' @param X matrix of values
 #' @param k value for kmeans
 #' @param nstart Where to start
+#'
+#' @return list of clusters and labels
 #'
 #' @importFrom stats kmeans
 #' @export
@@ -78,6 +84,8 @@ doKmeans <- function(X,k,nstart){
 #' @param matrix of values
 #' @param maximum number of clusters
 #' @param dx distance measure
+#'
+#' @return list of cluster labels
 #'
 #' @export
 #'
@@ -111,6 +119,8 @@ findPartition <- function(X,Kmax,dX=NULL,...){
 #' @param B number of recursions
 #' @param ref.gen reference gen
 #' @param cl.lab cluster labels
+#'
+#' @return list of gaps found
 #'
 #' @export
 #'
@@ -185,6 +195,8 @@ gap <- function(X,Kmax=10,B=100,ref.gen="PC",cl.lab=NULL,...){
 #' @description helper-functions only used by GAP:
 #' Simulate from a uniform distribution according to min and max of the feature vector:
 #'
+#' @return Simulated uniform distribution
+#'
 #' @export
 #'
 sim <- function(Xcol) {
@@ -201,6 +213,8 @@ sim <- function(Xcol) {
 #' @param dx matrix for cluster
 #' @param K current cluster
 #' @param cl.lab cluster labels
+#'
+#' @return The within cluster distribution
 #'
 #' @export
 #'
@@ -240,6 +254,8 @@ findW <- function(dX,K,cl.lab){
 #' @param X matrix of values
 #' @param Kmax maximum number of clusters
 #' @param B Number of recursions
+#'
+#' @return calculated Wb
 #'
 #' @export
 #'
@@ -286,6 +302,8 @@ getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
 #' @param minDist Minimum distance between clusters
 #' @param cl.lab cluster labels
 #'
+#' @return list of identified clusters
+#'
 #' @export
 #'
 part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
@@ -329,6 +347,8 @@ part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
 #' @param Kmax max number of cluster
 #' @param ind number of clusters
 #' @param cl.lab cluster label
+#'
+#' @return Either cluster results or recursion elements
 #'
 #' @export
 #'
@@ -436,6 +456,11 @@ PartRec <- function(X,Kmax,ind,cl.lab=NULL,...){
 #' @description Help-functions only used by part:
 #' Find a stopping threshold given the percentage of heights to be used in the dendrogram
 #'
+#' @param X value matrix
+#' @param q q
+#'
+#' @return threshold
+#'
 #' @importFrom stats hclust
 #'
 #' @export
@@ -465,6 +490,8 @@ get.threshold <- function(X,q,...){
 #'
 #' @param clusters The found clusters
 #' @param minSize The parameter for minimum cluster size
+#'
+#' @return PART labels
 #'
 #' @export
 #'

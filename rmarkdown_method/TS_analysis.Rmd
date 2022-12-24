@@ -569,6 +569,9 @@ if(exists('list_ancestors')==TRUE){
 }
 
 ```
+```{r sess_info}
+sessionInfo()
+```
 ## {.unlisted .unnumbered}
 
 

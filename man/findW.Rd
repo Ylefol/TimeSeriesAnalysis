@@ -13,6 +13,9 @@ findW(dX, K, cl.lab)
 
 \item{dx}{matrix for cluster}
 }
+\value{
+The within cluster distribution
+}
 \description{
 Calulates the total within-cluster dispersion (W_K) for a k=1,...,K:
 }

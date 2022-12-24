@@ -11,6 +11,9 @@ getPARTlabels(clusters, minSize)
 
 \item{minSize}{The parameter for minimum cluster size}
 }
+\value{
+PART labels
+}
 \description{
 Retrives the labels for the clusters found by PART
 }

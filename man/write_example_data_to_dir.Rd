@@ -10,6 +10,9 @@ write_example_data_to_dir(example_data)
 \item{example_data}{Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
 datasets available}
 }
+\value{
+None
+}
 \description{
 This function writes the example dataset to the 'data' directory
 This presents the data in a way where users will understand the various files

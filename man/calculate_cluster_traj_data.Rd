@@ -4,7 +4,7 @@
 \alias{calculate_cluster_traj_data}
 \title{Calcualte trajectory of clusters}
 \usage{
-calculate_cluster_traj_data(object, custom_cmap = NULL, scale_feat = T)
+calculate_cluster_traj_data(object, custom_cmap = NULL, scale_feat = TRUE)
 }
 \arguments{
 \item{object}{A timeseries object}

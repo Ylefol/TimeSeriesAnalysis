@@ -9,8 +9,8 @@ plot_cluster_traj(
   ts_data,
   ts_mean_data,
   num_col = 4,
-  rem_legend_axis = F,
-  log_TP = F,
+  rem_legend_axis = FALSE,
+  log_TP = FALSE,
   title_text_size = 14
 )
 }

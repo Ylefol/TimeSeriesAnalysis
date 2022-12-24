@@ -13,6 +13,9 @@ findPartition(X, Kmax, dX = NULL, ...)
 
 \item{dx}{distance measure}
 }
+\value{
+list of cluster labels
+}
 \description{
 Obtain partitions of the data into k=1,...,Kmax clusters
 gives the clustering method, distance measure, and other parameters to be used in the clustering

@@ -6,9 +6,13 @@ bibliography: references.bib
 header-includes:
   - \usepackage{subfig}
 output:
-  html_document:
+  rmarkdown::html_document:
   toc: true
-toc_float: true
+  toc_float: true
+vignette: >
+  %\VignetteIndexEntry{TimeSeries Analysis – C.elegans example run}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 
 ---
 
@@ -512,7 +516,7 @@ if(length(target_ancestors)==0){
   GOs_ancestors_clust<-data.frame(NULL)
 }else{
   GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,return_plot=TRUE,target_dir=name_result_folder)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,TS_object@sem_list,return_plot=TRUE,target_dir=name_result_folder)
 }
 
 ```
@@ -567,6 +571,11 @@ if(exists('list_ancestors')==TRUE){
 }
 
 ```
+
+```{r sess_info}
+sessionInfo()
+```
+
 ## {.unlisted .unnumbered}
 
 

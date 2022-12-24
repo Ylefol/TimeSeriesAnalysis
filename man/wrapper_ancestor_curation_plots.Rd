@@ -7,9 +7,9 @@
 wrapper_ancestor_curation_plots(
   GO_df,
   sem_data,
-  use_names = T,
+  use_names = TRUE,
   target_dir = "TS_results/",
-  return_plot = F
+  return_plot = FALSE
 )
 }
 \arguments{

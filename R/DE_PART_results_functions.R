@@ -111,6 +111,7 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' the data is calculated/obtained from \code{calculated_mean_cluster_traj} function
 #' @param plot_name The name given to the plot file as it is saved
 #'
+#' @return None
 #'
 #' @export
 wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
@@ -876,6 +877,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param custom_width The width of the heatmap
 #' @param custom_height The height of the heatmap
 #'
+#' @return None
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation anno_barplot rowAnnotation anno_block Heatmap draw Legend
 #' @importFrom grid gpar
@@ -1464,6 +1466,8 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #' @param DE_type The differential gene expression axes for which the results will be retrieved
 #' @param log_tp Boolean indicating if timepoints should be log10 transformed for the plot
 #'
+#' @return None
+#'
 #' @import ggplot2
 #'
 #' @export
@@ -1547,6 +1551,8 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
 #' @param mat Matrix to investigate
 #' @param min_shared_fields Minimum number of positions that are not NA in both
 #' vectors in order not to flag the vector pair as problematic
+#'
+#' @return list of problematic combs
 #'
 #' @importFrom GenomicRanges setdiff
 #'

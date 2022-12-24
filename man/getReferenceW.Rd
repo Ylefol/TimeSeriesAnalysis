@@ -13,6 +13,9 @@ getReferenceW(X, Kmax, B, ref.gen, ...)
 
 \item{B}{Number of recursions}
 }
+\value{
+calculated Wb
+}
 \description{
 Generate reference data sets and find Wb:
 }

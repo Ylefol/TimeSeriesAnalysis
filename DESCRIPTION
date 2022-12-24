@@ -1,10 +1,10 @@
 Package: TimeSeriesAnalysis
 Type: Package
 Title: Transcriptomic TimeSeries (longitudinal) analysis
-Version: 0.1.0
+Version: 0.99.0
 Authors@R: person("Yohan", "Lefol", email = "yohan.lefol@gmail.com",
                   role = c("aut", "cre"))
-Description: Examples and documentation for the TimeSeriesAnalysis R pipeline
+Description: An pipeline to analyse and interpret longitudinal transcriptomic data from both RNAseq and microarray orgigins. The pipeline performs differential gene expression, clustering, and plots usefull figures to aid in interpretation of identified clusters of differentially expressed genes.
 License: MIT
 VignetteBuilder: knitr
 Imports:
@@ -27,12 +27,24 @@ Imports:
 	data.table,
 	htmltools,
 	dynamicTreeCut,
-	stringi
+	stringi,
+	rstudioapi,
+	AnnotationDbi,
+	BiocGenerics,
+	GenomicRanges,
+	RColorBrewer,
+	grDevices,
+	htmlwidgets,
+	stats,
+	utils
 Depends: 
 	R (>= 4.1)
 Suggests: knitr,
 	rmarkdown,
 URL: https://github.com/Ylefol/TimeSeriesAnalysis
 LazyData: true
+biocViews: Sequencing, RNASeq, Microarray, GeneExpression, Transcription,
+    Normalization, DifferentialExpression, Clustering, Regression,
+    PrincipalComponent
 RoxygenNote: 7.2.3
 Encoding: UTF-8
