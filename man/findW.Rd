@@ -6,6 +6,13 @@
 \usage{
 findW(dX, K, cl.lab)
 }
+\arguments{
+\item{K}{current cluster}
+
+\item{cl.lab}{cluster labels}
+
+\item{dx}{matrix for cluster}
+}
 \description{
 Calulates the total within-cluster dispersion (W_K) for a k=1,...,K:
 }

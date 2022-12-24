@@ -8,8 +8,8 @@
 # library(limma, include.only = c("plotMDS"))
 # library(reshape2)
 
-packages_for_loading<-c('DESeq2','limma','grid','ggrepel','ggplot2','ComplexHeatmap','reshape2','stringr','stringi')
-suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
+# packages_for_loading<-c('DESeq2','limma','grid','ggrepel','ggplot2','ComplexHeatmap','reshape2','stringr','stringi')
+# suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 # wrapper for result creation -------------------
 
@@ -37,17 +37,19 @@ suppressPackageStartupMessages(lapply(packages_for_loading, require, character.o
 #' compensated for (NA introduced). Currently, there is no reason to have this set to
 #' False.
 #'
+#' @import ggplot2
+#'
 #' @return None
 #'
 #' @export
-plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=T){
+plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE){
   #Create path to DE type and create directory
   main_path<-paste0(results_folder,'DE_results_',DE_type,'/')
   dir.create(main_path)
 
   message('Creating summary heat map')
   #Create a overview heatmap of the differential expression results for that type
-  custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=T,
+  custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=TRUE,
                          plot_file_name = paste0(main_path,'custom_heat_',DE_type),adjust_missing_temp_samples)
 
   DE_res<-object@DE_results[[DE_type]]
@@ -74,7 +76,7 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
     #Create and save volcano plot
     v_plot<-volcanoplot_alt(DE_results, genes_of_interest=genes_of_interest,
                             filter_choice=DE_p_filter,l2FC_thresh=DE_l2fc_thresh,
-                            p_thresh=DE_p_thresh, plot_title=DE_name, label_top_n=0,show_non_sig_interest=F)
+                            p_thresh=DE_p_thresh, plot_title=DE_name, label_top_n=0,show_non_sig_interest=FALSE)
     ggsave(paste0(save_path,"volcano_plot.png"),dpi=300,width=21, height=19, units='cm',
            plot=v_plot)
 
@@ -109,8 +111,9 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' the data is calculated/obtained from \code{calculated_mean_cluster_traj} function
 #' @param plot_name The name given to the plot file as it is saved
 #'
+#'
 #' @export
-wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=F,plot_name='Ctraj'){
+wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
   clust_order<-unique(cluster_traj_dta[,c('cluster','nGenes')])
   clust_order<-clust_order$cluster[order(-clust_order$nGenes)]
   num_needed_figures<-ceiling(length(clust_order)/8)
@@ -150,7 +153,7 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
       custom_width<-12
     }
 
-    if(log_TP==T){
+    if(log_TP==TRUE){
       sub_ts_data$log10_timepoint<-log10(sub_ts_data$timepoint)
       sub_ts_data$log10_timepoint[sub_ts_data$log10_timepoint=='-Inf']<-0
       sub_ts_means$log10_timepoint<-log10(sub_ts_means$timepoint)
@@ -198,6 +201,9 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 #' interest should be shown.
 #'
 #' @return The ggplot object for the volcano plot
+#'
+#' @import ggplot2
+#' @importFrom  ggrepel geom_label_repel
 #'
 #' @export
 volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2FC_thresh=1,
@@ -300,6 +306,9 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #'
 #' @return None
 #'
+#' @import ggplot2
+#' @importFrom  ggrepel geom_label_repel
+#'
 #' @export
 #'
 maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,p_thresh=0.05,plot_title="MA plot"){
@@ -376,6 +385,10 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #'
 #' @return the pca_plot
 #'
+#' @import ggplot2
+#' @importFrom stats prcomp
+#' @importFrom DESeq2 vst plotPCA
+#'
 #' @export
 #'
 plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
@@ -387,7 +400,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
   }
 
   if(time_object@DE_method=='DESeq2'){
-    if (is.null(DE_res)==T){
+    if (is.null(DE_res)==TRUE){
       dds<-time_object@DESeq2_obj
     }else{
       dds<-DE_res[['sub_dds']]
@@ -401,7 +414,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     pca_data$timepoint<-factor(timepoints_used,levels=unique(timepoints_used))
 
   }else if(time_object@DE_method=='limma'){
-    if (is.null(DE_res)==T){
+    if (is.null(DE_res)==TRUE){
       samples_interest<-colnames(time_object@count_matrix$norm)
     }else{
       samples_interest<-colnames(DE_res[['DE_raw_data']])
@@ -433,7 +446,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     pca_data$group<-factor(pca_data$group,levels=time_object@group_names)
   }
   num_shapes<-length(unique(time_object@sample_data$timepoint))
-  if (is.null(DE_res)==T){
+  if (is.null(DE_res)==TRUE){
     pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint,label = name)) +
       geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
                        box.padding = unit(0.35, "lines"),
@@ -479,7 +492,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #'
 #' @export
 #'
-custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=T,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=T){
+custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=TRUE){
 
   #Create the matrix
   if (DE_type=='conditional'){
@@ -498,7 +511,7 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=T,plot_file_n
   my_l2fc_vect<-temp_list[['l2fc_vector']]
 
   #If needed, log transform the l2fc results
-  if (log_transform==T){
+  if (log_transform==TRUE){
     my_l2fc_vect<-log_transform_l2fc_vect(my_l2fc_vect)
   }
 
@@ -575,7 +588,7 @@ create_conditional_heatmap_matrix<-function(time_object){
     names(temp_l2fc)<-genes_mod
 
     samp_dta<-time_object@sample_data[time_object@sample_data$sample %in% colnames(temp_df),]
-    if (all(rep_template %in% samp_dta$replicate)==F){
+    if (all(rep_template %in% samp_dta$replicate)==FALSE){
       missing_replicates<-rep_template[!rep_template %in% samp_dta$replicate]
       missing_rep_list<-list()
       for (rep in missing_replicates){
@@ -661,7 +674,7 @@ create_conditional_heatmap_matrix<-function(time_object){
 #'
 #' @export
 #'
-create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=T){
+create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=TRUE){
   DE_list<-time_object@DE_results$temporal
   DEG_list<-list()
   all_replicates<-c()
@@ -704,8 +717,8 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
     colnames(temp_df)=sample_data_used$replicate
 
     #Works
-    if(adjust_for_missing_samples==T){
-      if(all(rep_template_temporal %in% sample_data_used$replicate)==F){
+    if(adjust_for_missing_samples==TRUE){
+      if(all(rep_template_temporal %in% sample_data_used$replicate)==FALSE){
         missing_replicates<-rep_template_temporal[!rep_template_temporal %in% sample_data_used$replicate]
         missing_rep_list<-list()
         for (replicate in missing_replicates){
@@ -738,7 +751,7 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
 
   group_vector<-c()
   for (group in row.names(heat_df)){
-    if (endsWith(group,'C')==T){
+    if (endsWith(group,'C')==TRUE){
       group_vector<-c(group_vector,'Control')
     }else{
       group_vector<-c(group_vector,'Experiment')
@@ -776,7 +789,7 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
 prepare_heat_data <- function(matrix_list,log_transform){
   heat_matrix<-matrix_list[['main_matrix']]
 
-  if (log_transform==T){
+  if (log_transform==TRUE){
     heat_matrix<-log10(as.matrix(heat_matrix+1))
   }
 
@@ -863,15 +876,16 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param custom_width The width of the heatmap
 #' @param custom_height The height of the heatmap
 #'
-#' @return none
 #'
+#' @importFrom ComplexHeatmap HeatmapAnnotation anno_barplot rowAnnotation anno_block Heatmap draw Legend
+#' @importFrom grid gpar
 #' @export
 #'
 plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_transform,
                                   legend_value='counts', plot_file_name='custom_heatmap',
                                   custom_width=15,custom_height=5){
 
-  if(log_transform==T){
+  if(log_transform==TRUE){
     if(legend_value=='intensity value'){
       bottom_histo = HeatmapAnnotation('log10(FC)' = anno_barplot(l2fc_col))
     }else{
@@ -905,27 +919,27 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
   #Check if clustering of rows and cols is possible
   problematic_combs<-identify_problematic_combs(heat_mat)
   if (length(problematic_combs$row)>0){
-    clust_rows<-F
+    clust_rows<-FALSE
   }else{
-    clust_rows<-T
+    clust_rows<-TRUE
   }
 
   if (length(problematic_combs$column)>0){
-    clust_cols<-F
+    clust_cols<-FALSE
   }else{
-    clust_cols<-T
+    clust_cols<-TRUE
   }
 
 
   save_name_svg<-paste0(plot_file_name,'.svg')
   svg(save_name_svg,width=custom_width,height=custom_height)
   draw(Heatmap(heat_mat,name=count_legend,cluster_rows = clust_rows,cluster_columns = clust_cols,
-               show_column_names = F,show_row_names = F,row_names_side='left',
+               show_column_names = FALSE,show_row_names = FALSE,row_names_side='left',
                row_split = row_splits,column_split=col_split,
-               border=T,na_col = 'gray',column_title = NULL,row_title = NULL,
+               border=TRUE,na_col = 'gray',column_title = NULL,row_title = NULL,
                top_annotation = top_annot,left_annotation=left_annot,
                bottom_annotation = bottom_histo,
-               cluster_column_slices=F,cluster_row_slices = F),
+               cluster_column_slices=FALSE,cluster_row_slices = FALSE),
        annotation_legend_list = lgd,
        annotation_legend_side = 'bottom'
   )
@@ -936,12 +950,12 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
   #width and height *96 to convert inches to pixels
   png(save_name_png,width=custom_width*96,height=custom_height*96)
   draw(Heatmap(heat_mat,name=count_legend,cluster_rows = clust_rows,cluster_columns = clust_cols,
-               show_column_names = F,show_row_names = F,row_names_side='left',
+               show_column_names = FALSE,show_row_names = FALSE,row_names_side='left',
                row_split = row_splits,column_split=col_split,
-               border=T,na_col = 'gray',column_title = NULL,row_title = NULL,
+               border=TRUE,na_col = 'gray',column_title = NULL,row_title = NULL,
                top_annotation = top_annot,left_annotation=left_annot,
                bottom_annotation = bottom_histo,
-               cluster_column_slices=F,cluster_row_slices = F),
+               cluster_column_slices=FALSE,cluster_row_slices = FALSE),
        annotation_legend_list = lgd,
        annotation_legend_side = 'bottom'
   )
@@ -969,6 +983,11 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #'
 #' @return A list containing the two types of top annotaiton and the named vector used to create the column splits
 #'
+#' @importFrom ComplexHeatmap HeatmapAnnotation
+#' @importFrom grid gpar
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom grDevices colorRampPalette
+#'
 #' @export
 #'
 prepare_top_annotation_PART_heat<-function(object){
@@ -992,8 +1011,8 @@ prepare_top_annotation_PART_heat<-function(object){
   # If possible, use custom colors, otherwise use colorbrewer
   if (length(unique(found_timepoints))>length(my_cols)){
     num_tp <- length(unique(found_timepoints))
-    cols <- RColorBrewer::brewer.pal(8, name = "Set1")[seq_len(min(8, num_tp))]
-    time_cols <- grDevices::colorRampPalette(colors = cols)(num_tp)
+    cols <- brewer.pal(8, name = "Set1")[seq_len(min(8, num_tp))]
+    time_cols <- colorRampPalette(colors = cols)(num_tp)
     names(time_cols) <- unique(found_timepoints)
   }else{
     time_cols<-my_cols[1:length(unique(found_timepoints))]
@@ -1004,14 +1023,14 @@ prepare_top_annotation_PART_heat<-function(object){
   top_annot_labels = HeatmapAnnotation(foo = anno_block(gp = fill_set_groups, labels = unique(col_split)),
                                        timepoints=found_timepoints,
                                        col = list(timepoints = time_cols),
-                                       show_annotation_name=F,
+                                       show_annotation_name=FALSE,
                                        annotation_legend_param = list(title = "timepoints", at = unique(found_timepoints),
                                                                       labels = unique(found_timepoints)))
 
   top_annot_no_labels = HeatmapAnnotation(foo = anno_block(gp = fill_set_groups, labels = rep(NULL,length(unique(col_split)))),
                                           timepoints=found_timepoints,
                                           col = list(timepoints = time_cols),
-                                          show_annotation_name=F,
+                                          show_annotation_name=FALSE,
                                           annotation_legend_param = list(title = "timepoints", at = unique(found_timepoints),
                                                                          labels = unique(found_timepoints)))
 
@@ -1034,6 +1053,9 @@ prepare_top_annotation_PART_heat<-function(object){
 #' @param object A time series object
 #' @param heat_name The file name given to the saved heatmap
 #'
+#' @importFrom ComplexHeatmap rowAnnotation Heatmap draw
+#' @importFrom grid gpar
+#'
 #' @return none
 #'
 #' @export
@@ -1041,9 +1063,9 @@ prepare_top_annotation_PART_heat<-function(object){
 PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
   #Cluster illustration stored as rowAnnotation
-  row_annot <- ComplexHeatmap::rowAnnotation(gene_cluster = object@PART_results$part_data$gene_cluster,
+  row_annot <- rowAnnotation(gene_cluster = object@PART_results$part_data$gene_cluster,
                                              col = list(gene_cluster=object@PART_results$cluster_info[['colored_clust_rows']]),
-                                             show_annotation_name=F,
+                                             show_annotation_name=FALSE,
                                              annotation_legend_param = list(title = "clusters", at = unique(object@PART_results$part_data$gene_cluster),
                                                                             labels = unique(object@PART_results$cluster_map$cluster)))
 
@@ -1086,14 +1108,14 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
   svg(paste0(heat_name,"_with_names.svg"),height=30,width=20)
   draw(
-    ComplexHeatmap::Heatmap(
-      sorted_matrix, name = "Z-score", cluster_columns = F,
-      cluster_rows=F,#object@PART_results$cluster_info[['clustered_rows']],
-      show_column_dend = T,show_row_dend = F,
-      row_names_gp = grid::gpar(fontsize = 8), left_annotation = row_annot,
+    Heatmap(
+      sorted_matrix, name = "Z-score", cluster_columns = FALSE,
+      cluster_rows=FALSE,#object@PART_results$cluster_info[['clustered_rows']],
+      show_column_dend = TRUE,show_row_dend = FALSE,
+      row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
       row_order = row.names(object@PART_results$part_data),
-      show_row_names = T,top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = T,
-      column_gap = unit(gap_vect, "mm"),show_column_names = F,border=F,column_title = NULL),
+      show_row_names = TRUE,top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = TRUE,
+      column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
     annotation_legend_list = lgd
   )
   trash<-capture.output(dev.off())#Capture output to prevent print
@@ -1101,14 +1123,14 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
   svg(paste0(heat_name,".svg"))
   draw(
-    ComplexHeatmap::Heatmap(
-      sorted_matrix, name = "Z-score", cluster_columns = F,
-      cluster_rows=F,#object@PART_results$cluster_info[['clustered_rows']],
-      show_column_dend = T,show_row_dend = F,
-      row_names_gp = grid::gpar(fontsize = 8), left_annotation = row_annot,
+    Heatmap(
+      sorted_matrix, name = "Z-score", cluster_columns = FALSE,
+      cluster_rows=FALSE,#object@PART_results$cluster_info[['clustered_rows']],
+      show_column_dend = TRUE,show_row_dend = FALSE,
+      row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
       row_order = row.names(object@PART_results$part_data),
-      show_row_names = F,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = T,
-      column_gap = unit(gap_vect, "mm"),show_column_names = F,border=F,column_title = NULL),
+      show_row_names = FALSE,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
+      column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
     annotation_legend_list = lgd
   )
   trash<-capture.output(dev.off())#Capture output to prevent print
@@ -1131,10 +1153,14 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' @return A dataframe containing the transformed or non-transformed gene values for
 #' each cluster
 #'
+#' @importFrom reshape2 melt
+#' @importFrom stringi stri_reverse
+#' @importFrom stringr str_split_fixed
+#'
 #' @export
 #'
-calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=T){
-  if (is.null(custom_cmap)==T){
+calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
+  if (is.null(custom_cmap)==TRUE){
     my_cmap<-object@PART_results$cluster_map
   }else{
     my_cmap<-custom_cmap
@@ -1150,19 +1176,19 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=T){
       if(length(samples_to_merge)>1){
         val_vect<-rowMeans(norm_mat[,samples_to_merge])
       }else{
-        val_vect<-norm_mat[,samples_to_merge,drop=F]
+        val_vect<-norm_mat[,samples_to_merge,drop=FALSE]
       }
       new_col_name<-paste0(group,'_',tp)
       df_list[[new_col_name]]<-val_vect
     }
   }
-  if(scale_feat==T){
+  if(scale_feat==TRUE){
     ts_df<-sweep(data.frame(df_list),1,rowSums(data.frame(df_list)),'/')
   }else{
     ts_df<-(data.frame(df_list))
   }
   ts_df$gene_id<-row.names(ts_df)
-  ts_df <- reshape2::melt(ts_df,id='gene_id')
+  ts_df <- melt(ts_df,id='gene_id')
   for_merge<-object@sample_data[,c('sample','group','timepoint')]
 
   # colnames(ts_df)=c('gene_id','sample','trans_mean')
@@ -1261,12 +1287,13 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' @return A ggplot2 object for the cluster trajectory plot performed
 #'
+#' @import ggplot2
 #'
 #' @export
 #'
-plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=F,log_TP=F,title_text_size=14){
+plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=FALSE,log_TP=FALSE,title_text_size=14){
 
-  if(log_TP==T){
+  if(log_TP==TRUE){
     ts_data$log10_timepoint<-log10(ts_data$timepoint)
     ts_data$log10_timepoint[ts_data$log10_timepoint=='-Inf']<-0
     ts_mean_data$log10_timepoint<-log10(ts_mean_data$timepoint)
@@ -1291,7 +1318,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
       ylab('scaled expression') +
       facet_wrap(~labels, scales = 'free_x', ncol = num_col)
 
-      if(rem_legend_axis==T){
+      if(rem_legend_axis==TRUE){
         plt<-plt + theme(legend.position = "none") +
           theme(axis.title.x = element_blank()) +
           theme(axis.title.y = element_blank())
@@ -1314,14 +1341,14 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
 #'
 #' @return dataframe with the trajectory data for the requested gene
 #'
+#' @importFrom reshape2 melt
+#'
 #' @export
-#'
-#'
-calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=F){
+calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
   #Create a list of genes of interest
   my_dta<-time_object@count_matrix$norm[target_gene,]
 
-  my_dta<-reshape2::melt(my_dta,id.vars = NULL)
+  my_dta<-melt(my_dta,id.vars = NULL)
   my_dta$sample<-row.names(my_dta)
   if(time_object@DE_method=='limma'){
     colnames(my_dta)=c('reads','sample')
@@ -1340,7 +1367,7 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=F){
     }
   }
   mean_data<-as.data.frame(mean_data_list)
-  if(log_timepoint==T){
+  if(log_timepoint==TRUE){
     mean_data$log10_timepoint<-log10(mean_data$timepoint)
     mean_data$log10_timepoint[mean_data$log10_timepoint=='-Inf']<-0
   }
@@ -1362,19 +1389,21 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=F){
 #'
 #' @return the ggplot2 object for the plot
 #'
+#' @import ggplot2
+#'
 #' @export
 #'
 plot_single_gene_traj<-function(mean_data,color_vector=NULL){
-  if(is.null(color_vector)==T){
+  if(is.null(color_vector)==TRUE){
     color_vector<-c("#e31a1c","#1f78b4")
     names(color_vector)=c('Activated','Control')
   }
   if('log10_timepoint' %in% colnames(mean_data)){
     plt <- ggplot(mean_data,aes(x = log10_timepoint, y = reads, color = group))+
-      geom_smooth(aes(x = log10_timepoint ), lwd = 1.5,se=F,formula = y ~ x, method = "loess")
+      geom_smooth(aes(x = log10_timepoint ), lwd = 1.5,se=FALSE,formula = y ~ x, method = "loess")
   }else{
     plt <- ggplot(mean_data,aes(x = timepoint, y = reads, color = group))+
-      geom_smooth(aes(x = timepoint ), lwd = 1.5,se=F,formula = y ~ x, method = "loess")
+      geom_smooth(aes(x = timepoint ), lwd = 1.5,se=FALSE,formula = y ~ x, method = "loess")
   }
    plt <- plt +
     scale_color_manual(values=color_vector) +
@@ -1435,11 +1464,11 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #' @param DE_type The differential gene expression axes for which the results will be retrieved
 #' @param log_tp Boolean indicating if timepoints should be log10 transformed for the plot
 #'
-#' @return none
+#' @import ggplot2
 #'
 #' @export
 #'
-create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_location,DE_type=c('conditional','temporal'),log_tp=F){
+create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_location,DE_type=c('conditional','temporal'),log_tp=FALSE){
 
   for(DE in DE_type){
     if(!(DE %in% names(object@DE_results))){
@@ -1478,8 +1507,8 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
       }
     }
     #Only write the dataframe to csv if at least one experiment has values for the gene
-    if(all(is.na(gene_df[,'padj'])) == F){
-      write.csv(gene_df,paste0(save_location,gene,'.csv'),row.names=F)
+    if(all(is.na(gene_df[,'padj'])) == FALSE){
+      write.csv(gene_df,paste0(save_location,gene,'.csv'),row.names=FALSE)
     }
     #Plot gene trajectory if gene is in time object
     if(gene %in% row.names(object@count_matrix$norm)){
@@ -1494,7 +1523,7 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
   upstream_save_loc<-strsplit(save_location,'/')[[1]][1]
   genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(TS_object@count_matrix$norm)]
   if(length(genes_not_found)>0){
-    write.csv(genes_not_found,paste0(upstream_save_loc,'/','genes_of_interest_not_found.csv'),row.names=F)
+    write.csv(genes_not_found,paste0(upstream_save_loc,'/','genes_of_interest_not_found.csv'),row.names=FALSE)
   }
 }
 
@@ -1519,8 +1548,9 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
 #' @param min_shared_fields Minimum number of positions that are not NA in both
 #' vectors in order not to flag the vector pair as problematic
 #'
+#' @importFrom GenomicRanges setdiff
 #'
-#'@export
+#' @export
 #'
 #'
 identify_problematic_combs <- function(mat, min_shared_fields = 1) {

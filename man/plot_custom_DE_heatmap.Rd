@@ -36,9 +36,6 @@ plot_custom_DE_heatmap(
 
 \item{custom_height}{The height of the heatmap}
 }
-\value{
-none
-}
 \description{
 The function is intended to be called within the \code{custom_heatmap_wrapper}
 

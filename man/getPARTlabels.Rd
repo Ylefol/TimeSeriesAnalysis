@@ -6,6 +6,11 @@
 \usage{
 getPARTlabels(clusters, minSize)
 }
+\arguments{
+\item{clusters}{The found clusters}
+
+\item{minSize}{The parameter for minimum cluster size}
+}
 \description{
-getPARTlabels
+Retrives the labels for the clusters found by PART
 }

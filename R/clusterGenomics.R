@@ -11,6 +11,12 @@
 #'
 #' @description Compute distance matrix for given distance measure; note: distance between rows!
 #'
+#' @param X Matrix used to calculate the distance
+#' @param dist.method The distance method to use in the calculation
+#' @param cor.method The correlation method to use. 'pearson' is the default,
+#'
+#' @importFrom stats as.dist dist
+#'
 #' @export
 #'
 getDist <- function(X,dist.method,cor.method="pearson"){
@@ -32,6 +38,12 @@ getDist <- function(X,dist.method,cor.method="pearson"){
 #'
 #' @description Perform hierarchical clustering with given linkage, and apply horizontal cutting of tree into k clusters
 #'
+#' @param d a dissimilarity structure as produced by dist.
+#' @param k an integer scalar or vector with the desired number of groups
+#' @param linkage the agglomeration method to be used.
+#'
+#' @importFrom stats hclust cutree
+#'
 #' @export
 #'
 doHclust <- function(d,k,linkage){
@@ -44,6 +56,11 @@ doHclust <- function(d,k,linkage){
 #'
 #' @description Perform K-means clustering into k clusters
 #'
+#' @param X matrix of values
+#' @param k value for kmeans
+#' @param nstart Where to start
+#'
+#' @importFrom stats kmeans
 #' @export
 #'
 doKmeans <- function(X,k,nstart){
@@ -56,7 +73,12 @@ doKmeans <- function(X,k,nstart){
 #' @title findPartition
 #'
 #' @description Obtain partitions of the data into k=1,...,Kmax clusters
-#'gives the clustering method, distance measure, and other parameters to be used in the clustering
+#' gives the clustering method, distance measure, and other parameters to be used in the clustering
+#'
+#' @param matrix of values
+#' @param maximum number of clusters
+#' @param dx distance measure
+#'
 #' @export
 #'
 findPartition <- function(X,Kmax,dX=NULL,...){
@@ -83,6 +105,12 @@ findPartition <- function(X,Kmax,dX=NULL,...){
 #' @title gap
 #'
 #' @description gap finds the optimal number of clusters based on the "gap statistic" (Tibshirani et al. 2001)
+#'
+#' @param X matrix of values
+#' @param Kmax maximum number of clusters
+#' @param B number of recursions
+#' @param ref.gen reference gen
+#' @param cl.lab cluster labels
 #'
 #' @export
 #'
@@ -170,6 +198,10 @@ sim <- function(Xcol) {
 #'
 #' @description Calulates the total within-cluster dispersion (W_K) for a k=1,...,K:
 #'
+#' @param dx matrix for cluster
+#' @param K current cluster
+#' @param cl.lab cluster labels
+#'
 #' @export
 #'
 findW <- function(dX,K,cl.lab){
@@ -205,6 +237,10 @@ findW <- function(dX,K,cl.lab){
 #'
 #' @description Generate reference data sets and find Wb:
 #'
+#' @param X matrix of values
+#' @param Kmax maximum number of clusters
+#' @param B Number of recursions
+#'
 #' @export
 #'
 getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
@@ -213,7 +249,7 @@ getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
   Wb <- matrix(0,nrow=Kmax,ncol=B)
   if(ref.gen=="PC"){
     #Transform data using svd:
-    m <- apply(X,2,mean,na.rm=T)   #First columncenter X:
+    m <- apply(X,2,mean,na.rm=TRUE)   #First columncenter X:
     Xc <- sweep(X,2,m)
     #SVD:
     s <- svd(Xc)
@@ -243,6 +279,12 @@ getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
 #' @title part
 #'
 #' @description Main function for PART:
+#'
+#' @param X matrix of values
+#' @param kmax maximum number of clusters
+#' @param minSize minimum cluster size
+#' @param minDist Minimum distance between clusters
+#' @param cl.lab cluster labels
 #'
 #' @export
 #'
@@ -281,7 +323,12 @@ part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
 
 #' @title PartRec
 #'
-#' @description The recursive function:
+#' @description The recursive function used by PART clustering
+#'
+#' @param X Matrix of values
+#' @param Kmax max number of cluster
+#' @param ind number of clusters
+#' @param cl.lab cluster label
 #'
 #' @export
 #'
@@ -389,6 +436,8 @@ PartRec <- function(X,Kmax,ind,cl.lab=NULL,...){
 #' @description Help-functions only used by part:
 #' Find a stopping threshold given the percentage of heights to be used in the dendrogram
 #'
+#' @importFrom stats hclust
+#'
 #' @export
 #'
 get.threshold <- function(X,q,...){
@@ -412,7 +461,10 @@ get.threshold <- function(X,q,...){
 
 #' @title getPARTlabels
 #'
-#' @description
+#' @description Retrives the labels for the clusters found by PART
+#'
+#' @param clusters The found clusters
+#' @param minSize The parameter for minimum cluster size
 #'
 #' @export
 #'

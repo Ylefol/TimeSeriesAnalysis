@@ -6,6 +6,15 @@
 \usage{
 PartRec(X, Kmax, ind, cl.lab = NULL, ...)
 }
+\arguments{
+\item{X}{Matrix of values}
+
+\item{Kmax}{max number of cluster}
+
+\item{ind}{number of clusters}
+
+\item{cl.lab}{cluster label}
+}
 \description{
-The recursive function:
+The recursive function used by PART clustering
 }

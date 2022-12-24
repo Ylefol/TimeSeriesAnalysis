@@ -6,6 +6,13 @@
 \usage{
 doKmeans(X, k, nstart)
 }
+\arguments{
+\item{X}{matrix of values}
+
+\item{k}{value for kmeans}
+
+\item{nstart}{Where to start}
+}
 \description{
 Perform K-means clustering into k clusters
 }

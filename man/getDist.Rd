@@ -6,6 +6,13 @@
 \usage{
 getDist(X, dist.method, cor.method = "pearson")
 }
+\arguments{
+\item{X}{Matrix used to calculate the distance}
+
+\item{dist.method}{The distance method to use in the calculation}
+
+\item{cor.method}{The correlation method to use. 'pearson' is the default,}
+}
 \description{
 Compute distance matrix for given distance measure; note: distance between rows!
 }

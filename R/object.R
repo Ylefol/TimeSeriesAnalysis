@@ -1,8 +1,8 @@
 # library(DESeq2)
-# library(limma)
-packages_for_loading<-c('DESeq2','limma')
-suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
-
+# # library(limma)
+# packages_for_loading<-c('DESeq2','limma')
+# suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
+#
 
 # Class creation  -------------------
 
@@ -42,6 +42,11 @@ suppressPackageStartupMessages(lapply(packages_for_loading, require, character.o
 #' @name TimeSeries_Object-class
 #' @rdname TimeSeries_Object-class
 #' @concept objects
+#'
+#' @importClassesFrom DESeq2 DESeqDataSet
+#' @importClassesFrom limma EList
+#' @importClassesFrom GOSemSim GOSemSimDATA
+#'
 #' @exportClass TimeSeries_Object
 #'
 TimeSeries_Object<-setClass(
@@ -55,7 +60,7 @@ TimeSeries_Object<-setClass(
     DE_p_thresh='numeric',
     DE_l2fc_thresh='numeric',
     Gpro_org='character',
-    sem_list='list',
+    sem_list='GOSemSimDATA',
     DESeq2_obj='DESeqDataSet',
     limma_object='EList',
     DE_results='list',
@@ -159,6 +164,8 @@ create_raw_count_matrix<-function(time_object,path_to_data=NULL,limma_id_replace
 #'
 #' @return The processed and normalized Elist object
 #'
+#' @importFrom limma read.maimages backgroundCorrect normalizeBetweenArrays avereps
+#'
 #' @export
 process_microarr_dta_limma<-function(micro_arr_path,micro_arr_source='agilent',green.only=TRUE,
                                      backg_corr_meth='normexp',back_corr_offset=16,
@@ -183,7 +190,7 @@ process_microarr_dta_limma<-function(micro_arr_path,micro_arr_source='agilent',g
   norm_data <- normalizeBetweenArrays(data_bckcor, method=norm_arrays_meth)
 
   #Create gene ID vector and average the reps
-  if(is.null(ID_used)==T){
+  if(is.null(ID_used)==TRUE){
     ID_vect<-norm_data$genes[,1]
   }else{
     ID_vect<-norm_data$genes[[ID_used]]
@@ -214,7 +221,7 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 
   count_matrix=Elist_obj$E
   #Replaces rownames with a selection from the genes dataframe of the E list
-  if (is.null(replace_rows_with)==F){
+  if (is.null(replace_rows_with)==FALSE){
     row.names(count_matrix)=Elist_obj$genes[[replace_rows_with]]
   }
 
@@ -245,10 +252,10 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
   for(file in list.files(path_to_counts)){
     sample_name<-strsplit(file,'\\.')[[1]][1]
     if (sample_name %in% selected_samples){
-      if(endsWith(file,'.csv')==T){
-        temp_df<-read.csv(paste0(path_to_counts,'/',file),header=T)
+      if(endsWith(file,'.csv')==TRUE){
+        temp_df<-read.csv(paste0(path_to_counts,'/',file),header=TRUE)
       }else{
-        temp_df<-read.delim(paste0(path_to_counts,'/',file),header=F)
+        temp_df<-read.delim(paste0(path_to_counts,'/',file),header=FALSE)
       }
       colnames(temp_df)=c('gene_id',sample_name)
       if (nrow(final_counts)==0){
@@ -289,25 +296,43 @@ write_example_data_to_dir<-function(example_data){
     dir.create('data/PBMC')
     dir.create('data/PBMC/raw_counts_TS')
     for(dta in names(AID_TS_data[['counts']])){
-      write.table(AID_TS_data[['counts']][[dta]],paste0('data/PBMC/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+      write.table(AID_TS_data[['counts']][[dta]],paste0('data/PBMC/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
     }
-    write.csv(AID_TS_data[['sample_dta']],'data/PBMC/sample_file.csv',row.names = F)
+    write.csv(AID_TS_data[['sample_dta']],'data/PBMC/sample_file.csv',row.names = FALSE)
   }else if (example_data=='MURINE'){
     dir.create('data/murine')
     dir.create('data/murine/raw_counts_TS')
     for(dta in names(murine_TS_data[['counts']])){
-      write.table(murine_TS_data[['counts']][[dta]],paste0('data/murine/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+      write.table(murine_TS_data[['counts']][[dta]],paste0('data/murine/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
     }
-    write.csv(murine_TS_data[['sample_dta']],'data/murine/sample_file.csv',row.names = F)
+    write.csv(murine_TS_data[['sample_dta']],'data/murine/sample_file.csv',row.names = FALSE)
   }else if(example_data=='CELEGANS'){
     dir.create('data/celegans')
     dir.create('data/celegans/raw_counts_TS')
     for(dta in names(Celegans_TS_data[['counts']])){
-      write.table(Celegans_TS_data[['counts']][[dta]],paste0('data/celegans/raw_counts_TS/',dta),quote =F,row.names = F,sep='\t',col.names = F)
+      write.table(Celegans_TS_data[['counts']][[dta]],paste0('data/celegans/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
     }
-    write.csv(Celegans_TS_data[['sample_dta']],'data/celegans/sample_file.csv',row.names = F)
+    write.csv(Celegans_TS_data[['sample_dta']],'data/celegans/sample_file.csv',row.names = FALSE)
   }else{
     message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
   }
+}
+
+#' @title Calculate and add semantic similarity to object
+#'
+#' @description This function calculates the semantic similarity object for an
+#' organism. It then stores this within the TimeSeries object and returns it
+#'
+#' @param object A timeseries object
+#' @param ont_sem_sim An ontology for the semantic similarity. EX: 'BP','MF','CC'
+#'
+#' @importFrom GOSemSim godata
+#'
+#' @export
+add_semantic_similarity_data<-function(object,ont_sem_sim){
+  #Create semantic data
+  object@sem_list <- godata(object@sem_sim_org, ont=ont_sem_sim, computeIC=TRUE)
+
+  return(object)
 }
 

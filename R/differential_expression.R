@@ -1,7 +1,7 @@
 # library(tibble)
 # library(dplyr)
 
-suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
+# suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 # wrapper functions  -------------------
 
@@ -40,7 +40,7 @@ conditional_DE_wrapper<-function(time_object){
       samps_interest<-time_object@sample_data$sample[time_object@sample_data$timepoint==tp]
       time_object<-DE_using_DESeq2(time_object,group_names,samps_interest,exp_name,main_key='conditional')
     }else if(time_object@DE_method=='limma'){
-      time_object<-DE_using_limma(time_object,group_names,exp_name,target_tp=tp,do_temporal=F)
+      time_object<-DE_using_limma(time_object,group_names,exp_name,target_tp=tp,do_temporal=FALSE)
     }
 
 
@@ -73,7 +73,7 @@ conditional_DE_wrapper<-function(time_object){
 #'
 #' @export
 #'
-temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
+temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 
   if ('temporal' %in% names(time_object@DE_results)){
     message('Temporal differential expression results already exist')
@@ -132,7 +132,7 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
       time_object<-DE_using_DESeq2(time_object,tp_labels,sample_order,exp_name,'temporal',condition_factor=cond_vect)
 
     }else if(time_object@DE_method=='limma'){
-      time_object<-DE_using_limma(time_object,group_names=tps_interest,exp_name,do_temporal=T)
+      time_object<-DE_using_limma(time_object,group_names=tps_interest,exp_name,do_temporal=TRUE)
     }
 
   }
@@ -168,6 +168,9 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=F){
 #' differeital gene expression analysis
 #'
 #' @return The timeseries object updated with the results from the experiment
+#'
+#' @importFrom DESeq2 DESeq results
+#' @importFrom BiocGenerics counts
 #'
 #' @export
 #'
@@ -222,6 +225,8 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #'
 #' @return The timeseries object with the added normalized count matrix
 #'
+#' @importFrom DESeq2 DESeqDataSetFromMatrix estimateSizeFactors counts
+#'
 #' @export
 #'
 normalize_timeSeries_with_deseq2 <- function(time_object){
@@ -272,6 +277,8 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
 #'
 #' @return a list contianing the model matrix and the subsets used
 #'
+#' @importFrom stats model.matrix
+#'
 #' @export
 #'
 prep_tp_matrix <- function(time_object,groups_in_ts,target_tp=NULL,do_temporal=FALSE){
@@ -293,12 +300,12 @@ prep_tp_matrix <- function(time_object,groups_in_ts,target_tp=NULL,do_temporal=F
 
   # tp_limma_subset <- rna_biop_dataa[,colnames(rna_biop_dataa$E) %in% subset_samples]
   microarr_dta<-time_object@limma_object
-  g1_vect<-gsub(pattern = F,replacement = 0,x = colnames(microarr_dta$E) %in% group_1_tp)
-  g1_vect<-gsub(pattern = T,replacement = 1,x = g1_vect)
+  g1_vect<-gsub(pattern = FALSE,replacement = 0,x = colnames(microarr_dta$E) %in% group_1_tp)
+  g1_vect<-gsub(pattern = TRUE,replacement = 1,x = g1_vect)
 
 
-  g2_vect<-gsub(pattern = F,replacement = 0,x = colnames(microarr_dta$E) %in% group_2_tp)
-  g2_vect<-gsub(pattern = T,replacement = 1,x = g2_vect)
+  g2_vect<-gsub(pattern = FALSE,replacement = 0,x = colnames(microarr_dta$E) %in% group_2_tp)
+  g2_vect<-gsub(pattern = TRUE,replacement = 1,x = g2_vect)
   matrix_df<-data.frame(Group1=g1_vect, Group2=g2_vect)
   mm <- model.matrix(~Group1+Group2,matrix_df)
   colnames(mm)=c('X.Intercept','G1','G2')
@@ -319,10 +326,12 @@ prep_tp_matrix <- function(time_object,groups_in_ts,target_tp=NULL,do_temporal=F
 #'
 #' @return The empirical Bayesian results
 #'
+#' @importFrom limma is.fullrank lmFit makeContrasts contrasts.fit eBayes
+#'
 #' @export
 #'
 calculate_EB <- function(micro_arr_dta,matrix_model,comparison){
-  if(is.fullrank(matrix_model)==F){
+  if(is.fullrank(matrix_model)==FALSE){
     matrix_model<-matrix_model[,1:2]
     #Perform linear regression and set-up contrast
     limma_res <- lmFit(micro_arr_dta, matrix_model)
@@ -364,7 +373,7 @@ calculate_EB <- function(micro_arr_dta,matrix_model,comparison){
 #'
 #' @export
 #'
-DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temporal=F){
+DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temporal=FALSE){
 
   return_list<-prep_tp_matrix(time_object,group_names,target_tp=target_tp,do_temporal=do_temporal)
 
@@ -372,7 +381,7 @@ DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temp
   all_samp_IDs<-return_list[[2]]
   my_eb_res<-calculate_EB(time_object@limma_object,my_mm,exp_name)
 
-  if(do_temporal==T){
+  if(do_temporal==TRUE){
     DE_type<-'temporal'
   }else{
     DE_type<-'conditional'
@@ -401,6 +410,9 @@ DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temp
 #' expression experiment performed
 #'
 #' @return The updated time object
+#'
+#' @importFrom limma topTable
+#' @importFrom dplyr rename "%>%"
 #'
 #' @export
 #'
@@ -463,7 +475,7 @@ convert_eb_res_to_DE_results<-function(time_object,eb_res,samples_used,exp_name,
 #'
 select_genes_with_l2fc<-function(time_object,custom_l2fc_thresh=NULL){
 
-  if(is.null(custom_l2fc_thresh)==T){
+  if(is.null(custom_l2fc_thresh)==TRUE){
     custom_l2fc_thresh<-time_object@PART_l2fc_thresh
   }
   gene_vect<-c()

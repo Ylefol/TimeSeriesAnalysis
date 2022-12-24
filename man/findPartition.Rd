@@ -6,6 +6,13 @@
 \usage{
 findPartition(X, Kmax, dX = NULL, ...)
 }
+\arguments{
+\item{matrix}{of values}
+
+\item{maximum}{number of clusters}
+
+\item{dx}{distance measure}
+}
 \description{
 Obtain partitions of the data into k=1,...,Kmax clusters
 gives the clustering method, distance measure, and other parameters to be used in the clustering

@@ -23,9 +23,6 @@ create_tables_genes_of_interest_DE(
 
 \item{log_tp}{Boolean indicating if timepoints should be log10 transformed for the plot}
 }
-\value{
-none
-}
 \description{
 Function which retrieves, processes, and saves information regarding
 genes which have been labelled as interesting by the user. The function will

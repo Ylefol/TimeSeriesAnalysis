@@ -6,6 +6,13 @@
 \usage{
 getReferenceW(X, Kmax, B, ref.gen, ...)
 }
+\arguments{
+\item{X}{matrix of values}
+
+\item{Kmax}{maximum number of clusters}
+
+\item{B}{Number of recursions}
+}
 \description{
 Generate reference data sets and find Wb:
 }

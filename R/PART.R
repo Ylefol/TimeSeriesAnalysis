@@ -2,14 +2,14 @@
 # library(tictoc)
 # library('GOSemSim')
 
-packages_for_loading<-c('gprofiler2','tictoc','tibble','GOSemSim')
-suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
+# packages_for_loading<-c('gprofiler2','tictoc','tibble','GOSemSim')
+# suppressPackageStartupMessages(lapply(packages_for_loading, require, character.only = TRUE))
 
 #' @title Format data for PART
 #'
 #' @description The function retrieves the counts from the time series object and filters
 #' it to only contain relevant genes and samples. The data can also be scaled
-#' if the parameter 'scale' is set to T
+#' if the parameter 'scale' is set to TRUE
 #'
 #'
 #' @param object A time series object
@@ -23,7 +23,7 @@ suppressPackageStartupMessages(lapply(packages_for_loading, require, character.o
 #'
 prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
   #Check if the matrix already exists, if yes, end function
-  if('part_matrix'%in% names(object@PART_results)==T){
+  if('part_matrix'%in% names(object@PART_results)==TRUE){
     message('PART matrix already exists')
     return(object)
   }
@@ -31,7 +31,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
   #Retrieve and prep assay
   cnts <- object@count_matrix$norm
 
-  if (is.null(target_samples)==F){
+  if (is.null(target_samples)==FALSE){
     cnts <- cnts[, target_samples]
   }
 
@@ -70,16 +70,22 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 #' @return The timeseries object with the PART results added
 #'
+#' @import tictoc
+#' @importFrom tibble add_column
+#' @importFrom stats hclust dist
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom grDevices colorRampPalette
+#'
 #' @export
 #'
 compute_PART<-function(object,part_recursion=100,part_min_clust=10,
                            dist_param="euclidean", hclust_param="average",
-                           custom_seed=NULL,custom_matrix=NULL,return_as_object=T){
+                           custom_seed=NULL,custom_matrix=NULL,return_as_object=TRUE){
 
   #check if custom matrix was given
-  if(is.null(custom_matrix)==T){
+  if(is.null(custom_matrix)==TRUE){
     #check if PART has already been calculated
-    if('part_data' %in% names(object@PART_results)==T){
+    if('part_data' %in% names(object@PART_results)==TRUE){
       message('PART results already exists')
       return(object)
     }
@@ -91,7 +97,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   }
 
   #Sets a seed for reproducibility
-  if (is.null(custom_seed)==F){
+  if (is.null(custom_seed)==FALSE){
     set.seed(as.character(custom_seed))
   }
 
@@ -107,7 +113,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   my_iter<-1
   clust_swap_df<-NULL
   for(val in unique(calculated_clusters$lab.hatK[rowclust$order])){
-    if(is.null(clust_swap_df)==T){
+    if(is.null(clust_swap_df)==TRUE){
       clust_swap_df<-data.frame('original'=val,'replacement'=paste0('C',my_iter))
     }else{
       new_row<-c(val,paste0('C',my_iter))
@@ -128,8 +134,8 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 
   #Sets up the format for the color bar which will illustrate the different clusters found
   num_clusts <- length(unique(calculated_clusters$lab.hatK))
-  cols <- RColorBrewer::brewer.pal(8, name = "Set3")[seq_len(min(8, num_clusts))]
-  clust_cols <- grDevices::colorRampPalette(colors = cols)(num_clusts)
+  cols <- brewer.pal(8, name = "Set3")[seq_len(min(8, num_clusts))]
+  clust_cols <- colorRampPalette(colors = cols)(num_clusts)
   names(clust_cols) <- unique(part_data$gene_cluster)
 
   #Create the color vector to add to file
@@ -156,7 +162,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
                     dist_param=dist_param, hclust_param=hclust_param,
                     custom_seed=custom_seed)
 
-  if(return_as_object==T){
+  if(return_as_object==TRUE){
     object@PART_results[['cluster_info']]<-clust_info_list
     object@PART_results[['part_data']]<-part_data
     object@PART_results[['cluster_map']]<-cluster_map
@@ -186,6 +192,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #'
 #' @return The updated object with the Gprofiler results
 #'
+#' @import gprofiler2
+#' @import GOSemSim
+#'
 #' @export
 run_gprofiler_PART_clusters<-function(object){
 
@@ -203,7 +212,7 @@ run_gprofiler_PART_clusters<-function(object){
     gene_vect<-cmap[cmap==clust,]
     gene_vect<-as.vector(row.names(gene_vect))
     gostres <- gost(query = gene_vect,organism = object@Gpro_org)
-    if (is.null(gostres)==F){
+    if (is.null(gostres)==FALSE){
       object@Gprofiler_results[[clust]]<-gostres
     }
   }

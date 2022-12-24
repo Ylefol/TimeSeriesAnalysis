@@ -6,6 +6,17 @@
 \usage{
 part(X, Kmax = 10, minSize = 8, minDist = NULL, cl.lab = NULL, ...)
 }
+\arguments{
+\item{X}{matrix of values}
+
+\item{minSize}{minimum cluster size}
+
+\item{minDist}{Minimum distance between clusters}
+
+\item{cl.lab}{cluster labels}
+
+\item{kmax}{maximum number of clusters}
+}
 \description{
 Main function for PART:
 }

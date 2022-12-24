@@ -5,10 +5,8 @@ Version: 0.1.0
 Authors@R: person("Yohan", "Lefol", email = "yohan.lefol@gmail.com",
                   role = c("aut", "cre"))
 Description: Examples and documentation for the TimeSeriesAnalysis R pipeline
-Encoding: UTF-8
-LazyData: true
-Depends: 
-    R (>= 4.1)
+License: MIT
+VignetteBuilder: knitr
 Imports:
 	stringr,
 	DESeq2,
@@ -30,10 +28,11 @@ Imports:
 	htmltools,
 	dynamicTreeCut,
 	stringi
-Suggests:
-	knitr,
+Depends: 
+	R (>= 4.1)
+Suggests: knitr,
 	rmarkdown,
-RoxygenNote: 7.2.1
-VignetteBuilder: knitr
 URL: https://github.com/Ylefol/TimeSeriesAnalysis
-BugReports: https://github.com/Ylefol/TimeSeriesAnalysis/issues
+LazyData: true
+RoxygenNote: 7.2.3
+Encoding: UTF-8

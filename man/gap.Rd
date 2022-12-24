@@ -6,6 +6,17 @@
 \usage{
 gap(X, Kmax = 10, B = 100, ref.gen = "PC", cl.lab = NULL, ...)
 }
+\arguments{
+\item{X}{matrix of values}
+
+\item{Kmax}{maximum number of clusters}
+
+\item{B}{number of recursions}
+
+\item{ref.gen}{reference gen}
+
+\item{cl.lab}{cluster labels}
+}
 \description{
 gap finds the optimal number of clusters based on the "gap statistic" (Tibshirani et al. 2001)
 }

@@ -6,6 +6,13 @@
 \usage{
 doHclust(d, k, linkage)
 }
+\arguments{
+\item{d}{a dissimilarity structure as produced by dist.}
+
+\item{k}{an integer scalar or vector with the desired number of groups}
+
+\item{linkage}{the agglomeration method to be used.}
+}
 \description{
 Perform hierarchical clustering with given linkage, and apply horizontal cutting of tree into k clusters
 }
