@@ -10,7 +10,6 @@ compute_PART(
   part_min_clust = 10,
   dist_param = "euclidean",
   hclust_param = "average",
-  custom_seed = NULL,
   custom_matrix = NULL,
   return_as_object = TRUE
 )
@@ -25,9 +24,6 @@ compute_PART(
 \item{dist_param}{The distance parameter for clustering}
 
 \item{hclust_param}{The hierarchical clustering method/parameter to be used}
-
-\item{custom_seed}{An integer to be used to set a custom seed
-which gives the option of reproducibility from the PART calculation}
 
 \item{custom_matrix}{Allows the input of a custom matrix instead of taking it
 from the object}

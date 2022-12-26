@@ -1,9 +1,5 @@
 library(TimeSeriesAnalysis)
-packages_for_loading<-c('DESeq2','limma','grid','ggrepel','ggplot2','ComplexHeatmap',
-                        'reshape2','plotly','GO.db','GOSemSim','data.table','gprofiler2',
-                        'htmlwidgets','dynamicTreeCut','stringr')
-
-lapply(packages_for_loading, require, character.only = TRUE)
+library(ggplot2)
 
 #If timepoints should be log transformed for plotting
 log_tp_traj=F
@@ -18,7 +14,7 @@ load(file = paste0(name_result_folder,obj_name))
 TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
 ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
 
-#Create a list of genes of interest
+#Used to highlight specific genes regardless of differential gene expression significance
 genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
 
 #Create results for conditional and temporal differential gene expression results
@@ -53,11 +49,8 @@ my_ont_gpro=paste0('GO:',my_ont_sem_sim)
 gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = name_result_folder)
 GO_clusters<-gpro_res[['GO_df']]
 
-#Create semantic data
-sem_data <- godata(TS_object@sem_sim_org, ont=my_ont_sem_sim, computeIC=TRUE)
-
 #Plot and save MDS and clustered MDS
-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_data,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'))
+wrapper_MDS_and_MDS_clusters(GO_clusters,TS_object@sem_list,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'))
 
 
 
@@ -85,5 +78,5 @@ target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042
 ancestor_ontology<-'BP'
 
 GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,target_dir=name_result_folder)
+ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,TS_object@sem_list,target_dir=name_result_folder)
 

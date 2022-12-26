@@ -1,5 +1,5 @@
 ---
-title: "TimeSeries Analysis – PBMC TGF vs LPS"
+title: "TimeSeries Analysis – PBMC IgM vs LPS"
 author: "Yohan Lefol"
 date: '`r format(Sys.Date(), "%d. %B %Y")`'
 bibliography: references.bib
@@ -61,6 +61,12 @@ my_ont_sem_sim='BP'
 #hsapiens
 #celegans
 my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
+
+# The seed serves to create reproducible results with PART.
+# A seed will ensure that the random components of PART clustering will be the same
+# as long as the same seed is used. For more information on seeds, please consult
+# this link: https://www.r-bloggers.com/2018/07/%F0%9F%8C%B1-setting-a-seed-in-r-when-using-parallel-simulation/
+PART_seed=123456
 
 PART_l2fc<-2 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
@@ -160,10 +166,12 @@ samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@gro
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,
                                      scale=TRUE,target_samples=c(samps_2,samps_1))
 
-#Initiate PART clustering with a pre-defined seed – 123456
+#Sets a seed for reproducibility
+if (is.null(PART_seed)==FALSE){
+  set.seed(as.character(PART_seed))
+}
 TS_object<-compute_PART(TS_object,part_recursion=PART_recursion,part_min_clust=PART_min_clust,
-                        dist_param="euclidean", hclust_param="average",
-                        custom_seed=123456)
+                        dist_param="euclidean", hclust_param="average")
 #Save the TimeSeries object to the directory to prevent loss of data in the event
 #of a downstream error
 save(TS_object,file=name_save_obj)

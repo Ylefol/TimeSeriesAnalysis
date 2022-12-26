@@ -61,8 +61,6 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' @param part_min_clust The minimum number of genes per cluster
 #' @param dist_param The distance parameter for clustering
 #' @param hclust_param The hierarchical clustering method/parameter to be used
-#' @param custom_seed An integer to be used to set a custom seed
-#' which gives the option of reproducibility from the PART calculation
 #' @param custom_matrix Allows the input of a custom matrix instead of taking it
 #' from the object
 #' @param return_as_object Boolean indicating if the results should be returned
@@ -80,7 +78,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 compute_PART<-function(object,part_recursion=100,part_min_clust=10,
                            dist_param="euclidean", hclust_param="average",
-                           custom_seed=NULL,custom_matrix=NULL,return_as_object=TRUE){
+                           custom_matrix=NULL,return_as_object=TRUE){
 
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){
@@ -94,11 +92,6 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 
   }else{
     main_matrix<-custom_matrix
-  }
-
-  #Sets a seed for reproducibility
-  if (is.null(custom_seed)==FALSE){
-    set.seed(as.character(custom_seed))
   }
 
   tic()#Start a timer for PART computation
