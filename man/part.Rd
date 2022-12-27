@@ -23,3 +23,9 @@ list of identified clusters
 \description{
 Main function for PART:
 }
+\examples{
+example_dta<-create_example_data_for_R()
+X=as.matrix(example_dta$counts)
+PART_results<-part(X,B=5,minSize = 2)
+
+}

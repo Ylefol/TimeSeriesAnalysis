@@ -1,0 +1,7 @@
+"ancestor","term_id","term_name","p_value","term_size","group_name","-log10(padj)","group_color","ancestor_name"
+"GO:0002252","GO:0002443","leukocyte mediated immunity",0.00492989397590127,446,"C4",0.558974393711735,"#1F78B4","immune effector process"
+"GO:0002682","GO:0002683","negative regulation of immune system process",0.0156678366984123,430,"C5",0.260922919283214,"#B2DF8A","regulation of immune system process"
+"GO:0006955","GO:0002250","adaptive immune response",0.00100326943799938,721,"C4",1.18566906056394,"#A6CEE3","immune response"
+"GO:0006955","GO:0045087","innate immune response",0.00724392500117776,916,"C4",0.41011273007299,"#A6CEE3","immune response"
+"GO:0006955","GO:0098542","defense response to other organism",0.000671544749020919,1163,"C4",1.35338110686467,"#A6CEE3","immune response"
+"GO:0050900","GO:0030595","leukocyte chemotaxis",0.0136368191481368,239,"C9",0.305287556869895,"#33A02C","leukocyte migration"

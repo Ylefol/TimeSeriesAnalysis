@@ -18,3 +18,8 @@ The updated time object
 This function calculates the semantic similarity object for an
 organism. It then stores this within the TimeSeries object and returns it
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+
+}

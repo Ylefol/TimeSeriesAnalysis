@@ -19,3 +19,10 @@ the found distance
 \description{
 Compute distance matrix for given distance measure; note: distance between rows!
 }
+\examples{
+example_dta<-create_example_data_for_R()
+X=as.matrix(example_dta$counts)
+#Get distance matrix
+dX <- getDist(X,dist.method='euclidean',cor.method='pearson')
+
+}

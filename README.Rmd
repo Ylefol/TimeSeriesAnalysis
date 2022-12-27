@@ -22,7 +22,7 @@ TiSA: TimeSeriesAnalysis - Is a transcriptomic analysis tool for both RNA sequen
 
 ## Overview
 
-TimeSeriesAnalysis (TSA) is an analysis and visualization package for RNAseq and
+TimeSeriesAnalysis (TiSA) is an analysis and visualization package for RNAseq and
 microarray data. TS extracts significant genes from time course
 transcriptomic data by performing differential gene expression on both
 the conditional and temporal axes. It then employs partitioning

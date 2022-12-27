@@ -42,3 +42,15 @@ The function then runs through the standard DESeq2 pipeline. It saves the dds
 object, the raw differential expression results, and the significant differential
 expression results.
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+
+#DE for a single timepoint
+group_names<-TS_object@group_names
+tp<-'1'
+exp_name<-paste0(group_names[1],'_vs_',group_names[2],'_TP_',tp)
+samps_interest<-TS_object@sample_data$sample[TS_object@sample_data$timepoint==tp]
+TS_object<-DE_using_DESeq2(TS_object,group_names,samps_interest,exp_name,main_key='conditional')
+
+}

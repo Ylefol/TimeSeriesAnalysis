@@ -11,12 +11,32 @@
 #'
 #' @return The name of the most variable cluster
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
+#' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
+#' target_clust<-find_most_variable_cluster(TS_object,mean_ts_data)
+#'
 #' @export
 #'
 find_most_variable_cluster<-function(time_object,mean_ts_data){
 
   #Retrieve clusters which have gprofiler results
-  clusts_interest<-names(time_object@Gprofiler_results)
+  clusts_interest<-names(slot(time_object,'Gprofiler_results'))
   mean_ts_data<-mean_ts_data[mean_ts_data$cluster %in% clusts_interest,]
 
   dif_clust<-c()
@@ -51,17 +71,26 @@ find_most_variable_cluster<-function(time_object,mean_ts_data){
 #'
 #' @return The DEG table summarizing the results
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
+#' DEG_df<-create_DEG_df(TS_object)
+#'
 #' @export
 #'
 create_DEG_df<-function(time_object){
-  #Get DEGs
+  DE_res<-slot(time_object,'DE_results')
+
   DEG_amount<-c()
   names_exp<-c()
   gene_vect<-c()
-  for(DE_type in names(time_object@DE_results)){
-    for(exp in names(time_object@DE_results[[DE_type]])){
-      gene_vect<-c(gene_vect,time_object@DE_results[[DE_type]][[exp]][['DE_sig_data']]$gene_id)
-      DEG_amount<-c(DEG_amount,nrow(time_object@DE_results[[DE_type]][[exp]][['DE_sig_data']]))
+  for(DE_type in names(DE_res)){
+    for(exp in names(DE_res[[DE_type]])){
+      gene_vect<-c(gene_vect,DE_res[[DE_type]][[exp]][['DE_sig_data']]$gene_id)
+      DEG_amount<-c(DEG_amount,nrow(DE_res[[DE_type]][[exp]][['DE_sig_data']]))
       exp<-paste0(exp,' (',DE_type,')')
       names_exp<-c(names_exp,exp)
     }

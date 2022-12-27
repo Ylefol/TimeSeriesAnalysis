@@ -20,3 +20,11 @@ dataframe with the trajectory data for the requested gene
 Function takes in a target gene and will calculate the genes trajectory
 over the time points within the time object
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
+
+}

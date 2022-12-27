@@ -18,3 +18,14 @@ threshold
 Help-functions only used by part:
 Find a stopping threshold given the percentage of heights to be used in the dendrogram
 }
+\examples{
+example_dta<-create_example_data_for_R()
+X=as.matrix(example_dta$counts)
+#Default ... values:
+default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#Check for user modifications:
+fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#Find stopping threshold if minDist is NULL
+minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+
+}

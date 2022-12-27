@@ -105,19 +105,19 @@ names(graphic_vector)<-c(name_experiment,name_control)
 ```
 
 ## Create TimeSeries object
-This code chunk first checks if a timeseries object has been saved, if that is the 
+This code chunk first checks if a timeseries object has been saved, if that is the
 case, the object is loaded instead of being created again. To reset this analysis, the
-saved timeseries object should be deleted or moved from the repository.  
-If no timeseries object was found, the code chunk creates the timeseries object 
-using the parameters defined above. The raw matrix is also created using the second function  
+saved timeseries object should be deleted or moved from the repository.
+If no timeseries object was found, the code chunk creates the timeseries object
+using the parameters defined above. The raw matrix is also created using the second function
 ```{r create_base_TS, message=FALSE}
 if(obj_name %in% list.files(name_result_folder)==FALSE){
   TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,my_group_names),
-                 group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
-                 DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
-                 PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
-TS_object <- create_raw_count_matrix(TS_object,my_path_data)
-TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
+                   group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
+                   DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
+                   PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
+  TS_object <- create_raw_count_matrix(TS_object,my_path_data)
+  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
 }else{
   load(name_save_obj)
 }
@@ -132,11 +132,11 @@ If the tool used is limma[@smyth2005limma], the normalized matrix should have be
 thus no normalization is needed.
 
 This code chunk performs both the conditional and temporal differential gene expression
-and saves the results within the Time Series object. 
+and saves the results within the Time Series object.
 ```{r run_DE ,message=FALSE,warning=FALSE}
 
 #Perform normalization if the DESeq2 tool is being used and if normalized matrix doesn't exist
-if (TS_object@DE_method=='DESeq2' & 'norm' %in% names(TS_object@count_matrix)!=TRUE){
+if (slot(TS_object,'DE_method')=='DESeq2' & 'norm' %in% names(slot(TS_object,'count_matrix'))!=TRUE){
   TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 }
 
@@ -161,19 +161,20 @@ for clustering as well as the number of recursions set for the clustering
 signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
-samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+samp_dta<-slot(TS_object,'sample_data')
+samps_2<-samp_dta$sample[samp_dta$group==TS_object@group_names[2]]
+samps_1<-samp_dta$sample[samp_dta$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,
-                                     scale=TRUE,target_samples=c(samps_2,samps_1))
+                                scale=TRUE,target_samples=c(samps_2,samps_1))
 
 #Sets a seed for reproducibility
 if (is.null(PART_seed)==FALSE){
   set.seed(as.character(PART_seed))
 }
 TS_object<-compute_PART(TS_object,part_recursion=PART_recursion,part_min_clust=PART_min_clust,
-                        dist_param="euclidean", hclust_param="average")
+                        custom_seed=PART_seed,dist_param="euclidean", hclust_param="average")
 #Save the TimeSeries object to the directory to prevent loss of data in the event
 #of a downstream error
 save(TS_object,file=name_save_obj)
@@ -208,8 +209,8 @@ Most plots are created in SVG format for ease of editing with SVG editing softwa
 such as InkScape (open source software). Some plots are created in html format
 as they are interactive plots. These require a web browser to open them
 
-To convert SVG files to PNG/JPG/PDF, this website is available: https://svgtopng.com/  
-HTML files can be opened and then saved as PNG (or other) using the camera icon 
+To convert SVG files to PNG/JPG/PDF, this website is available: https://svgtopng.com/
+  HTML files can be opened and then saved as PNG (or other) using the camera icon
 in the top right of each respective interactive plot
 
 
@@ -219,30 +220,30 @@ TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
 ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
 
 #Creating sample_data without row.names for illustration in Rmarkdown format
-sample_dta<-TS_object@sample_data
+sample_dta<-slot(TS_object,'sample_data')
 row.names(sample_dta)=NULL
 
 ```
 ## TimeSeries summary of experiment
-**Name of groups beings compared\:** `r paste0(TS_object@group_names[1],' vs ',TS_object@group_names[2])`  
-**Number of genes analyzed\:** `r length(row.names(TS_object@count_matrix$norm))`  
+**Name of groups beings compared\:** `r paste0(slot(TS_object,'group_names')[1],' vs ',slot(TS_object,'group_names')[2])`
+**Number of genes analyzed\:** `r length(row.names(TS_object@count_matrix$norm))`
 
-**Differential expression parameters used\:**  
-**Method\:** `r TS_object@DE_method`  
-**P statistic filter used\:** `r TS_object@DE_p_filter` with a `r TS_object@DE_p_thresh` threshold  
-**Log(2)FoldChange significance threshold used\:** `r TS_object@DE_l2fc_thresh`  
+**Differential expression parameters used\:**
+  **Method\:** `r slot(TS_object,'DE_method')`
+**P statistic filter used\:** `r slot(TS_object,'DE_p_filter')` with a `r slot(TS_object,'DE_p_thresh')` threshold
+**Log(2)FoldChange significance threshold used\:** `r slot(TS_object,'DE_l2fc_thresh')`
 
-**PART parameters used\:**  
-**PART log(2)FoldChange significance threshold\:** `r TS_object@PART_l2fc_thresh`  
-**number of recursions\:** `r TS_object@PART_results$params_used$part_recursion`  
-**minimum cluster size\:** `r TS_object@PART_results$params_used$part_min_clust`  
-**distance parameter\:** `r TS_object@PART_results$params_used$dist_param`  
-**hclust parameter\:** `r TS_object@PART_results$params_used$hclust_param`  
-**custom seed used\:** `r as.character(TS_object@PART_results$params_used$custom_seed)`  
-**PART computation time\:** `r TS_object@PART_results$comp_time`  
+**PART parameters used\:**
+  **PART log(2)FoldChange significance threshold\:** `r slot(TS_object,'PART_l2fc_thresh')`
+**number of recursions\:** `r slot(TS_object,'PART_results')$params_used$part_recursion`
+**minimum cluster size\:** `r slot(TS_object,'PART_results')$params_used$part_min_clust`
+**distance parameter\:** `r slot(TS_object,'PART_results')$params_used$dist_param`
+**hclust parameter\:** `r slot(TS_object,'PART_results')$params_used$hclust_param`
+**custom seed used\:** `r as.character(slot(TS_object,'PART_results')$params_used$custom_seed)`
+**PART computation time\:** `r slot(TS_object,'PART_results')$comp_time`
 
-**PCA of sample data\:**    
-   `r knitr::include_graphics(paste0(name_result_folder,"PCA_plot.png"))`  
+**PCA of sample data\:**
+  `r knitr::include_graphics(paste0(name_result_folder,"PCA_plot.png"))`
 ```{r DE_results ,echo=FALSE,message=FALSE,warning=FALSE}
 
 #Create results for conditional and temporal differential gene expression results
@@ -259,62 +260,63 @@ create_tables_genes_of_interest_DE(TS_object,genes_of_interest,save_location=pas
 ```
 ## Differential Gene Expression results
 
-**DEGs found per analysis\:** `r kable(DEG_table)`  
+**DEGs found per analysis\:** `r kable(DEG_table)`
 Each experiment listed in the above table has separate results which can be viewed
 in the 'TS_results' folder. In the main results folder, the differential gene expression
-results are located in the 'DE_results_conditional' and 'DE_results_temporal' plot.  
-Each individual experiment creates the following\:  
-**DE_raw_data.csv**\: A csv file containing all the genes and their associated differential
-expression results, regardless of significance.  
-**DE_sig_data**\: A csv file containing only the significant differential expression results.  
-**MA_plot.png**\: A MA plot, these are often used to evaluate the quality of the normalization.  
+results are located in the 'DE_results_conditional' and 'DE_results_temporal' plot.
+Each individual experiment creates the following\:
+  **DE_raw_data.csv**\: A csv file containing all the genes and their associated differential
+expression results, regardless of significance.
+**DE_sig_data**\: A csv file containing only the significant differential expression results.
+**MA_plot.png**\: A MA plot, these are often used to evaluate the quality of the normalization.
 **volcano_plot.png**\: A volcano plot which splits significantly up-regulated and down-regulated genes
-as well as non-significant genes.  
-**PCA_plot**\: A PCA plot using only the samples implicated in the differential gene expression analysis.  
+as well as non-significant genes.
+**PCA_plot**\: A PCA plot using only the samples implicated in the differential gene expression analysis.
 
 The pipeline also creates two large heatmaps which summarize conditional and temporal
-differential expression results. The heatmaps were created using the ComplexHeatmaps package[@gu2016complex].  
+differential expression results. The heatmaps were created using the ComplexHeatmaps package[@gu2016complex].
 These heatmaps illustrate each experiment as different columns (distinguished by color)
 while the rows distinguish the groups. Plotted in the heatmaps is the log transformed counts,
 while the log transformed log(2)fold change is seen in a histogram at the bottom of the heatmap.
 The number of genes in each experiment (colored columns) is indicated in the legend at the bottom
-of the heatmap.  
+of the heatmap.
 In the case of the temporal heatmap, the rows are labelled 'experiment' and 'control'. The 'experiment'
 represents the time points being compared while the control represents the timepoint which the 'experiment'
-is compared against. For example, TP2_vs_TP1 would have the 'experiment' be TP2 and the control be TP1, 
-while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. Note that TP=time point.  
+is compared against. For example, TP2_vs_TP1 would have the 'experiment' be TP2 and the control be TP1,
+while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. Note that TP=time point.
 
-**The conditional heatmap**  
-`r knitr::include_graphics(paste0(name_result_folder,"/DE_results_conditional/custom_heat_conditional.svg"))` 
+**The conditional heatmap**
+  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_conditional/custom_heat_conditional.svg"))`
 
-**The temporal heatmap**  
-`r knitr::include_graphics(paste0(name_result_folder,"/DE_results_temporal/custom_heat_temporal.svg"))` 
+**The temporal heatmap**
+  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_temporal/custom_heat_temporal.svg"))`
 
 ## Genes of interest results
 
 ```{r genes_interest, echo=FALSE, message=FALSE, warning=FALSE, out.width= "65%", out.extra='style="float:right; padding:10px"'}
 #Subset for genes in the analysis
-gene_matrix_interest<-TS_object@count_matrix$norm[row.names(TS_object@count_matrix$norm) %in% genes_of_interest,]
+count_matrix_lst<-slot(TS_object,'count_matrix')
+gene_matrix_interest<-count_matrix_lst$norm[row.names(count_matrix_lst$norm) %in% genes_of_interest,]
 if(nrow(gene_matrix_interest)>0){
-    var_vect <- apply(gene_matrix_interest, 1, stats::var)
-    selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]
-    target_file<-paste0(name_result_folder,'genes_of_interest/',selected_gene,'_trajectory.png')
-    knitr::include_graphics(target_file)
+  var_vect <- apply(gene_matrix_interest, 1, stats::var)
+  selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]
+  target_file<-paste0(name_result_folder,'genes_of_interest/',selected_gene,'_trajectory.png')
+  knitr::include_graphics(target_file)
 }else{
-  selected_gene<-row.names(TS_object@PART_results$cluster_map)[1]
+  selected_gene<-row.names(slot(TS_object,'PART_results')$cluster_map)[1]
   gene_traj_dta<-calculate_gene_traj_data(TS_object,selected_gene,log_tp_traj)
-  gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,TS_object@group_colors)
+  gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(TS_object,'group_colors'))
   gene_traj_plot
 }
 
 ```
-If genes of interest have been specified, the pipeline will extract the differential 
+If genes of interest have been specified, the pipeline will extract the differential
 gene expression results, both conditional and temporal, for each gene requested, provided
 that they are found in the count matrix. These data files, along with individual trajectory
 plots are stored in the 'TS_results/genes_of_interest' folder. Below the trajectory of the
 most variable gene is shown. If no genes of interest were submitted, a random gene is taken
 from the differential expression results. Illustrated in the trajectory plots is the timepoints
-on the x axis and the number of reads (RNAseq) or expression (microarray) on the y axis.  
+on the x axis and the number of reads (RNAseq) or expression (microarray) on the y axis.
 Note that data files and trajectory plots are created for all genes of interest found, regardless
 of their significance based on the differential gene expression analyses.
 
@@ -351,38 +353,38 @@ target_clust<-find_most_variable_cluster(TS_object,mean_ts_data)
 sub_ts<-ts_data[ts_data$cluster==target_clust,]
 sub_mean<-mean_ts_data[mean_ts_data$cluster==target_clust,]
 plt_clust<-plot_cluster_traj(object = TS_object,ts_data = sub_ts,ts_mean_data = sub_mean, num_col=1,rem_legend_axis=TRUE,log_TP=log_tp_traj)
-cluster_map_sum<-t(as.data.frame(table(TS_object@PART_results$cluster_map[,c(1)])))
+cluster_map_sum<-t(as.data.frame(table(slot(TS_object,'PART_results')$cluster_map[,c(1)])))
 row.names(cluster_map_sum)=c('Cluster name','Number of genes')
 colnames(cluster_map_sum)=NULL
 ```
-**PART result summary\:** `r kable(cluster_map_sum)`  
+**PART result summary\:** `r kable(cluster_map_sum)`
 
-All cluster results are found in the 'PART_results' folder, within this folder you will find the following\:  
+All cluster results are found in the 'PART_results' folder, within this folder you will find the following\:
 
-**PART_heat.svg**\: A svg heatmap of the PART result – detailed below.  
+**PART_heat.svg**\: A svg heatmap of the PART result – detailed below.
 **PART_heat_with_names.svg**\: The same plot as above but with sample and gene names included. These may not
-be visible depending on the number of genes included as well as the length of the sample names.  
+be visible depending on the number of genes included as well as the length of the sample names.
 **PART_heat_cmap.csv**\: A csv file representing a 'cluster_map' which provides the cluster in which
-each gene was sorted in as well as the color (in HEX code) given to that cluster.  
-**PART_heat_data.csv**\: The z-score values used in the 'PART_heat' heatmaps.  
-**Ctraj.svg**\: At least one, and possibly several of these files will be in the folder. This/these SVG plots 
+each gene was sorted in as well as the color (in HEX code) given to that cluster.
+**PART_heat_data.csv**\: The z-score values used in the 'PART_heat' heatmaps.
+**Ctraj.svg**\: At least one, and possibly several of these files will be in the folder. This/these SVG plots
 show the trajectory of each cluster individually while being split by group. Meaning the trajectory
-of each cluster is shown twice, once per group. Information concerning the cluster and group is shown 
-in the title of each subplot. One example of cluster trajectory is shown below.    
+of each cluster is shown twice, once per group. Information concerning the cluster and group is shown
+in the title of each subplot. One example of cluster trajectory is shown below.
 
-**PART heatmap and cluster trajectory**  
+**PART heatmap and cluster trajectory**
 In this heatmap we illustrate all the genes which were submitted for PART clustering.
 Each gene is illustrated using a Z-score, which measures the number of standard deviations
-that a gene has from it's mean. In essence it measures the variability.  
+that a gene has from it's mean. In essence it measures the variability.
 Clusters are shown as the colored bar on the left hand side of the plot while groups and timepoints
-are shown as the colored bars on the top of the heatmap. PART heatmaps were created with ComplexHeatmaps[@gu2016complex].  
+are shown as the colored bars on the top of the heatmap. PART heatmaps were created with ComplexHeatmaps[@gu2016complex].
 The cluster trajectory of the most variable cluster (`r target_clust`) is illustrated, with
 the trajectory of the experiment group at the top and the control group at the bottom. The x axis
 represents timepoints and the y axis represents the scaled mean expression of the genes. The expression
 of each gene is obtained by calculating the mean between all replicates for each time point in each group.
-The values are then scaled in order to illustrate their trajectory. The overall mean of the cluster is shown as a thicker gray line.  
+The values are then scaled in order to illustrate their trajectory. The overall mean of the cluster is shown as a thicker gray line.
 
-```{r test,figures-side, out.width = "49%", out.height="49%", fig.width=3, fig.height=3,echo=FALSE} 
+```{r test,figures-side, out.width = "49%", out.height="49%", fig.width=3, fig.height=3,echo=FALSE}
 par(mar = c(4, 4, .1, .1)) #set the parameters
 knitr::include_graphics(paste0(name_result_folder,"PART_results/PART_heat.svg")) #plot the heatmap
 plt_clust #Plot the cluster
@@ -406,43 +408,43 @@ is then used with the semantic distance to create two versions of the MDS plot.
 #Create standard gprofiler results
 gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = name_result_folder,return_specific_cluster=target_clust)
 GO_clusters<-gpro_res[['GO_df']]
-
-found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+sem_dta<-slot(TS_object,'sem_list')
+found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 
 #Plot and save MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,TS_object@sem_list,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'),return_plot=TRUE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'),return_plot=TRUE)
 ```
 
 Each cluster has it's own individual gprofiler plot, these are found in 'TS_results/gprofiler_results/figures'.
-The gost plot for the most variable cluster (`r target_clust`) is shown below.  
+The gost plot for the most variable cluster (`r target_clust`) is shown below.
 These interactive plots show the results of various databases when queried with a list of genes.
-More information concerning these plots and their various datasources can be found at the following link\: 
-https://biit.cs.ut.ee/gprofiler/gost  
+More information concerning these plots and their various datasources can be found at the following link\:
+https://biit.cs.ut.ee/gprofiler/gost
 
 
 `r gpro_res[['gost_clust']]`
 
 In addition to the standard gprofiler plot, the TimeSeries pipeline creates Multi-Dimensional Scaling (MDS)
-plots. These plots illustrate a custom selected ontology defined by the 'my_ont_gpro' parameter. The first MDS plots shows all 
-the found terms of the specified ontology and distinguishes them based on the cluster(s) in which they are found.  
+plots. These plots illustrate a custom selected ontology defined by the 'my_ont_gpro' parameter. The first MDS plots shows all
+the found terms of the specified ontology and distinguishes them based on the cluster(s) in which they are found.
 In a MDS plot, the distance between each dot represents the semantic similarity between terms[@yu2010gosemsim;@wang2007new]. This can be loosely
 defined as the 'closeness' between terms. Semantic similarity takes into account many factors, such as the content
-of the terms (genes which belong to it), it's associations to other terms, the similarity or lack there-of in function etc...  
+of the terms (genes which belong to it), it's associations to other terms, the similarity or lack there-of in function etc...
 In an MDS plot, the dimensions will be adjusted to fill the space with all the terms, therefor there is no set metric to measure
 the similarity. The purpose of the MDS plot is moreso to help visualize different groupings (or clusters) of relevant terms.
 Hovering the cursor over the dots will provide specific information for that dot (term)
 ```{r show_MDS_term ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
 MDS_plots[['MDS_term']]
 ```
-A second version of the MDS plot provides a nearest ancestor clustering approach. 
+A second version of the MDS plot provides a nearest ancestor clustering approach.
 All terms found are brought up to their nearest common ancestor. Since these databases,
-GO ontology in particular, have a tree-like hierarchy, we are able to find common ancestors 
-for each term which may provide a broader view if too many individual terms exist.  
+GO ontology in particular, have a tree-like hierarchy, we are able to find common ancestors
+for each term which may provide a broader view if too many individual terms exist.
 This approach does not distinguish based on clusters in which terms were found, meaning that
-terms from different clusters may be paired together.  
+terms from different clusters may be paired together.
 The size of each dot in this approach is relative to the number of terms sorted in that common ancestor (dot)
 while the color is representative of the dominant cluster in that common ancestor. For example, if an ancestor
-has 4 terms within it, and 3 of those terms are found in cluster 1 (C1), the dot will carry the color associated to C1.  
+has 4 terms within it, and 3 of those terms are found in cluster 1 (C1), the dot will carry the color associated to C1.
 Hovering the cursor over the dots will provide more information on those specific common ancestors.
 ```{r show_MDS_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
 MDS_plots[['MDS_clust']]
@@ -452,7 +454,7 @@ MDS_plots[['MDS_clust']]
 
 Dotplots were designed to illustrate the top n term results for any single ontology.
 In the below code chunk three different ontologies are demonstrated, GO\:BP (biological
-processes), REAC (REACTOME) [@jassal2020reactome] and KEGG[@kanehisa2017kegg]. The 'target_top' parameter defines the number of
+                                                                             processes), REAC (REACTOME) [@jassal2020reactome] and KEGG[@kanehisa2017kegg]. The 'target_top' parameter defines the number of
 terms (from most significant to least) per cluster that will be shown on the dotplot.
 
 All terms shown are considered to be significant, the 'top' aspect reflects significance
@@ -476,9 +478,9 @@ select_ontology<-'HP'
 GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
 
 ```
-Illustrated below is the dotplot for the REACTOME pathway if it exists, otherwise it 
-will show GO:BP or KEGG dotplots if those have been created. All dotplots created above 
-can be found in the 'TS_results/gprofiler_results' folder.  
+Illustrated below is the dotplot for the REACTOME pathway if it exists, otherwise it
+will show GO:BP or KEGG dotplots if those have been created. All dotplots created above
+can be found in the 'TS_results/gprofiler_results' folder.
 ```{r show_dotplot ,echo=FALSE,message=FALSE,warning=FALSE}
 
 loc_gpro<-paste0(name_result_folder,'gprofiler_results/')
@@ -523,20 +525,20 @@ if(length(target_ancestors)==0){
   GOs_ancestors_clust<-data.frame(NULL)
 }else{
   GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,TS_object@sem_list,return_plot=TRUE,target_dir=name_result_folder)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=name_result_folder)
 }
 
 ```
 
 Two formats are generated for the ancestor plot. The first is a MDS plot. The second
-is a dotplot version. If more than one term was found to be associated to ancestors, 
-the MDS plot will be created and can be seen below, otherwise only the dotplot will be created. 
-The dotplot will not be created if no terms were found. The files for both of these plots 
-can be found in 'TS_results/ancestor_plots'. In the MDS and dotplot alike, the color of 
-each term represents the ancestor to which they have been associated and the size is 
-proportional to the -log transformed adjusted p-value. In the MDS plot, the PART clusters in 
-which these terms are found can be seen by hovering over each dot, in the dotplot version, this 
-information is made available on the x axis while the y axis represents the terms.  
+is a dotplot version. If more than one term was found to be associated to ancestors,
+the MDS plot will be created and can be seen below, otherwise only the dotplot will be created.
+The dotplot will not be created if no terms were found. The files for both of these plots
+can be found in 'TS_results/ancestor_plots'. In the MDS and dotplot alike, the color of
+each term represents the ancestor to which they have been associated and the size is
+proportional to the -log transformed adjusted p-value. In the MDS plot, the PART clusters in
+which these terms are found can be seen by hovering over each dot, in the dotplot version, this
+information is made available on the x axis while the y axis represents the terms.
 
 ```{r show_ancestor_MDS ,message=FALSE,warning=FALSE,echo=FALSE}
 if(is.null(ancestor_plots[['MDS']])==FALSE){
@@ -549,31 +551,31 @@ if(is.null(ancestor_plots[['MDS']])==FALSE){
 ```{r,echo=FALSE}
 if(nrow(GOs_ancestors_clust)>0){
   #Escape the colons (:) for better illustration
-ancestor_df<-GOs_ancestors_clust
-ancestor_df$ancestor<-gsub(x=ancestor_df$ancestor,pattern = ':','\\\\:')
-ancestor_df$term_id<-gsub(x=ancestor_df$term_id,pattern = ':',replacement = '\\\\:')
-list_ancestors=list()
-for(i in unique(ancestor_df$ancestor)){
-  temp_df<-ancestor_df[ancestor_df$ancestor==i,c('term_id','term_name','group_name')]
-  colnames(temp_df)=c('term ID','term name','PART cluster') #Rename for better legibility
-  row.names(temp_df)=NULL #Remove row names for better format
-  list_ancestors[[i]]<-temp_df #Add to list
+  ancestor_df<-GOs_ancestors_clust
+  ancestor_df$ancestor<-gsub(x=ancestor_df$ancestor,pattern = ':','\\\\:')
+  ancestor_df$term_id<-gsub(x=ancestor_df$term_id,pattern = ':',replacement = '\\\\:')
+  list_ancestors=list()
+  for(i in unique(ancestor_df$ancestor)){
+    temp_df<-ancestor_df[ancestor_df$ancestor==i,c('term_id','term_name','group_name')]
+    colnames(temp_df)=c('term ID','term name','PART cluster') #Rename for better legibility
+    row.names(temp_df)=NULL #Remove row names for better format
+    list_ancestors[[i]]<-temp_df #Add to list
   }
 }
 ```
 
-A interactive table is also generated in order to better navigate the results in the event of a 
+A interactive table is also generated in order to better navigate the results in the event of a
 large number of terms found for many different ancestors. The csv version of this data can be found
 in 'TS_results/ancestor_plots'.
 
 ```{r,results='asis', echo=FALSE}
 if(exists('list_ancestors')==TRUE){
   for(i in names(list_ancestors)){
-  cat('###',i,' \n')
-  cat("Ancestor name: ",ancestor_df$ancestor_name[ancestor_df$ancestor==i][1])
-  cat("\n")
-  print(knitr::kable(list_ancestors[[i]]) )
-  cat('\n')
+    cat('###',i,' \n')
+    cat("Ancestor name: ",ancestor_df$ancestor_name[ancestor_df$ancestor==i][1])
+    cat("\n")
+    print(knitr::kable(list_ancestors[[i]]) )
+    cat('\n')
   }
 }
 
@@ -582,6 +584,7 @@ if(exists('list_ancestors')==TRUE){
 ```{r sess_info}
 sessionInfo()
 ```
+
 ## {.unlisted .unnumbered}
 
 

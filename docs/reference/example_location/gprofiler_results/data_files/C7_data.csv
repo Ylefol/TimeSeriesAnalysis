@@ -1,0 +1,2 @@
+,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
+1,query_1,TRUE,0.0333910449789987,125,3,2,0.666666666666667,0.016,KEGG:04380,KEGG,Osteoclast differentiation,8064,293,KEGG:00000

@@ -54,3 +54,17 @@ The gradient legend of the values within the heatmap is given on the right hand 
 
 The heatmap is saved in both png and svg format.
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+heat_dta<-create_conditional_heatmap_matrix(TS_object)
+heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
+
+log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
+
+plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
+                      heat_dta[['group_split']],log_l2fc,log_transform = TRUE)
+
+}

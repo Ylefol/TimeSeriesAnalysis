@@ -28,3 +28,9 @@ differential gene expressions will be performed: TP2 vs TP1 and TP3 vs TP2.
 The function subsets the DESeq2_obj based on the necessary samples and adjusts
 the condition of the object to reflect the comparison being done
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
+TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE)
+
+}

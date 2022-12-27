@@ -13,3 +13,9 @@ Simulated uniform distribution
 helper-functions only used by GAP:
 Simulate from a uniform distribution according to min and max of the feature vector:
 }
+\examples{
+example_dta<-create_example_data_for_R()
+X=as.matrix(example_dta$counts)
+Z <- apply(X,2,sim)
+
+}

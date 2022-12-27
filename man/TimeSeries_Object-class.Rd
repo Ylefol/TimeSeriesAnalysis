@@ -35,7 +35,7 @@ significance. Genes will be considered significant if they are below this thresh
 \item{\code{DE_l2fc_thresh}}{A numeric value for the log2FolChange threshold to establish
 significance where the absolute value of the genes must be greater than the threshold}
 
-\item{\code{Gpro_org}}{The organism used in gprofiler firendly format}
+\item{\code{Gpro_org}}{The organism used in gprofiler friendly format}
 
 \item{\code{sem_list}}{The list containing the semantic similarity measures for each ontology}
 

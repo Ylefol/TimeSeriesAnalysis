@@ -19,17 +19,33 @@
 #'
 #' @return The timeseries object with the added PART count matrix
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object@PART_results$part_matrix
+#'
 #' @export
 #'
 prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
   #Check if the matrix already exists, if yes, end function
-  if('part_matrix'%in% names(object@PART_results)==TRUE){
+  if('part_matrix'%in% names(slot(object,'PART_results'))==TRUE){
     message('PART matrix already exists')
     return(object)
   }
 
   #Retrieve and prep assay
-  cnts <- object@count_matrix$norm
+  cnts <- slot(object,'count_matrix')$norm
 
   if (is.null(target_samples)==FALSE){
     cnts <- cnts[, target_samples]
@@ -61,12 +77,29 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' @param part_min_clust The minimum number of genes per cluster
 #' @param dist_param The distance parameter for clustering
 #' @param hclust_param The hierarchical clustering method/parameter to be used
+#' @param custom_seed The seed inputed (if any)
 #' @param custom_matrix Allows the input of a custom matrix instead of taking it
 #' from the object
 #' @param return_as_object Boolean indicating if the results should be returned
 #' within the submitted object or as a list
 #'
 #' @return The timeseries object with the PART results added
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
 #'
 #' @import tictoc
 #' @importFrom tibble add_column
@@ -78,16 +111,16 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 compute_PART<-function(object,part_recursion=100,part_min_clust=10,
                            dist_param="euclidean", hclust_param="average",
-                           custom_matrix=NULL,return_as_object=TRUE){
-
+                           custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE){
+  PART_res<-slot(object,'PART_results')
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){
     #check if PART has already been calculated
-    if('part_data' %in% names(object@PART_results)==TRUE){
+    if('part_data' %in% names(PART_res)==TRUE){
       message('PART results already exists')
       return(object)
     }
-    main_matrix<-object@PART_results$part_matrix
+    main_matrix<-PART_res$part_matrix
     message('computing PART clusters')
 
   }else{
@@ -152,8 +185,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   PART_computation_time<-capture.output(toc())
 
   PART_params<-list(part_recursion=part_recursion, part_min_clust=part_min_clust,
-                    dist_param=dist_param, hclust_param=hclust_param,
-                    custom_seed=custom_seed)
+                    dist_param=dist_param, hclust_param=hclust_param, custom_seed=custom_seed)
 
   if(return_as_object==TRUE){
     object@PART_results[['cluster_info']]<-clust_info_list
@@ -185,6 +217,23 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #'
 #' @return The updated object with the Gprofiler results
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-run_gprofiler_PART_clusters(TS_object)
+#'
 #' @import gprofiler2
 #' @import GOSemSim
 #'
@@ -192,19 +241,19 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 run_gprofiler_PART_clusters<-function(object){
 
   #Check if gprofiler results already exists
-  if(length(object@Gprofiler_results)>0){
+  if(length(slot(object,'Gprofiler_results'))>0){
     message('Gprofiler results already exist')
     return(object)
   }
 
   message('running Gprofiler on PART clusters')
 
-  cmap<-object@PART_results$cluster_map
+  cmap<-slot(object,'PART_results')$cluster_map
   for (clust in unique(cmap$cluster)){
     message(paste0('Gprofiler for ',clust))
     gene_vect<-cmap[cmap==clust,]
     gene_vect<-as.vector(row.names(gene_vect))
-    gostres <- gost(query = gene_vect,organism = object@Gpro_org)
+    gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
     if (is.null(gostres)==FALSE){
       object@Gprofiler_results[[clust]]<-gostres
     }

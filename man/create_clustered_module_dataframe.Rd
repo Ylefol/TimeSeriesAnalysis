@@ -19,3 +19,28 @@ of the GOs within the cluster
 Function which counts the number of GOs in each cluster and determines how many
 GOs of each module appears in each cluster
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+#Results saved to created directory
+dir.create('example_location')
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=dir.create('example_location'))
+GO_clusters<-gpro_res[['GO_df']]
+TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+clustered_module_df<-create_clustered_module_dataframe(found_clusters)
+
+}

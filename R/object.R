@@ -27,7 +27,7 @@
 #' significance. Genes will be considered significant if they are below this threshold
 #' @slot DE_l2fc_thresh A numeric value for the log2FolChange threshold to establish
 #' significance where the absolute value of the genes must be greater than the threshold
-#' @slot Gpro_org The organism used in gprofiler firendly format
+#' @slot Gpro_org The organism used in gprofiler friendly format
 #' @slot sem_list The list containing the semantic similarity measures for each ontology
 #' @slot DESeq2_obj The normalized DESeq2 object
 #' @slot limma_object The EList limma object
@@ -43,11 +43,11 @@
 #' @rdname TimeSeries_Object-class
 #' @concept objects
 #'
+#' @import rstudioapi
 #' @importClassesFrom DESeq2 DESeqDataSet
 #' @importClassesFrom limma EList
 #' @importClassesFrom GOSemSim GOSemSimDATA
 #'
-#' @import rstudioapi	AnnotationDbi BiocGenerics GenomicRanges RColorBrewer grDevices htmlwidgets stats utils
 #'
 #' @exportClass TimeSeries_Object
 #'
@@ -85,6 +85,12 @@ TimeSeries_Object<-setClass(
 #'
 #' @return the subsetted sample file based on the selected groups
 #'
+#' @examples
+#'  write_example_data_to_dir('PBMC')
+#' my_path_data<-'data/PBMC/raw_counts_TS'
+#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#' prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
+#'
 #' @export
 #'
 prep_sample_data<-function(path, group_names){
@@ -116,28 +122,40 @@ prep_sample_data<-function(path, group_names){
 #'
 #' @return The timeseries object with the raw count matrix added to it
 #'
+#' @examples
+#' write_example_data_to_dir('PBMC')
+#' my_path_data<-'data/PBMC/raw_counts_TS'
+#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#'
+#' TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
+#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#' TS_object <- create_raw_count_matrix(TS_object,my_path_data)
 #'
 #' @export
 create_raw_count_matrix<-function(time_object,path_to_data=NULL,limma_id_replace='GeneName'){
 
-  groups<-time_object@group_names
+  groups<-slot(time_object,'group_names')
   #Ensures that the order will follow the grouping order
-  selected_samples_1<-time_object@sample_data$sample[time_object@sample_data$group %in% groups[1]]
-  selected_samples_2<-time_object@sample_data$sample[time_object@sample_data$group %in% groups[2]]
+  samp_data<-slot(time_object,'sample_data')
+  selected_samples_1<-samp_data$sample[samp_data$group %in% groups[1]]
+  selected_samples_2<-samp_data$sample[samp_data$group %in% groups[2]]
   selected_samples<-c(selected_samples_1,selected_samples_2)
 
   #Prepare the matrix according to the differential expression method (affects input)
-  if (time_object@DE_method=='DESeq2'){
+  DE_method<-slot(time_object,'DE_method')
+  if (DE_method=='DESeq2'){
     final_counts<-prep_RNAseq_matrix(path_to_data,selected_samples)
     slot_storage<-'raw'
-  }else if (time_object@DE_method=='limma'){
+  }else if (DE_method=='limma'){
     if(endsWith(path_to_data,'.rds')){
       time_object@limma_object<-readRDS(my_path_data)
     }else{
       time_object@limma_object<-process_microarr_dta_limma(my_path_data)
     }
-
-    final_counts<-prep_limma_matrix(Elist_obj=time_object@limma_object,replace_rows_with = limma_id_replace)
+    Elist<-slot(time_object,'limma_object')
+    final_counts<-prep_limma_matrix(Elist_obj=Elist,replace_rows_with = limma_id_replace)
     slot_storage<-'norm' #Stored as norm as the data is expected to be normalized already
   }
   #Re-organize samples to be in order of groups
@@ -246,7 +264,23 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #'
 #' @return final_counts The formatted count matrix
 #'
+#' @examples
+#' write_example_data_to_dir('PBMC')
+#' my_path_data<-'data/PBMC/raw_counts_TS'
+#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
 #'
+#' TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
+#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#' groups<-TS_object@group_names
+#' #Ensures that the order will follow the grouping order
+#' selected_samples_1<-TS_object@sample_data$sample[TS_object@sample_data$group %in% groups[1]]
+#' selected_samples_2<-TS_object@sample_data$sample[TS_object@sample_data$group %in% groups[2]]
+#' selected_samples<-c(selected_samples_1,selected_samples_2)
+#'
+#' #Prepare the matrix according to the differential expression method (affects input)
+#' final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
 #' @export
 #'
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
@@ -290,6 +324,9 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #'
 #' @return None
 #'
+#' @examples
+#' write_example_data_to_dir('PBMC')
+#'
 #' @export
 write_example_data_to_dir<-function(example_data){
   #If data folder does not exist, create it
@@ -332,13 +369,72 @@ write_example_data_to_dir<-function(example_data){
 #'
 #' @return The updated time object
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+#'
 #' @importFrom GOSemSim godata
 #'
 #' @export
 add_semantic_similarity_data<-function(object,ont_sem_sim){
   #Create semantic data
-  object@sem_list <- godata(object@sem_sim_org, ont=ont_sem_sim, computeIC=TRUE)
+  sem_org<-slot(object,'sem_sim_org')
+  object@sem_list <- godata(sem_org, ont=ont_sem_sim, computeIC=TRUE)
 
   return(object)
 }
 
+#' @title Create a subset of count data for R examples (documentation)
+#'
+#' @description This function creates a subset of the AID count data in order to
+#' present quick examples within the documentation
+#'
+#' @return The smaller count matrix and sample data as a list
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' @export
+create_example_data_for_R<-function(){
+  counts_df<-NULL
+  for(exp in names(AID_TS_data$counts)){
+    if(is.null(counts_df)==TRUE){
+      counts_df<-AID_TS_data$counts[[exp]]
+    }else{
+      counts_df<-cbind(counts_df,AID_TS_data$counts[[exp]][,2])
+    }
+  }
+  row.names(counts_df)=counts_df[,1]
+  counts_df<-counts_df[2:ncol(counts_df)]
+  colnames(counts_df)=names(AID_TS_data$counts)
+
+  #Subset count dataframe
+  counts_df<-counts_df[1:200,]
+  return_list<-list(counts=counts_df,sample_data=AID_TS_data$sample_dta)
+  return(return_list)
+}
+
+#' @title Create a TimeSeries_Object from example data
+#'
+#' @description This function creates a TimeSeries_Object from example data
+#' to use within documentation examples
+#'
+#' @return The example TimeSeries_Object
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' @export
+create_example_object_for_R<-function(){
+
+  write_example_data_to_dir('PBMC')
+  my_path_data<-'data/PBMC/raw_counts_TS'
+  my_path_sample_dta<-'data/PBMC/sample_file.csv'
+
+  graph_vect<-c("#e31a1c","#1f78b4")
+  names(graph_vect)<-c('IgM','LPS')
+
+
+  TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
+                   group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
+                   DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+                   PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+  TS_object <- create_raw_count_matrix(TS_object,my_path_data)
+  return(TS_object)
+}

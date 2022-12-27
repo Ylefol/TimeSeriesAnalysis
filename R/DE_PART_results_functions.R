@@ -41,6 +41,13 @@
 #'
 #' @return None
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '')
+#'
 #' @export
 plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE){
   #Create path to DE type and create directory
@@ -52,7 +59,7 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
   custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=TRUE,
                          plot_file_name = paste0(main_path,'custom_heat_',DE_type),adjust_missing_temp_samples)
 
-  DE_res<-object@DE_results[[DE_type]]
+  DE_res<-slot(object,'DE_results')[[DE_type]]
 
   #Iterate over the experiments in the DE_type and create csv results, volcano plot, and MA plots
   for (DE_name in names(DE_res)){
@@ -62,9 +69,9 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
     dir.create(save_path)
 
     #Extract filter parameters for significance
-    DE_p_filter<-object@DE_p_filter
-    DE_p_thresh<-object@DE_p_thresh
-    DE_l2fc_thresh<-object@DE_l2fc_thresh
+    DE_p_filter<-slot(object,'DE_p_filter')
+    DE_p_thresh<-slot(object,'DE_p_thresh')
+    DE_l2fc_thresh<-slot(object,'DE_l2fc_thresh')
 
     #Create csv results for raw and significant differential expression data
     create_DE_data_results(object,DE_type=DE_type,exp_name=DE_name,
@@ -112,6 +119,26 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' @param plot_name The name given to the plot file as it is saved
 #'
 #' @return None
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
+#' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
+#' wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=FALSE,plot_name='Ctraj')
 #'
 #' @export
 wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
@@ -202,6 +229,14 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 #' interest should be shown.
 #'
 #' @return The ggplot object for the volcano plot
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' v_plot<-volcanoplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data)
+#' v_plot
 #'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
@@ -307,6 +342,13 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #'
 #' @return None
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)#' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
+#' ma_plot
+#'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
 #'
@@ -386,6 +428,15 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #'
 #' @return the pca_plot
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
+#' TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
+#' TS_pca
+#'
 #' @import ggplot2
 #' @importFrom stats prcomp
 #' @importFrom DESeq2 vst plotPCA
@@ -393,16 +444,17 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' @export
 #'
 plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
+  samp_dta_full<-slot(time_object,'sample_data')
 
   if(DE_type=='all'){
     DE_res<-NULL
   }else{
-    DE_res<-time_object@DE_results[[DE_type]][[exp_name]]
+    DE_res<-slot(time_object,'DE_results')[[DE_type]][[exp_name]]
   }
-
-  if(time_object@DE_method=='DESeq2'){
+  DE_meth<-slot(time_object,'DE_method')
+  if(DE_meth=='DESeq2'){
     if (is.null(DE_res)==TRUE){
-      dds<-time_object@DESeq2_obj
+      dds<-slot(time_object,'DESeq2_obj')
     }else{
       dds<-DE_res[['sub_dds']]
     }
@@ -410,22 +462,22 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     pca_data <- plotPCA(vsd, intgroup=c('condition'), returnData = TRUE)
     percentVar <- round(100 * attr(pca_data, "percentVar"))
 
-    samp_dta<-time_object@sample_data[time_object@sample_data$sample %in% pca_data$name,]
+    samp_dta<-samp_dta_full[samp_dta_full$sample %in% pca_data$name,]
     timepoints_used<-samp_dta$timepoint[order(match(samp_dta$sample,pca_data$name))]
     pca_data$timepoint<-factor(timepoints_used,levels=unique(timepoints_used))
 
-  }else if(time_object@DE_method=='limma'){
+  }else if(DE_meth=='limma'){
     if (is.null(DE_res)==TRUE){
-      samples_interest<-colnames(time_object@count_matrix$norm)
+      samples_interest<-colnames(slot(time_object,'count_matrix')$norm)
     }else{
       samples_interest<-colnames(DE_res[['DE_raw_data']])
-      samples_interest<-samples_interest[samples_interest %in% time_object@sample_data$sample]
+      samples_interest<-samples_interest[samples_interest %in% samp_dta_full$sample]
     }
-    sample_data_used<-time_object@sample_data[time_object@sample_data$sample %in% samples_interest,]
+    sample_data_used<-samp_dta_full[samp_dta_full$sample %in% samples_interest,]
     sample_data_used<-sample_data_used[order(match(sample_data_used$sample,samples_interest)),]
 
 
-    matrix_to_use<-time_object@count_matrix$norm[,samples_interest]
+    matrix_to_use<-slot(time_object,'count_matrix')$norm[,samples_interest]
     pca_res <- prcomp(t(matrix_to_use))
     axis_labels <- sprintf('%.1f', 1:length(pca_res$sdev), (pca_res$sdev^2 / sum(pca_res$sdev^2))*100)
 
@@ -439,14 +491,14 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
   }
   if(DE_type=='temporal'){
     groups_for_lvl<-strsplit(exp_name,'_vs_')[[1]]
-    if(time_object@DE_method=='limma'){
+    if(DE_meth=='limma'){
       pca_data$group<-c(paste0('TP_',pca_data$timepoint))
     }
     pca_data$group<-factor(pca_data$group,levels=c(groups_for_lvl[1],groups_for_lvl[2]))
   }else{
-    pca_data$group<-factor(pca_data$group,levels=time_object@group_names)
+    pca_data$group<-factor(pca_data$group,levels=slot(time_object,'group_names'))
   }
-  num_shapes<-length(unique(time_object@sample_data$timepoint))
+  num_shapes<-length(unique(samp_dta_full$timepoint))
   if (is.null(DE_res)==TRUE){
     pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint,label = name)) +
       geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
@@ -491,6 +543,14 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #' False.
 #' @return none
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Run function, results saved to main directory
+#' custom_heatmap_wrapper(TS_object,DE_type = 'conditional')
+#'
 #' @export
 #'
 custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=TRUE){
@@ -516,8 +576,9 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
     my_l2fc_vect<-log_transform_l2fc_vect(my_l2fc_vect)
   }
 
+  DE_meth<-slot(time_object,'DE_method')
   #Call the function to create the heatmap
-  if(time_object@DE_method=='limma'){
+  if(DE_meth=='limma'){
     legend_val<-'intensity value'
   }else{
     legend_val<-'counts'
@@ -550,11 +611,19 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
 #' @return A list containing the main data matrix (count values) and the
 #' three vectors described above.
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' heat_dta<-create_conditional_heatmap_matrix(TS_object)
+#'
 #' @export
 #'
 create_conditional_heatmap_matrix<-function(time_object){
 
-  DE_list<-time_object@DE_results$conditional
+  sample_dta_full<-slot(time_object,'sample_data')
+  DE_list<-slot(time_object,'DE_results')$conditional
 
   DEG_list<-list()
   all_replicates<-c()
@@ -563,7 +632,7 @@ create_conditional_heatmap_matrix<-function(time_object){
       next
     }
     DEG_list[[i]]<-DE_list[[i]][['DE_sig_data']]
-    replicates_in_exp<-time_object@sample_data$replicate[time_object@sample_data$sample %in% colnames(DEG_list[[i]])]
+    replicates_in_exp<-sample_dta_full$replicate[sample_dta_full$sample %in% colnames(DEG_list[[i]])]
     all_replicates<-c(all_replicates,replicates_in_exp)
   }
   rep_template<-unique(all_replicates)
@@ -588,12 +657,12 @@ create_conditional_heatmap_matrix<-function(time_object){
     temp_l2fc<-temp_df$log2FoldChange
     names(temp_l2fc)<-genes_mod
 
-    samp_dta<-time_object@sample_data[time_object@sample_data$sample %in% colnames(temp_df),]
+    samp_dta<-sample_dta_full[sample_dta_full$sample %in% colnames(temp_df),]
     if (all(rep_template %in% samp_dta$replicate)==FALSE){
       missing_replicates<-rep_template[!rep_template %in% samp_dta$replicate]
       missing_rep_list<-list()
       for (rep in missing_replicates){
-        associated_sample<-time_object@sample_data$sample[time_object@sample_data$replicate==rep][1]
+        associated_sample<-sample_dta_full$sample[sample_dta_full$replicate==rep][1]
         missing_rep_list[[associated_sample]]<-rep(NA,nrow(temp_df))
       }
       missing_rep_cols<-as.data.frame(missing_rep_list)
@@ -601,7 +670,7 @@ create_conditional_heatmap_matrix<-function(time_object){
 
       temp_df<-cbind(temp_df,missing_rep_cols)
 
-      replicate_order<-time_object@sample_data[time_object@sample_data$sample %in% colnames(temp_df),]
+      replicate_order<-sample_dta_full[sample_dta_full$sample %in% colnames(temp_df),]
       replicate_order<-replicate_order[order(match(replicate_order$sample,colnames(temp_df))),]
 
       temp_df<-temp_df[,replicate_order$sample]
@@ -629,7 +698,7 @@ create_conditional_heatmap_matrix<-function(time_object){
     gene_vector<-c(gene_vector,temp_gene_vector)
   }
 
-  my_group_df<-time_object@sample_data[,c('group','replicate')]
+  my_group_df<-sample_dta_full[,c('group','replicate')]
 
   colnames(my_group_df)=c('labels','replicate')
   my_group_df<-unique(my_group_df)
@@ -673,15 +742,24 @@ create_conditional_heatmap_matrix<-function(time_object){
 #' @return A list containing the main data matrix (count values) and the
 #' three vectors described above.
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-temporal_DE_wrapper(TS_object)
+#' heat_dta<-create_temporal_heatmap_matrix(TS_object)
+#'
+#'
 #' @export
 #'
 create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=TRUE){
-  DE_list<-time_object@DE_results$temporal
+  samp_dta_full<-slot(time_object,'sample_data')
+  DE_list<-slot(time_object,'DE_results')$temporal
   DEG_list<-list()
   all_replicates<-c()
   for (i in names(DE_list)){
     DEG_list[[i]]<-DE_list[[i]][['DE_sig_data']]
-    replicates_in_exp<-time_object@sample_data$replicate[time_object@sample_data$sample %in% colnames(DEG_list[[i]])]
+    replicates_in_exp<-samp_dta_full$replicate[samp_dta_full$sample %in% colnames(DEG_list[[i]])]
     all_replicates<-c(all_replicates,replicates_in_exp)
   }
   rep_template<-unique(all_replicates)
@@ -706,7 +784,7 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
     temp_l2fc<-temp_df$log2FoldChange
     names(temp_l2fc)<-genes_mod
 
-    sample_data_used<-time_object@sample_data[time_object@sample_data$sample %in% colnames(temp_df),]
+    sample_data_used<-samp_dta_full[samp_dta_full$sample %in% colnames(temp_df),]
 
     sample_data_ctrl<-sample_data_used[sample_data_used$timepoint==ctrl_timepoint,]
     sample_data_ctrl$replicate<-paste0(sample_data_ctrl$replicate,'_C')
@@ -784,6 +862,13 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
 #'
 #' @return An updated version of the inputted matrix_list
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' heat_dta<-create_conditional_heatmap_matrix(TS_object)
+#' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 #'
 #' @export
 #'
@@ -825,6 +910,16 @@ prepare_heat_data <- function(matrix_list,log_transform){
 #' @param l2fc_vector The log2FoldChange vector to be log transformed
 #'
 #' @return The log transformed vector
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' heat_dta<-create_conditional_heatmap_matrix(TS_object)
+#' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
+#'
+#' log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
 #'
 #' @export
 #'
@@ -878,6 +973,19 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param custom_height The height of the heatmap
 #'
 #' @return None
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' heat_dta<-create_conditional_heatmap_matrix(TS_object)
+#' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
+#'
+#' log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
+#'
+#' plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
+#'                       heat_dta[['group_split']],log_l2fc,log_transform = TRUE)
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation anno_barplot rowAnnotation anno_block Heatmap draw Legend
 #' @importFrom grid gpar
@@ -985,18 +1093,37 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #'
 #' @return A list containing the two types of top annotaiton and the named vector used to create the column splits
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' top_annot<-prepare_top_annotation_PART_heat(TS_object)
+#'
 #' @importFrom ComplexHeatmap HeatmapAnnotation
 #' @importFrom grid gpar
-#' @importFrom RColorBrewer brewer.pal
-#' @importFrom grDevices colorRampPalette
+#' @import RColorBrewer
+#' @import grDevices
 #'
 #' @export
 #'
 prepare_top_annotation_PART_heat<-function(object){
 
-  main_matrix<-object@PART_results$part_matrix
-
-  samp_data<-object@sample_data[order(match(object@sample_data$sample,colnames(main_matrix))),]
+  main_matrix<-slot(object,'PART_results')$part_matrix
+  samp_dta_full<-slot(object,'sample_data')
+  group_cols<-slot(object,'group_colors')
+  samp_data<-samp_dta_full[order(match(samp_dta_full$sample,colnames(main_matrix))),]
 
   found_timepoints<-samp_data$timepoint
   found_replicates<-samp_data$replicate
@@ -1005,8 +1132,8 @@ prepare_top_annotation_PART_heat<-function(object){
   col_split<-factor(unname(found_replicates),levels=unique(unname(found_replicates)))
   num_cols<-table(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))
   #Needs to be adatapted using the object graphical parameters
-  fill_set_groups=gpar(fill=c(rep(object@group_colors[[group_order[1]]],unname(num_cols[1])),
-                              rep(object@group_colors[[group_order[2]]],unname(num_cols[2]))
+  fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1])),
+                              rep(group_cols[[group_order[2]]],unname(num_cols[2]))
   ))
 
   my_cols<-c('#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
@@ -1060,16 +1187,36 @@ prepare_top_annotation_PART_heat<-function(object){
 #'
 #' @return none
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' #Heatmap will be saved to main directory
+#' PART_heat_map(TS_object,'PART_heat') #Create a summary heatmap
+#'
 #' @export
 #'
 PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
   #Cluster illustration stored as rowAnnotation
-  row_annot <- rowAnnotation(gene_cluster = object@PART_results$part_data$gene_cluster,
-                                             col = list(gene_cluster=object@PART_results$cluster_info[['colored_clust_rows']]),
+  PART_res<-slot(object,'PART_results')
+  row_annot <- rowAnnotation(gene_cluster = PART_res$part_data$gene_cluster,
+                                             col = list(gene_cluster=PART_res$cluster_info[['colored_clust_rows']]),
                                              show_annotation_name=FALSE,
-                                             annotation_legend_param = list(title = "clusters", at = unique(object@PART_results$part_data$gene_cluster),
-                                                                            labels = unique(object@PART_results$cluster_map$cluster)))
+                                             annotation_legend_param = list(title = "clusters", at = unique(PART_res$part_data$gene_cluster),
+                                                                            labels = unique(PART_res$cluster_map$cluster)))
 
   #Create top annotations
   top_annot_results<-prepare_top_annotation_PART_heat(object)
@@ -1092,19 +1239,20 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
     }
   }
 
+  group_cols<-slot(object,'group_colors')
   #Create the legend for the groups
-  lgd = Legend(labels = names(object@group_colors), title = "groups",
-               legend_gp = gpar(fill = unname(object@group_colors)))
+  lgd = Legend(labels = names(group_cols), title = "groups",
+               legend_gp = gpar(fill = unname(group_cols)))
 
 
 
   PART_save_data<-paste0(heat_name,'_data.csv')
   PART_save_cmap<-paste0(heat_name,'_cmap.csv')
-  write.csv(object@PART_results$part_matrix,PART_save_data)
-  write.csv(object@PART_results$cluster_map,PART_save_cmap)
+  write.csv(PART_res$part_matrix,PART_save_data)
+  write.csv(PART_res$cluster_map,PART_save_cmap)
 
   #Extract matrix for plotting
-  sorted_matrix<-as.matrix(object@PART_results$part_data[,3:ncol(object@PART_results$part_data)])
+  sorted_matrix<-as.matrix(PART_res$part_data[,3:ncol(PART_res$part_data)])
 
   #Plot the heatmap
 
@@ -1112,10 +1260,10 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
   draw(
     Heatmap(
       sorted_matrix, name = "Z-score", cluster_columns = FALSE,
-      cluster_rows=FALSE,#object@PART_results$cluster_info[['clustered_rows']],
+      cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
       show_column_dend = TRUE,show_row_dend = FALSE,
       row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
-      row_order = row.names(object@PART_results$part_data),
+      row_order = row.names(PART_res$part_data),
       show_row_names = TRUE,top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = TRUE,
       column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
     annotation_legend_list = lgd
@@ -1127,10 +1275,10 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
   draw(
     Heatmap(
       sorted_matrix, name = "Z-score", cluster_columns = FALSE,
-      cluster_rows=FALSE,#object@PART_results$cluster_info[['clustered_rows']],
+      cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
       show_column_dend = TRUE,show_row_dend = FALSE,
       row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
-      row_order = row.names(object@PART_results$part_data),
+      row_order = row.names(PART_res$part_data),
       show_row_names = FALSE,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
       column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
     annotation_legend_list = lgd
@@ -1155,6 +1303,24 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' @return A dataframe containing the transformed or non-transformed gene values for
 #' each cluster
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
+#'
 #' @importFrom reshape2 melt
 #' @importFrom stringi stri_reverse
 #' @importFrom stringr str_split_fixed
@@ -1162,19 +1328,21 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' @export
 #'
 calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
+  PART_res<-slot(object,'PART_results')
+  samp_dta_full<-slot(object,'sample_data')
   if (is.null(custom_cmap)==TRUE){
-    my_cmap<-object@PART_results$cluster_map
+    my_cmap<-PART_res$cluster_map
   }else{
     my_cmap<-custom_cmap
   }
 
-  norm_mat<-object@count_matrix$norm[row.names(my_cmap),]
+  norm_mat<-slot(object,'count_matrix')$norm[row.names(my_cmap),]
 
   ts_df<-data.frame(gene_id=NULL,group=NULL,timepoint=NULL,mean_reads=NULL)
   df_list<-list()
-  for (group in unique(object@sample_data$group)){
-    for (tp in unique(object@sample_data$timepoint)){
-      samples_to_merge<-object@sample_data$sample[object@sample_data$group==group & object@sample_data$timepoint==tp]
+  for (group in unique(samp_dta_full$group)){
+    for (tp in unique(samp_dta_full$timepoint)){
+      samples_to_merge<-samp_dta_full$sample[samp_dta_full$group==group & samp_dta_full$timepoint==tp]
       if(length(samples_to_merge)>1){
         val_vect<-rowMeans(norm_mat[,samples_to_merge])
       }else{
@@ -1191,7 +1359,7 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
   }
   ts_df$gene_id<-row.names(ts_df)
   ts_df <- melt(ts_df,id='gene_id')
-  for_merge<-object@sample_data[,c('sample','group','timepoint')]
+  for_merge<-samp_dta_full[,c('sample','group','timepoint')]
 
   # colnames(ts_df)=c('gene_id','sample','trans_mean')
   # print(ts_df)
@@ -1239,6 +1407,25 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #' @param clust_traj_dta gene trajectory data for each gene, obtained by \code{calculate_cluster_traj_data}
 #'
 #' @return A dataframe containing the mean cluster trajectories
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
+#' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #'
 #' @export
 #'
@@ -1289,6 +1476,26 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' @return A ggplot2 object for the cluster trajectory plot performed
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
+#' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
+#' clust_traj<-plot_cluster_traj(TS_object,ts_data,mean_ts_data)
+#'
 #' @import ggplot2
 #'
 #' @export
@@ -1308,7 +1515,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
   }else{
     plt <- ggplot(ts_data, aes(y = trans_mean , x = timepoint, color = group))
   }
-    plt <- plt + scale_color_manual(values=object@group_colors) +
+    plt <- plt + scale_color_manual(values=slot(object,'group_colors')) +
       geom_line(aes(group = gene_id), alpha = 0.4) +
       geom_point() +
       geom_line(
@@ -1343,21 +1550,28 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
 #'
 #' @return dataframe with the trajectory data for the requested gene
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
+#'
 #' @importFrom reshape2 melt
 #'
 #' @export
 calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
   #Create a list of genes of interest
-  my_dta<-time_object@count_matrix$norm[target_gene,]
+  my_dta<-slot(time_object,'count_matrix')$norm[target_gene,]
 
   my_dta<-melt(my_dta,id.vars = NULL)
   my_dta$sample<-row.names(my_dta)
-  if(time_object@DE_method=='limma'){
+  if(slot(time_object,'DE_method')=='limma'){
     colnames(my_dta)=c('reads','sample')
   }else{
     colnames(my_dta)=c('sample','reads')
   }
-  my_dta<-merge(my_dta,time_object@sample_data,by='sample')
+  my_dta<-merge(my_dta,slot(time_object,'sample_data'),by='sample')
   mean_data_list<-list()
   for (group in unique(my_dta$group)){
     for (tp in unique(my_dta$timepoint)){
@@ -1390,6 +1604,14 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
 #' (by default it is Activated and Control)
 #'
 #' @return the ggplot2 object for the plot
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
+#' aicda_plot<-plot_single_gene_traj(aicda_traj_dta,TS_object@group_colors)
 #'
 #' @import ggplot2
 #'
@@ -1439,12 +1661,20 @@ plot_single_gene_traj<-function(mean_data,color_vector=NULL){
 #'
 #' @return None
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Below function will save results to main directory
+#' create_DE_data_results(TS_object,DE_type='conditional',exp_name='IgM_vs_LPS_TP_1',save_location='')
+#'
 #' @export
 #'
 create_DE_data_results<-function(object,DE_type,exp_name,save_location){
-
-  DE_raw<-object@DE_results[[DE_type]][[exp_name]][['DE_raw_data']]
-  DE_sig<-object@DE_results[[DE_type]][[exp_name]][['DE_sig_data']]
+  DE_res<-slot(object,'DE_results')
+  DE_raw<-DE_res[[DE_type]][[exp_name]][['DE_raw_data']]
+  DE_sig<-DE_res[[DE_type]][[exp_name]][['DE_sig_data']]
 
   write.csv(DE_raw,paste0(save_location,'DE_raw_data.csv'))
   write.csv(DE_sig,paste0(save_location,'DE_sig_data.csv'))
@@ -1468,22 +1698,31 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #'
 #' @return None
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Below function will save results to main directory
+#' create_tables_genes_of_interest_DE(TS_object,c('AICDA'),save_location='',log_tp = FALSE)
+#'
 #' @import ggplot2
 #'
 #' @export
 #'
 create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_location,DE_type=c('conditional','temporal'),log_tp=FALSE){
-
+  DE_res<-slot(object,'DE_results')
+  count_matrix<-slot(object,'count_matrix')
   for(DE in DE_type){
-    if(!(DE %in% names(object@DE_results))){
+    if(!(DE %in% names(DE_res))){
       message(paste0(DE,' not found, removing from genes of interest analysis'))
       DE_type<-DE_type[!DE_type==DE]
     }
   }
   list_interest<-list()
   for (DE in DE_type){
-    if (DE %in% names(object@DE_results)){
-      DE_list<-object@DE_results[[DE]]
+    if (DE %in% names(DE_res)){
+      DE_list<-DE_res[[DE]]
     }
     for (exp in names(DE_list)){
       sig_df<-DE_list[[exp]][['DE_raw_data']]
@@ -1515,17 +1754,17 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
       write.csv(gene_df,paste0(save_location,gene,'.csv'),row.names=FALSE)
     }
     #Plot gene trajectory if gene is in time object
-    if(gene %in% row.names(object@count_matrix$norm)){
+    if(gene %in% row.names(count_matrix$norm)){
       gene_traj_dta<-calculate_gene_traj_data(object,gene,log_tp)
       #Capture output to prevent useless warnings
-      gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,object@group_colors)
+      gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(object,'group_colors'))
       #May cause LOESS warnings if there are too few datapoints
       #Capture output to prevent useless warnings
       ggsave(plot=gene_traj_plot,filename = paste0(save_location,gene,'_trajectory.png'))
     }
   }
   upstream_save_loc<-strsplit(save_location,'/')[[1]][1]
-  genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(TS_object@count_matrix$norm)]
+  genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(count_matrix$norm)]
   if(length(genes_not_found)>0){
     write.csv(genes_not_found,paste0(upstream_save_loc,'/','genes_of_interest_not_found.csv'),row.names=FALSE)
   }
@@ -1554,7 +1793,16 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
 #'
 #' @return list of problematic combs
 #'
-#' @importFrom GenomicRanges setdiff
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' heat_dta<-create_conditional_heatmap_matrix(TS_object)
+#' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
+#' problematic_combs<-identify_problematic_combs(heat_dta[['heat_matrix']])
+#'
+#' @import GenomicRanges
 #'
 #' @export
 #'

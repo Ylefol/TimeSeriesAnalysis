@@ -22,24 +22,31 @@
 #' @return The timeseries object with the conitional differential expression results
 #' added to the DE_results slot of the object.
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#'
 #' @export
 conditional_DE_wrapper<-function(time_object){
-  group_names<-time_object@group_names
-
-  if ('conditional' %in% names(time_object@DE_results)){
+  group_names<-slot(time_object,'group_names')
+  DE_res<-slot(time_object,'DE_results')
+  DE_meth<-slot(time_object,'DE_method')
+  samp_dta_full<-slot(time_object,'sample_data')
+  if ('conditional' %in% names(DE_res)){
     message('Conditional differential expression results already exist')
     return(time_object)
   }else{
-    time_object@DE_results[['conditional']]<-list()
+    DE_res[['conditional']]<-list()
   }
 
-  all_timepoints<-unique(time_object@sample_data$timepoint)
+  all_timepoints<-unique(samp_dta_full$timepoint)
   for (tp in all_timepoints){
     exp_name<-paste0(group_names[1],'_vs_',group_names[2],'_TP_',tp)
-    if (time_object@DE_method=='DESeq2'){
-      samps_interest<-time_object@sample_data$sample[time_object@sample_data$timepoint==tp]
+    if (DE_meth=='DESeq2'){
+      samps_interest<-samp_dta_full$sample[samp_dta_full$timepoint==tp]
       time_object<-DE_using_DESeq2(time_object,group_names,samps_interest,exp_name,main_key='conditional')
-    }else if(time_object@DE_method=='limma'){
+    }else if(DE_meth=='limma'){
       time_object<-DE_using_limma(time_object,group_names,exp_name,target_tp=tp,do_temporal=FALSE)
     }
 
@@ -71,18 +78,26 @@ conditional_DE_wrapper<-function(time_object){
 #' @return The timeseries object with the temporal differential expression results
 #' added to the DE_results slot of the object.
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE)
+#'
 #' @export
 #'
 temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 
-  if ('temporal' %in% names(time_object@DE_results)){
+  DE_res<-slot(time_object,'DE_results')
+  samp_dta_full<-slot(time_object,'sample_data')
+
+  if ('temporal' %in% names(DE_res)){
     message('Temporal differential expression results already exist')
     return(time_object)
   }else{
-    time_object@DE_results[['temporal']]<-list()
+    DE_res[['temporal']]<-list()
   }
   #Sort the timepoints to ensure that they are in sequential order
-  all_timepoints<-sort(unique(time_object@sample_data$timepoint))
+  all_timepoints<-sort(unique(samp_dta_full$timepoint))
   if(do_all_combinations==TRUE){
     possible_TPs<-expand.grid(all_timepoints,all_timepoints)
     for (row in 1:nrow(possible_TPs)){
@@ -105,18 +120,20 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
       }
     }
   }
-
+  DE_meth<-slot(time_object,'DE_method')
   #Iterate over possible comparison and run them
   for(exp in 1:nrow(possible_TPs)){
     tps_interest<-as.numeric(possible_TPs[exp,])
     tp_labels<-paste0('TP_',tps_interest)
     exp_name<-paste0(tp_labels[1],'_vs_',tp_labels[2])
-    if (time_object@DE_method=='DESeq2'){
+    if (DE_meth=='DESeq2'){
 
-      samps_interest<-time_object@sample_data$sample[time_object@sample_data$timepoint %in% tps_interest]
-      samp_group_1<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[2]]
-      samp_group_2<-time_object@sample_data$sample[time_object@sample_data$timepoint==tps_interest[1]]
-      sample_order<-row.names(time_object@DESeq2_obj@colData)
+      samps_interest<-samp_dta_full$sample[samp_dta_full$timepoint %in% tps_interest]
+      samp_group_1<-samp_dta_full$sample[samp_dta_full$timepoint==tps_interest[2]]
+      samp_group_2<-samp_dta_full$sample[samp_dta_full$timepoint==tps_interest[1]]
+      DESeq2_obj<-slot(time_object,'DESeq2_obj')
+      DESeq2_colData<-slot(DESeq2_obj,'colData')
+      sample_order<-row.names(DESeq2_colData)
       sample_order<-sample_order[sample_order %in% samps_interest]
 
       #The labels show the highest tp first then the lowest. To build the comparison
@@ -131,7 +148,7 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
       cond_vect<-factor(cond_vect,levels = c(tp_labels[1],tp_labels[2]))
       time_object<-DE_using_DESeq2(time_object,tp_labels,sample_order,exp_name,'temporal',condition_factor=cond_vect)
 
-    }else if(time_object@DE_method=='limma'){
+    }else if(DE_meth=='limma'){
       time_object<-DE_using_limma(time_object,group_names=tps_interest,exp_name,do_temporal=TRUE)
     }
 
@@ -169,20 +186,31 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 #'
 #' @return The timeseries object updated with the results from the experiment
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#'
+#' #DE for a single timepoint
+#' group_names<-TS_object@group_names
+#' tp<-'1'
+#' exp_name<-paste0(group_names[1],'_vs_',group_names[2],'_TP_',tp)
+#' samps_interest<-TS_object@sample_data$sample[TS_object@sample_data$timepoint==tp]
+#' TS_object<-DE_using_DESeq2(TS_object,group_names,samps_interest,exp_name,main_key='conditional')
+#'
 #' @importFrom DESeq2 DESeq results
-#' @importFrom BiocGenerics counts
+#' @import BiocGenerics
 #'
 #' @export
 #'
 DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,condition_factor=NULL){
 
   #Extract significance filtering values
-  filter_type<-time_object@DE_p_filter
-  pval_thresh<-time_object@DE_p_thresh
-  l2fc_thresh<-time_object@DE_l2fc_thresh
+  filter_type<-slot(time_object,'DE_p_filter')
+  pval_thresh<-slot(time_object,'DE_p_thresh')
+  l2fc_thresh<-slot(time_object,'DE_l2fc_thresh')
 
   #Subsetting method
-  dds<-time_object@DESeq2_obj[,samples_to_use]
+  dds<-slot(time_object,'DESeq2_obj')[,samples_to_use]
 
   if(main_key=='temporal'){
     dds@colData@listData[['condition']]<-condition_factor
@@ -225,17 +253,22 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #'
 #' @return The timeseries object with the added normalized count matrix
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#'
 #' @importFrom DESeq2 DESeqDataSetFromMatrix estimateSizeFactors counts
 #'
 #' @export
 #'
 normalize_timeSeries_with_deseq2 <- function(time_object){
 
-  groups<-time_object@group_names
+  groups<-slot(time_object,'group_names')
+  samp_dta_full<-slot(time_object,'sample_data')
   #Assign Condition to all of the columns/samples/patients
-  condition <- factor(c(rep(groups[1], nrow(time_object@sample_data[time_object@sample_data$group==groups[1],])),
-                        rep(groups[2], nrow(time_object@sample_data[time_object@sample_data$group==groups[2],]))))
-  my_matrix<-as.matrix(round(time_object@count_matrix$raw))
+  condition <- factor(c(rep(groups[1], nrow(samp_dta_full[samp_dta_full$group==groups[1],])),
+                        rep(groups[2], nrow(samp_dta_full[samp_dta_full$group==groups[2],]))))
+  my_matrix<-as.matrix(round(slot(time_object,'count_matrix')$raw))
 
   #Create a coldata frame and instantiate the DESeqDataSet
   col_data <- data.frame(row.names=colnames(my_matrix),condition)
@@ -283,23 +316,23 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
 #'
 prep_tp_matrix <- function(time_object,groups_in_ts,target_tp=NULL,do_temporal=FALSE){
   #extract sample data for readability of code
-  sample_dta<-time_object@sample_data
+  samp_dta_full<-slot(time_object,'sample_data')
   if(do_temporal==FALSE){
-    group_ctrl<-sample_dta$sample[sample_dta$group==groups_in_ts[1]]
-    group_exp<-sample_dta$sample[sample_dta$group==groups_in_ts[2]]
-    tp_samples<-sample_dta$sample[sample_dta$timepoint==target_tp]
+    group_ctrl<-samp_dta_full$sample[samp_dta_full$group==groups_in_ts[1]]
+    group_exp<-samp_dta_full$sample[samp_dta_full$group==groups_in_ts[2]]
+    tp_samples<-samp_dta_full$sample[samp_dta_full$timepoint==target_tp]
     group_1_tp<-group_exp[group_exp %in% tp_samples]
     group_2_tp<-group_ctrl[group_ctrl %in% tp_samples]
   }else{
-    group_1_tp<-sample_dta$sample[sample_dta$timepoint==groups_in_ts[2]]
-    group_2_tp<-sample_dta$sample[sample_dta$timepoint==groups_in_ts[1]]
+    group_1_tp<-samp_dta_full$sample[samp_dta_full$timepoint==groups_in_ts[2]]
+    group_2_tp<-samp_dta_full$sample[samp_dta_full$timepoint==groups_in_ts[1]]
   }
 
 
   subset_samples<-c(group_1_tp,group_2_tp)
 
   # tp_limma_subset <- rna_biop_dataa[,colnames(rna_biop_dataa$E) %in% subset_samples]
-  microarr_dta<-time_object@limma_object
+  microarr_dta<-slot(time_object,'limma_object')
   g1_vect<-gsub(pattern = FALSE,replacement = 0,x = colnames(microarr_dta$E) %in% group_1_tp)
   g1_vect<-gsub(pattern = TRUE,replacement = 1,x = g1_vect)
 
@@ -379,7 +412,7 @@ DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temp
 
   my_mm<-return_list[[1]]
   all_samp_IDs<-return_list[[2]]
-  my_eb_res<-calculate_EB(time_object@limma_object,my_mm,exp_name)
+  my_eb_res<-calculate_EB(slot(time_object,'limma_object'),my_mm,exp_name)
 
   if(do_temporal==TRUE){
     DE_type<-'temporal'
@@ -433,13 +466,13 @@ convert_eb_res_to_DE_results<-function(time_object,eb_res,samples_used,exp_name,
   DE_raw =  DE_raw[order(DE_raw$gene_id,DE_raw$padj),]
   DE_raw = DE_raw[ !duplicated(DE_raw$gene_id), ]
 
-  samples_used_df<-time_object@count_matrix$norm[,samples_used]
+  samples_used_df<-slot(time_object,'count_matrix')$norm[,samples_used]
   samples_used_df<-samples_used_df[DE_raw$gene_id,]
 
   DE_raw<-cbind(DE_raw,samples_used_df)
 
-  DE_sig<-DE_raw[abs(DE_raw$log2FoldChange)>time_object@DE_l2fc_thresh,]
-  DE_sig<-DE_sig[DE_sig[[time_object@DE_p_filter]]<time_object@DE_p_thresh,]
+  DE_sig<-DE_raw[abs(DE_raw$log2FoldChange)>slot(time_object,'DE_l2fc_thresh'),]
+  DE_sig<-DE_sig[DE_sig[[slot(time_object,'DE_p_filter')]]<slot(time_object,'DE_p_thresh'),]
 
   res_list<-list(sub_eb=eb_res,DE_raw_data=DE_raw, DE_sig_data=DE_sig)
 
@@ -474,13 +507,13 @@ convert_eb_res_to_DE_results<-function(time_object,eb_res,samples_used,exp_name,
 #' @export
 #'
 select_genes_with_l2fc<-function(time_object,custom_l2fc_thresh=NULL){
-
+  DE_res<-slot(time_object,'DE_results')
   if(is.null(custom_l2fc_thresh)==TRUE){
-    custom_l2fc_thresh<-time_object@PART_l2fc_thresh
+    custom_l2fc_thresh<-slot(time_object,'PART_l2fc_thresh')
   }
   gene_vect<-c()
-  for (DE_type in names(time_object@DE_results)){
-    DE_res_exps<-time_object@DE_results[[DE_type]]
+  for (DE_type in names(DE_res)){
+    DE_res_exps<-DE_res[[DE_type]]
     for (exp in names(DE_res_exps)){
       genes_above_thresh<-DE_res_exps[[exp]][['DE_sig_data']]
       genes_above_thresh<-genes_above_thresh$gene_id[abs(genes_above_thresh$log2FoldChange)>=custom_l2fc_thresh]

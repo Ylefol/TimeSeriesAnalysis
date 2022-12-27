@@ -17,3 +17,10 @@ the subsetted sample file based on the selected groups
 \description{
 A simple function to read and subset the sample_data created by the user
 }
+\examples{
+ write_example_data_to_dir('PBMC')
+my_path_data<-'data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'data/PBMC/sample_file.csv'
+prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
+
+}

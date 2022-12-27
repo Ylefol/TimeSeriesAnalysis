@@ -33,3 +33,12 @@ none
 A wrapper function which calls the necessary functions to create a heatmap
 illustrating the significant DEGs of a given differential expression type (DE_type)
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Run function, results saved to main directory
+custom_heatmap_wrapper(TS_object,DE_type = 'conditional')
+
+}

@@ -21,3 +21,16 @@ Either cluster results or recursion elements
 \description{
 The recursive function used by PART clustering
 }
+\examples{
+example_dta<-create_example_data_for_R()
+X=as.matrix(example_dta$counts)
+#Default ... values:
+default.par <- list(q=0.25,Kmax.rec=5,B=10,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#Check for user modifications:
+fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#Find stopping threshold if minDist is NULL
+minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+fixed.par$minDist <- minDist
+clusters = PartRec(X,Kmax=10,ind=rep(1,nrow(X)),cl.lab=NULL,fixed.par)
+
+}

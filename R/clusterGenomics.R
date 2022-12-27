@@ -19,6 +19,12 @@
 #'
 #' @importFrom stats as.dist dist
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Get distance matrix
+#' dX <- getDist(X,dist.method='euclidean',cor.method='pearson')
+#'
 #' @export
 #'
 getDist <- function(X,dist.method,cor.method="pearson"){
@@ -48,6 +54,20 @@ getDist <- function(X,dist.method,cor.method="pearson"){
 #'
 #' @importFrom stats hclust cutree
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
+#' gap.res <- gap(X=X,Kmax=10,cl.lab=cl.lab,B=fixed.par$B,ref.gen=fixed.par$ref.gen,fixed.par=fixed.par)
+#' hc.res <- doHclust(getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method),k=1,linkage=fixed.par$linkage)$cl    #(k is irrelevant here, only specified because doHclust needs it)
+#'
 #' @export
 #'
 doHclust <- function(d,k,linkage){
@@ -67,6 +87,26 @@ doHclust <- function(d,k,linkage){
 #' @return list of clusters and labels
 #'
 #' @importFrom stats kmeans
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' dX <- getDist(X,dist.method='euclidean',cor.method='pearson')
+#' cl.lab <- vector("list",10)
+#' for(k in 1:10){
+#'   labX <- switch('hclust',
+#'                  hclust=doHclust(dX,k=k,linkage='average')$lab,
+#'                  kmeans=doKmeans(X,k,nstart=10)$lab)    #note:kmeans only calculated for euclidean distance!
+#'   cl.lab[[k]] <- labX
+#' }
+#'
 #' @export
 #'
 doKmeans <- function(X,k,nstart){
@@ -86,6 +126,18 @@ doKmeans <- function(X,k,nstart){
 #' @param dx distance measure
 #'
 #' @return list of cluster labels
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
 #'
 #' @export
 #'
@@ -121,6 +173,19 @@ findPartition <- function(X,Kmax,dX=NULL,...){
 #' @param cl.lab cluster labels
 #'
 #' @return list of gaps found
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
+#' gap.res <- gap(X=X,Kmax=10,cl.lab=cl.lab,B=fixed.par$B,ref.gen=fixed.par$ref.gen,fixed.par=fixed.par)
 #'
 #' @export
 #'
@@ -197,6 +262,11 @@ gap <- function(X,Kmax=10,B=100,ref.gen="PC",cl.lab=NULL,...){
 #'
 #' @return Simulated uniform distribution
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' Z <- apply(X,2,sim)
+#'
 #' @export
 #'
 sim <- function(Xcol) {
@@ -215,6 +285,21 @@ sim <- function(Xcol) {
 #' @param cl.lab cluster labels
 #'
 #' @return The within cluster distribution
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' dX <- getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method)
+#' cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
+#' #Find W: vector containing W_K for all choices of K
+#' W <- findW(dX=dX,K=10,cl.lab=cl.lab)
 #'
 #' @export
 #'
@@ -257,6 +342,22 @@ findW <- function(dX,K,cl.lab){
 #'
 #' @return calculated Wb
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' dX <- getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method)
+#' cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
+#' #Find W: vector containing W_K for all choices of K
+#' W <- findW(dX=dX,K=10,cl.lab=cl.lab)
+#' #Generate reference data sets and find Wb:
+#' Wb <- getReferenceW(X,Kmax=10,B=10,ref.gen='PC',fixed.par)
 #' @export
 #'
 getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
@@ -304,6 +405,11 @@ getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
 #'
 #' @return list of identified clusters
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' PART_results<-part(X,B=5,minSize = 2)
+#'
 #' @export
 #'
 part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
@@ -349,6 +455,18 @@ part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
 #' @param cl.lab cluster label
 #'
 #' @return Either cluster results or recursion elements
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=10,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' clusters = PartRec(X,Kmax=10,ind=rep(1,nrow(X)),cl.lab=NULL,fixed.par)
 #'
 #' @export
 #'
@@ -463,6 +581,16 @@ PartRec <- function(X,Kmax,ind,cl.lab=NULL,...){
 #'
 #' @importFrom stats hclust
 #'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#'
 #' @export
 #'
 get.threshold <- function(X,q,...){
@@ -492,6 +620,20 @@ get.threshold <- function(X,q,...){
 #' @param minSize The parameter for minimum cluster size
 #'
 #' @return PART labels
+#'
+#' @examples
+#' example_dta<-create_example_data_for_R()
+#' X=as.matrix(example_dta$counts)
+#' #Default ... values:
+#' default.par <- list(q=0.25,Kmax.rec=5,B=10,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
+#' #Check for user modifications:
+#' fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
+#' #Find stopping threshold if minDist is NULL
+#' minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
+#' fixed.par$minDist <- minDist
+#' clusters = PartRec(X,Kmax=10,ind=rep(1,nrow(X)),cl.lab=NULL,fixed.par)
+#' #Check for possible outliers and assign cluster labels
+#' label <- getPARTlabels(clusters,minSize=2)
 #'
 #' @export
 #'

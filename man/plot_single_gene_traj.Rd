@@ -20,3 +20,12 @@ The function plots the gene's trajectory across all timepoints for all the
 groups contained in the dataframe. It performs a facet split based on the 'label'
 column of the dataframe
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
+aicda_plot<-plot_single_gene_traj(aicda_traj_dta,TS_object@group_colors)
+
+}

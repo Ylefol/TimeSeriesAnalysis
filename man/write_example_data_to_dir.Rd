@@ -21,3 +21,7 @@ they must provide for the TimeSeriesAnalysis pipeline as well as their format.
 Having these files written as tab delimited and csv allows users to open them
 and see the formatting expected by TimeSeriesAnalysis
 }
+\examples{
+write_example_data_to_dir('PBMC')
+
+}

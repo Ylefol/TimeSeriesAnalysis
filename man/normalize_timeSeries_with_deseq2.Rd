@@ -17,3 +17,8 @@ The timeseries object with the added normalized count matrix
 Function which normalizes the raw count matrix from a timeseries object
 using the DESeq2 normalization.
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+
+}

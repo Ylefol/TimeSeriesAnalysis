@@ -43,3 +43,11 @@ The plot is created using ggplot2, to save a plot the ggsave() function is recom
 It is also recommended to use the following parameters to save the plot.
 dpi=300 width=21 height=19 units='cm'
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)#' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
+ma_plot
+
+}

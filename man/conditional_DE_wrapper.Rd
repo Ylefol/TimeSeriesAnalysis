@@ -23,3 +23,9 @@ of the experiment vs the control. This is done at every timepoint.
 The function calls the necessary sub functions for the differential expression
 analysis based on the type needed (DESeq2 for RNAseq or limma for microarray)
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
+TS_object<-conditional_DE_wrapper(TS_object)
+
+}

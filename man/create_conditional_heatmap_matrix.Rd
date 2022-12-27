@@ -28,3 +28,11 @@ a gene may be significant in two timepoint comparisons, and therefore have two
 different values. The vectors give the genes unique names based on their grouping
 in order to enable them to have different values if necessary.
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+heat_dta<-create_conditional_heatmap_matrix(TS_object)
+
+}

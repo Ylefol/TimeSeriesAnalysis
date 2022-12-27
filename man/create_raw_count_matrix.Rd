@@ -32,3 +32,15 @@ differential gene expression method selected (DESeq2 or limma) as this affects
 the input data. Where DESeq2 (RNAseq data) is stored as individual count file while
 for limma the function expects a csv file with all samples and genes.
 }
+\examples{
+write_example_data_to_dir('PBMC')
+my_path_data<-'data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'data/PBMC/sample_file.csv'
+
+TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
+                 group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+                 DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+                 PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+TS_object <- create_raw_count_matrix(TS_object,my_path_data)
+
+}

@@ -91,6 +91,12 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_conditional_heatmap_matrix.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_example_data_for_R.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_example_object_for_R.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_raw_count_matrix.html</loc>
   </url>
   <url>
@@ -113,6 +119,63 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/dotplot_ancestors.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/ancestor_plots/cluster_ancestors.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/MDS_GO_clusters.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/MDS_GO_terms.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C10_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C11_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C13_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C14_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C15_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C16_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C17_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C1_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C2_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C3_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C4_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C5_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C6_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C7_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C8_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C9_overview.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findPartition.html</loc>

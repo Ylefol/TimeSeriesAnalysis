@@ -26,3 +26,25 @@ Function which reads the grprofiler data results from the time series analysis
 The function reads the information for each cluster and filters for the required
 columns, ontology, and number of GOs. It then adds a -log10 FDR
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+#Results saved to created directory
+dir.create('example_location')
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+GO_top_cluster<-read_gprofiler_results(res_location='example_location',ont='GO:BP',top_n=10)
+
+}

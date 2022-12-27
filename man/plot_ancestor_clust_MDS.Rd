@@ -16,3 +16,38 @@ p The plotly plot to enable either visualization or saving of the plot
 Function which plots the MDS for clusters/nearest ancestor of the ancestor curation
 dataframe
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
+samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+#Set to NULL to not save results
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+GO_clusters<-gpro_res[['GO_df']]
+TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+                    'GO:0045058','GO:0002507')
+GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
+plot_data<-calculate_and_format_MDS(GOs_ancestors_clust,TS_object@sem_list)
+plot_data<-merge_duplicate_modules(plot_data)
+for_merger<-GOs_ancestors_clust[,c('term_id','ancestor_name','-log10(padj)')]
+colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')
+plot_data<-merge(plot_data,for_merger,by='GO.ID')
+
+my_MDS<-plot_ancestor_clust_MDS(plot_data)
+
+}
