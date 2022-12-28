@@ -36,6 +36,7 @@
 #' @param adjust_missing_temp_samples Boolean indicating if missing temporal samples should be
 #' compensated for (NA introduced). Currently, there is no reason to have this set to
 #' False.
+#' @param do_SVGs Boolean indicating if SVGs should be saved for the heatmaps
 #'
 #' @import ggplot2
 #'
@@ -46,10 +47,10 @@
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
-#' plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '')
+#' plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '',do_SVGs=FALSE)
 #'
 #' @export
-plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE){
+plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE,do_SVGs=TRUE){
   #Create path to DE type and create directory
   main_path<-paste0(results_folder,'DE_results_',DE_type,'/')
   dir.create(main_path)
@@ -57,7 +58,8 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
   message('Creating summary heat map')
   #Create a overview heatmap of the differential expression results for that type
   custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=TRUE,
-                         plot_file_name = paste0(main_path,'custom_heat_',DE_type),adjust_missing_temp_samples)
+                         plot_file_name = paste0(main_path,'custom_heat_',DE_type),
+                         adjust_missing_temp_samples,do_SVGs=do_SVGs)
 
   DE_res<-slot(object,'DE_results')[[DE_type]]
 
@@ -541,6 +543,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #' @param adjust_missing_temp_samples Boolean indicating if missing temporal samples should be
 #' compensated for (NA introduced). Currently, there is no reason to have this set to
 #' False.
+#' @param do_SVGs Boolean indicating if SVG files should be saved for the heatmaps
 #' @return none
 #'
 #' @examples
@@ -549,11 +552,11 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' #Run function, results saved to main directory
-#' custom_heatmap_wrapper(TS_object,DE_type = 'conditional')
+#' custom_heatmap_wrapper(TS_object,DE_type = 'conditional',do_SVGs=FALSE)
 #'
 #' @export
 #'
-custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=TRUE){
+custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=TRUE,do_SVGs=TRUE){
 
   #Create the matrix
   if (DE_type=='conditional'){
@@ -584,7 +587,7 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
     legend_val<-'counts'
   }
   plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,my_l2fc_vect,log_transform = log_transform,
-                         legend_value=legend_val, plot_file_name = plot_file_name)
+                         legend_value=legend_val, plot_file_name = plot_file_name,do_SVG=do_SVGs)
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -971,6 +974,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param plot_file_name The name given to the saved heatmap
 #' @param custom_width The width of the heatmap
 #' @param custom_height The height of the heatmap
+#' @param do_SVG Boolean to check if the SVG file should be created or not
 #'
 #' @return None
 #'
@@ -985,7 +989,8 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
 #'
 #' plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
-#'                       heat_dta[['group_split']],log_l2fc,log_transform = TRUE)
+#'                       heat_dta[['group_split']],log_l2fc,log_transform = TRUE,
+#'                       do_SVG=FALSE)
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation anno_barplot rowAnnotation anno_block Heatmap draw Legend
 #' @importFrom grid gpar
@@ -993,7 +998,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #'
 plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_transform,
                                   legend_value='counts', plot_file_name='custom_heatmap',
-                                  custom_width=15,custom_height=5){
+                                  custom_width=15,custom_height=5,do_SVG=TRUE){
 
   if(log_transform==TRUE){
     if(legend_value=='intensity value'){
@@ -1040,20 +1045,22 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
     clust_cols<-TRUE
   }
 
+  if(do_SVG==TRUE){
+    save_name_svg<-paste0(plot_file_name,'.svg')
+    svg(save_name_svg,width=custom_width,height=custom_height)
+    draw(Heatmap(heat_mat,name=count_legend,cluster_rows = clust_rows,cluster_columns = clust_cols,
+                 show_column_names = FALSE,show_row_names = FALSE,row_names_side='left',
+                 row_split = row_splits,column_split=col_split,
+                 border=TRUE,na_col = 'gray',column_title = NULL,row_title = NULL,
+                 top_annotation = top_annot,left_annotation=left_annot,
+                 bottom_annotation = bottom_histo,
+                 cluster_column_slices=FALSE,cluster_row_slices = FALSE),
+         annotation_legend_list = lgd,
+         annotation_legend_side = 'bottom'
+    )
+    dev.off()
+  }
 
-  save_name_svg<-paste0(plot_file_name,'.svg')
-  svg(save_name_svg,width=custom_width,height=custom_height)
-  draw(Heatmap(heat_mat,name=count_legend,cluster_rows = clust_rows,cluster_columns = clust_cols,
-               show_column_names = FALSE,show_row_names = FALSE,row_names_side='left',
-               row_split = row_splits,column_split=col_split,
-               border=TRUE,na_col = 'gray',column_title = NULL,row_title = NULL,
-               top_annotation = top_annot,left_annotation=left_annot,
-               bottom_annotation = bottom_histo,
-               cluster_column_slices=FALSE,cluster_row_slices = FALSE),
-       annotation_legend_list = lgd,
-       annotation_legend_side = 'bottom'
-  )
-  dev.off()
 
   save_name_png<-paste0(plot_file_name,'.png')
 

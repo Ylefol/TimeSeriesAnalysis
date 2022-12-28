@@ -13,7 +13,8 @@ plot_custom_DE_heatmap(
   legend_value = "counts",
   plot_file_name = "custom_heatmap",
   custom_width = 15,
-  custom_height = 5
+  custom_height = 5,
+  do_SVG = TRUE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ plot_custom_DE_heatmap(
 \item{custom_width}{The width of the heatmap}
 
 \item{custom_height}{The height of the heatmap}
+
+\item{do_SVG}{Boolean to check if the SVG file should be created or not}
 }
 \value{
 None
@@ -65,6 +68,7 @@ heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
 
 plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
-                      heat_dta[['group_split']],log_l2fc,log_transform = TRUE)
+                      heat_dta[['group_split']],log_l2fc,log_transform = TRUE,
+                      do_SVG=FALSE)
 
 }

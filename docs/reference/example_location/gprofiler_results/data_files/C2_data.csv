@@ -1,2 +1,2 @@
 ,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.049907139086204,33,8,2,0.25,0.0606060606060606,WP:WP5088,WP,Prostaglandin signaling,7827,396,WP:000000
+1,query_1,TRUE,0.0498963154564332,1,10,1,0.1,1,GO:1990972,GO:CC,multimerin complex,21690,4466,GO:0062023/GO:0098637

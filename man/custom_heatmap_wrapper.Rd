@@ -9,7 +9,8 @@ custom_heatmap_wrapper(
   DE_type,
   log_transform = TRUE,
   plot_file_name = "custom_DEG_heatmap",
-  adjust_missing_temp_samples = TRUE
+  adjust_missing_temp_samples = TRUE,
+  do_SVGs = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ on the heatmap}
 \item{adjust_missing_temp_samples}{Boolean indicating if missing temporal samples should be
 compensated for (NA introduced). Currently, there is no reason to have this set to
 False.}
+
+\item{do_SVGs}{Boolean indicating if SVG files should be saved for the heatmaps}
 }
 \value{
 none
@@ -39,6 +42,6 @@ TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
 #Run function, results saved to main directory
-custom_heatmap_wrapper(TS_object,DE_type = 'conditional')
+custom_heatmap_wrapper(TS_object,DE_type = 'conditional',do_SVGs=FALSE)
 
 }
