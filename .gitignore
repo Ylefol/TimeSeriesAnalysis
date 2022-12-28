@@ -46,6 +46,8 @@ vignettes/TS_results_celegans_example
 .Rhistory
 .RData
 .Ruserdata
+.Rbuildignore
+
 
 
 inst/doc
