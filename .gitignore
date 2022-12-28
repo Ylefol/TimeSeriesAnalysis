@@ -6,15 +6,6 @@ rmarkdown_method/TS_results_PBMC_example
 
 rmarkdown_method/data
 
-#Ignore EBSC folder
-EBSC_folder
-
-#Ignore Fran's folder
-Fran_folder
-
-#Ignore non-example results
-result_not_example
-
 #Ignore project file
 TimeSeriesAnalysis.Rproj
 
@@ -34,6 +25,7 @@ data/murine_TS_data.rda
 data_raw/
 
 #Ignore vignettes
+vignettes/.Rhistory
 vignettes/TS_results_murine_example
 vignettes/data
 vignettes/TS_results_PBMC_example
@@ -47,6 +39,7 @@ vignettes/TS_results_celegans_example
 .RData
 .Ruserdata
 .Rbuildignore
+.gitattributes
 
 
 
