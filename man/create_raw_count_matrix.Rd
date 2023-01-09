@@ -6,6 +6,7 @@
 \usage{
 create_raw_count_matrix(
   time_object,
+  samp_data,
   path_to_data = NULL,
   limma_id_replace = "GeneName"
 )
@@ -13,16 +14,15 @@ create_raw_count_matrix(
 \arguments{
 \item{time_object}{A timeseries object}
 
+\item{samp_data}{dataframe containing the sample data}
+
 \item{path_to_data}{The path towards the count files.}
 
 \item{limma_id_replace}{The name of gene id's to use from the 'genes' dataframe
 in the Elist}
-
-\item{limma_from_raw}{Indicates if raw data is provided for microarrays or if an
-Elist was given}
 }
 \value{
-The timeseries object with the raw count matrix added to it
+The time_object, count matrix, and the slot to save it in
 }
 \description{
 Function which prepares and ads the raw count matrix to the timeseries object
@@ -31,16 +31,4 @@ The function also differs in the preparation method depending onthe type of
 differential gene expression method selected (DESeq2 or limma) as this affects
 the input data. Where DESeq2 (RNAseq data) is stored as individual count file while
 for limma the function expects a csv file with all samples and genes.
-}
-\examples{
-write_example_data_to_dir('PBMC')
-my_path_data<-'data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'data/PBMC/sample_file.csv'
-
-TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
-                 group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
-                 DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
-                 PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-TS_object <- create_raw_count_matrix(TS_object,my_path_data)
-
 }

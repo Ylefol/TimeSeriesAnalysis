@@ -49,7 +49,13 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/SS_GO_clusters.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/TS_load_example_data.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/TimeSeries_Object-class.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_experiment_data.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_semantic_similarity_data.html</loc>
@@ -136,6 +142,9 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C11_overview.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C12_overview.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C13_overview.html</loc>
   </url>
   <url>
@@ -176,6 +185,12 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/example_location/gprofiler_results/figures/C9_overview.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/exp_matrix.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/exp_sample_data.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findPartition.html</loc>

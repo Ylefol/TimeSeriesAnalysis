@@ -19,11 +19,10 @@ vignette: >
 # NOTE: This script can be run from the CLI using the below command
 # Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS_analysis.html')"
 library(knitr)
+library(SummarizedExperiment)
 library(TimeSeriesAnalysis)
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
-
-write_example_data_to_dir('PBMC')
 
 ```
 
@@ -39,8 +38,9 @@ name_result_folder<-'TS_results_PBMC_example/'
 obj_name<-'timeSeries_obj_PBMC_example.Rdata'
 
 #Path to count data and sample data respectively
-my_path_data<-'data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#Not needed if using example data
+# my_path_data<-'data/PBMC/raw_counts_TS'
+# my_path_sample_dta<-'data/PBMC/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
@@ -111,11 +111,11 @@ If no timeseries object was found, the code chunk creates the timeseries object
 using the parameters defined above. The raw matrix is also created using the second function
 ```{r create_base_TS, message=FALSE}
 if(obj_name %in% list.files(name_result_folder)==FALSE){
-  TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,my_group_names),
+  TS_object <- new('TimeSeries_Object',
                    group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
                    DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
                    PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
-  TS_object <- create_raw_count_matrix(TS_object,my_path_data)
+  TS_object <- TS_load_example_data(TS_object,'PBMC')
   TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
 }else{
   load(name_save_obj)
@@ -135,7 +135,7 @@ and saves the results within the Time Series object.
 ```{r run_DE ,message=FALSE,warning=FALSE}
 
 #Perform normalization if the DESeq2 tool is being used and if normalized matrix doesn't exist
-if (slot(TS_object,'DE_method')=='DESeq2' & 'norm' %in% names(slot(TS_object,'count_matrix'))!=TRUE){
+if (slot(TS_object,'DE_method')=='DESeq2' & 'norm' %in% names(assays(slot(TS_object,'exp_data')))!=TRUE){
   TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 }
 
@@ -160,7 +160,7 @@ for clustering as well as the number of recursions set for the clustering
 signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
-samp_dta<-slot(TS_object,'sample_data')
+samp_dta<-exp_sample_data(TS_object)
 samps_2<-samp_dta$sample[samp_dta$group==TS_object@group_names[2]]
 samps_1<-samp_dta$sample[samp_dta$group==TS_object@group_names[1]]
 
@@ -219,13 +219,13 @@ TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
 ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
 
 #Creating sample_data without row.names for illustration in Rmarkdown format
-sample_dta<-slot(TS_object,'sample_data')
+sample_dta<-exp_sample_data(TS_object)
 row.names(sample_dta)=NULL
 
 ```
 ## TimeSeries summary of experiment
 **Name of groups beings compared\:** `r paste0(slot(TS_object,'group_names')[1],' vs ',slot(TS_object,'group_names')[2])`
-**Number of genes analyzed\:** `r length(row.names(TS_object@count_matrix$norm))`
+**Number of genes analyzed\:** `r length(row.names(exp_matrix(TS_object,'norm')))`
 
 **Differential expression parameters used\:**
   **Method\:** `r slot(TS_object,'DE_method')`
@@ -294,8 +294,8 @@ while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. No
 
 ```{r genes_interest, echo=FALSE, message=FALSE, warning=FALSE, out.width= "65%", out.extra='style="float:right; padding:10px"'}
 #Subset for genes in the analysis
-count_matrix_lst<-slot(TS_object,'count_matrix')
-gene_matrix_interest<-count_matrix_lst$norm[row.names(count_matrix_lst$norm) %in% genes_of_interest,]
+count_matrix_norm<-exp_matrix(TS_object,'norm')
+gene_matrix_interest<-count_matrix_norm[row.names(count_matrix_norm) %in% genes_of_interest,]
 if(nrow(gene_matrix_interest)>0){
   var_vect <- apply(gene_matrix_interest, 1, stats::var)
   selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]

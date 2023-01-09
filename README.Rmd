@@ -94,6 +94,8 @@ prefer a script approach, the equivalent of the rmarkdown report is
 provided in two scripts, one for the computation tasks and a second for
 the analyses. These two scripts are found in the ‘script_method’ folder.
 
+Both the rmarkdown and script methods are found in the ‘supp_to_bioconductor’ branch.
+
 ## Data
 
 Three different datasets have been used as example datasets for this pipeline,

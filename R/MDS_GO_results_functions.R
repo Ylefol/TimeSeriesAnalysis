@@ -38,8 +38,9 @@
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -143,8 +144,9 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -211,8 +213,9 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -313,8 +316,9 @@ find_merged_color<-function(group){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -405,8 +409,9 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -554,8 +559,9 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -639,8 +645,9 @@ create_clustered_module_dataframe<-function(cluster_df){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -744,8 +751,9 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -817,8 +825,9 @@ read_gprofiler_results<-function(res_location='TS_results/',ont='REAC',top_n=NUL
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -901,8 +910,9 @@ plot_ancestor_clust_MDS<-function(the_data,use_name=FALSE){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1136,8 +1146,9 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1219,8 +1230,9 @@ plot_MDS<-function(the_data){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1292,8 +1304,9 @@ GO_dotplot_wrapper<-function(gpro_file_location,target_ontology,top_n,custom_wid
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1362,8 +1375,9 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))

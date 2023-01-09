@@ -28,8 +28,9 @@
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -45,7 +46,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
   }
 
   #Retrieve and prep assay
-  cnts <- slot(object,'count_matrix')$norm
+  cnts <- as.matrix(exp_matrix(object,'norm'))
 
   if (is.null(target_samples)==FALSE){
     cnts <- cnts[, target_samples]
@@ -94,8 +95,9 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -226,8 +228,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))

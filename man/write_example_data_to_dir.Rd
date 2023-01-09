@@ -24,4 +24,5 @@ and see the formatting expected by TimeSeriesAnalysis
 \examples{
 write_example_data_to_dir('PBMC')
 
+
 }
