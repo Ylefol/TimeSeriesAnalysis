@@ -13,9 +13,7 @@
 #' It is used to store the input data along with the final processed data and
 #' any intermediate results that may be used for plot creation
 #'
-#' @slot count_matrix A list used to store the raw and normalized count matrices
-#' @slot sample_data A dataframe created by the user indicating the grouping, timepoints,
-#' and replicates to which the samples belong
+#' @slot exp_data A summarized experiment which will contain the sample data and the count matrix
 #' @slot group_names A vector for the group names used, should be in order for
 #' which the differential expression comparisons will occur, where the first
 #' should be the experiment and second should be the control
@@ -47,14 +45,14 @@
 #' @importClassesFrom DESeq2 DESeqDataSet
 #' @importClassesFrom limma EList
 #' @importClassesFrom GOSemSim GOSemSimDATA
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #'
 #' @exportClass TimeSeries_Object
 #'
 TimeSeries_Object<-setClass(
   Class='TimeSeries_Object',slots=list(
-    count_matrix='list',
-    sample_data='data.frame',
+    exp_data='SummarizedExperiment',
     group_names='vector',
     group_colors='vector',
     DE_method='character',
@@ -115,30 +113,18 @@ prep_sample_data<-function(path, group_names){
 #'
 #' @param time_object A timeseries object
 #' @param path_to_data The path towards the count files.
-#' @param limma_from_raw Indicates if raw data is provided for microarrays or if an
-#' Elist was given
+#' @param samp_data dataframe containing the sample data
 #' @param limma_id_replace The name of gene id's to use from the 'genes' dataframe
 #' in the Elist
 #'
-#' @return The timeseries object with the raw count matrix added to it
+#' @return The time_object, count matrix, and the slot to save it in
 #'
-#' @examples
-#' write_example_data_to_dir('PBMC')
-#' my_path_data<-'data/PBMC/raw_counts_TS'
-#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
-#'
-#' TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
-#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
-#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
-#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- create_raw_count_matrix(TS_object,my_path_data)
 #'
 #' @export
-create_raw_count_matrix<-function(time_object,path_to_data=NULL,limma_id_replace='GeneName'){
+create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_id_replace='GeneName'){
 
   groups<-slot(time_object,'group_names')
   #Ensures that the order will follow the grouping order
-  samp_data<-slot(time_object,'sample_data')
   selected_samples_1<-samp_data$sample[samp_data$group %in% groups[1]]
   selected_samples_2<-samp_data$sample[samp_data$group %in% groups[2]]
   selected_samples<-c(selected_samples_1,selected_samples_2)
@@ -161,10 +147,113 @@ create_raw_count_matrix<-function(time_object,path_to_data=NULL,limma_id_replace
   #Re-organize samples to be in order of groups
   final_counts<-final_counts[,selected_samples]
 
+  return(list(time_object,final_counts,slot_storage))
+}
 
-  time_object@count_matrix[[slot_storage]]<-final_counts
+#' @title Add counts and sample data of examples to a TimeSeriesObject
+#'
+#' @description A function takes an existing TimeSeriesObject and adds the specified
+#' example data to the object. Added data is the count matrix and sample data
+#'
+#'
+#' @param time_object A timeseries object
+#' @param example_dta Character of either 'PBMC', 'MURINE', or 'CELEGANS'
+#' Elist was given
+#'
+#' @return The timeseries object with the raw count matrix added to it as well as the sample data
+#'
+#' @examples
+#'
+#'
+#' TS_object <- new('TimeSeries_Object',
+#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#'
+#' @import SummarizedExperiment
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#'
+#' @export
+TS_load_example_data<-function(time_object,example_dta){
+  if(example_dta=='PBMC'){
+    exp_data<-AID_TS_data
+  }else if(example_dta=='MURINE'){
+    exp_data<-murine_TS_data
+  }else if(example_dta=='CELEGANS'){
+    exp_data<-Celegans_TS_data
+  }else{
+    stop("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
+  }
+  groups<-slot(time_object,'group_names')
+  samp_dta<-data.frame(colData(exp_data))
+  count_matrix<-assays(exp_data)$counts
+  target_samples<-samp_dta$sample[samp_dta$group %in% groups]
+
+  exp_data<-exp_data[,exp_data$sample %in% target_samples]
+  names(assays(exp_data))=c('raw')
+  time_object@exp_data<-exp_data
+
   return(time_object)
 }
+
+#' @title Fetches a data matrix from summarized experiments
+#'
+#' @description Function which extracts a matrix from summarizedexperiments contained
+#' within a TimeSeries_object. The matrix is extracted by name.
+#'
+#'
+#' @param time_object A timeseries object
+#' @param matrix_name Character for the name of the matrix. 'raw' or 'norm' are the standard
+#' names found unless user modifications have been made
+#'
+#' @return The extracted matrix
+#'
+#' @examples
+#'
+#' TS_object <- new('TimeSeries_Object',
+#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' exp_matrix(TS_object,'raw')
+#'
+#' @importFrom SummarizedExperiment assays
+#'
+#' @export
+exp_matrix<-function(time_object,matrix_name){
+  extracted_matrix<-assays(slot(time_object,'exp_data'))[[matrix_name]]
+  return(extracted_matrix)
+}
+
+#' @title Fetches the sample data
+#'
+#' @description Function which extracts the sample data from the SummarizedExperiment
+#' contained within the TimeSerie_Object. The sample data is extracted and returned in
+#' a data frame format
+#'
+#'
+#' @param time_object A timeseries object
+#'
+#' @return The data.frame format of sample data
+#'
+#' @examples
+#'
+#' TS_object <- new('TimeSeries_Object',
+#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' exp_sample_data(TS_object)
+#'
+#' @importFrom SummarizedExperiment assays
+#'
+#' @export
+exp_sample_data<-function(time_object,matrix_name){
+  samp_dta<-data.frame(colData(slot(time_object,'exp_data')))
+  return(samp_dta)
+}
+
 
 #' @title Read and process microarray data using the limma package
 #'
@@ -249,6 +338,60 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 }
 
 
+#' @title Adds experiment data in the form of a SummarizedExperiment
+#'
+#' @description The function creates a SummarizedExperiment from the provided data.
+#' It reads the sample data and value files, filters them to contain only the necessary
+#' groups and then creates a SummarizedExperiment to then store this into the TimeSeris_Object
+#'
+#'
+#' @param time_object A TimeSeries_Object
+#' @param sample_dta_path String which gives the csv path to the sample data
+#' @param count_dta_path String which gives the path to the count or microarray data
+#' @param limma_ID_replace The name of gene id's to use from the 'genes' dataframe
+#' in the Elist
+#'
+#' @return count_matrix
+#'
+#' @examples
+#' write_example_data_to_dir('PBMC')
+#' my_path_data<-'data/PBMC/raw_counts_TS'
+#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#'
+#' TS_object <- new('TimeSeries_Object',
+#'                  group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
+#'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
+#'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+#'
+#' TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
+#'
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#' @importFrom SummarizedExperiment assays
+#'
+#' @export
+add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_ID_replace='GeneName'){
+  groups<-slot(time_object,'group_names')
+  sample_data<-prep_sample_data(sample_dta_path,groups)
+  sample_data<-sample_data[sample_data$group %in% groups,]
+  returned_list<-create_raw_count_matrix(time_object = time_object,path_to_data = count_dta_path,limma_id_replace = limma_ID_replace, samp_data=sample_data)
+
+  time_object<-returned_list[[1]]
+  count_matrix<-returned_list[[2]]
+  matrix_name<-returned_list[[3]]
+
+  #Add row.names and re-order
+  row.names(sample_data)=sample_data$sample
+  sample_data<-sample_data[colnames(count_matrix),]
+
+  exp_data<-SummarizedExperiment(assays = count_matrix,colData = sample_data)
+  names(assays(exp_data))=matrix_name
+
+  time_object@exp_data<-exp_data
+
+  return(time_object)
+}
+
+
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #' @title prep count matrix form RNAseq count files
@@ -269,18 +412,20 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' my_path_data<-'data/PBMC/raw_counts_TS'
 #' my_path_sample_dta<-'data/PBMC/sample_file.csv'
 #'
-#' TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
-#'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
+#' TS_object <- new('TimeSeries_Object',
+#'                  group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' groups<-TS_object@group_names
+#'
+#' TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
+#' groups<-slot(time_object,'group_names')
 #' #Ensures that the order will follow the grouping order
-#' selected_samples_1<-TS_object@sample_data$sample[TS_object@sample_data$group %in% groups[1]]
-#' selected_samples_2<-TS_object@sample_data$sample[TS_object@sample_data$group %in% groups[2]]
+#' selected_samples_1<-samp_data$sample[samp_data$group %in% groups[1]]
+#' selected_samples_2<-samp_data$sample[samp_data$group %in% groups[2]]
 #' selected_samples<-c(selected_samples_1,selected_samples_2)
 #'
 #' #Prepare the matrix according to the differential expression method (affects input)
-#' final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
+#'  final_counts<-prep_RNAseq_matrix(path_to_data,selected_samples)
 #' @export
 #'
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
@@ -327,36 +472,45 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @examples
 #' write_example_data_to_dir('PBMC')
 #'
+#'
+#' @import SummarizedExperiment
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#'
 #' @export
 write_example_data_to_dir<-function(example_data){
-  #If data folder does not exist, create it
+  #Set object and save names based on requested example data
+  if(example_data=='PBMC'){
+    full_counts<-assay(AID_TS_data)
+    sample_data<-data.frame(AID_TS_data@colData)
+    save_name<-'PBMC'
+  }else if(example_data=='MURINE'){
+    full_counts<-assay(murine_TS_data)
+    sample_data<-data.frame(murine_TS_data@colData)
+    save_name='murine'
+  }else if(example_data=='CELEGANS'){
+    full_counts<-assay(Celegans_TS_data)
+    sample_data<-data.frame(Celegans_TS_data@colData)
+    save_name='celegans'
+  }else{
+    message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
+    return(NULL)
+  }
+
+  #Create data folder is it does not exist
   if(!'data' %in% list.files()){
     dir.create('data')
   }
-  if(example_data=='PBMC'){
-    dir.create('data/PBMC')
-    dir.create('data/PBMC/raw_counts_TS')
-    for(dta in names(AID_TS_data[['counts']])){
-      write.table(AID_TS_data[['counts']][[dta]],paste0('data/PBMC/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
-    }
-    write.csv(AID_TS_data[['sample_dta']],'data/PBMC/sample_file.csv',row.names = FALSE)
-  }else if (example_data=='MURINE'){
-    dir.create('data/murine')
-    dir.create('data/murine/raw_counts_TS')
-    for(dta in names(murine_TS_data[['counts']])){
-      write.table(murine_TS_data[['counts']][[dta]],paste0('data/murine/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
-    }
-    write.csv(murine_TS_data[['sample_dta']],'data/murine/sample_file.csv',row.names = FALSE)
-  }else if(example_data=='CELEGANS'){
-    dir.create('data/celegans')
-    dir.create('data/celegans/raw_counts_TS')
-    for(dta in names(Celegans_TS_data[['counts']])){
-      write.table(Celegans_TS_data[['counts']][[dta]],paste0('data/celegans/raw_counts_TS/',dta),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
-    }
-    write.csv(Celegans_TS_data[['sample_dta']],'data/celegans/sample_file.csv',row.names = FALSE)
-  }else{
-    message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
+  #Create folders to save example data
+  dir.create(paste0('data/',save_name))
+  dir.create(paste0('data/',save_name,'/raw_counts_TS'))
+
+  #Iterate over data and save it
+  for(dta in colnames(full_counts)){
+    temp_df<-data.frame(gene_id=row.names(full_counts),samp=full_counts[,dta])
+    colnames(temp_df)=c('gene_id',dta)
+    write.table(temp_df,paste0('data/',save_name,'/raw_counts_TS/',dta,'.counts'),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
   }
+  write.csv(sample_data,paste0('data/',save_name,'/sample_file.csv'),row.names = FALSE)
 }
 
 #' @title Calculate and add semantic similarity to object
@@ -431,10 +585,13 @@ create_example_object_for_R<-function(){
   names(graph_vect)<-c('IgM','LPS')
 
 
-  TS_object <- new('TimeSeries_Object',sample_data=prep_sample_data(my_path_sample_dta,c('IgM','LPS')),
+  TS_object <- new('TimeSeries_Object',
                    group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
                    DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                    PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-  TS_object <- create_raw_count_matrix(TS_object,my_path_data)
+  TS_object <- TS_load_example_data(TS_object,'PBMC')
   return(TS_object)
 }
+
+
+

@@ -132,8 +132,9 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -446,7 +447,7 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' @export
 #'
 plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
 
   if(DE_type=='all'){
     DE_res<-NULL
@@ -470,7 +471,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 
   }else if(DE_meth=='limma'){
     if (is.null(DE_res)==TRUE){
-      samples_interest<-colnames(slot(time_object,'count_matrix')$norm)
+      samples_interest<-colnames(exp_matrix(time_object,'norm'))
     }else{
       samples_interest<-colnames(DE_res[['DE_raw_data']])
       samples_interest<-samples_interest[samples_interest %in% samp_dta_full$sample]
@@ -479,7 +480,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
     sample_data_used<-sample_data_used[order(match(sample_data_used$sample,samples_interest)),]
 
 
-    matrix_to_use<-slot(time_object,'count_matrix')$norm[,samples_interest]
+    matrix_to_use<-exp_matrix(time_object,'norm')[,samples_interest]
     pca_res <- prcomp(t(matrix_to_use))
     axis_labels <- sprintf('%.1f', 1:length(pca_res$sdev), (pca_res$sdev^2 / sum(pca_res$sdev^2))*100)
 
@@ -625,7 +626,7 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
 #'
 create_conditional_heatmap_matrix<-function(time_object){
 
-  sample_dta_full<-slot(time_object,'sample_data')
+  sample_dta_full<-exp_sample_data(time_object)
   DE_list<-slot(time_object,'DE_results')$conditional
 
   DEG_list<-list()
@@ -756,7 +757,7 @@ create_conditional_heatmap_matrix<-function(time_object){
 #' @export
 #'
 create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=TRUE){
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
   DE_list<-slot(time_object,'DE_results')$temporal
   DEG_list<-list()
   all_replicates<-c()
@@ -1110,8 +1111,9 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1128,7 +1130,7 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 prepare_top_annotation_PART_heat<-function(object){
 
   main_matrix<-slot(object,'PART_results')$part_matrix
-  samp_dta_full<-slot(object,'sample_data')
+  samp_dta_full<-exp_sample_data(object)
   group_cols<-slot(object,'group_colors')
   samp_data<-samp_dta_full[order(match(samp_dta_full$sample,colnames(main_matrix))),]
 
@@ -1204,8 +1206,9 @@ prepare_top_annotation_PART_heat<-function(object){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1220,10 +1223,10 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
   #Cluster illustration stored as rowAnnotation
   PART_res<-slot(object,'PART_results')
   row_annot <- rowAnnotation(gene_cluster = PART_res$part_data$gene_cluster,
-                                             col = list(gene_cluster=PART_res$cluster_info[['colored_clust_rows']]),
-                                             show_annotation_name=FALSE,
-                                             annotation_legend_param = list(title = "clusters", at = unique(PART_res$part_data$gene_cluster),
-                                                                            labels = unique(PART_res$cluster_map$cluster)))
+                             col = list(gene_cluster=PART_res$cluster_info[['colored_clust_rows']]),
+                             show_annotation_name=FALSE,
+                             annotation_legend_param = list(title = "clusters", at = unique(PART_res$part_data$gene_cluster),
+                                                            labels = unique(PART_res$cluster_map$cluster)))
 
   #Create top annotations
   top_annot_results<-prepare_top_annotation_PART_heat(object)
@@ -1320,8 +1323,9 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1336,14 +1340,14 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #'
 calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
   PART_res<-slot(object,'PART_results')
-  samp_dta_full<-slot(object,'sample_data')
+  samp_dta_full<-exp_sample_data(object)
   if (is.null(custom_cmap)==TRUE){
     my_cmap<-PART_res$cluster_map
   }else{
     my_cmap<-custom_cmap
   }
 
-  norm_mat<-slot(object,'count_matrix')$norm[row.names(my_cmap),]
+  norm_mat<-exp_matrix(object,'norm')[row.names(my_cmap),]
 
   ts_df<-data.frame(gene_id=NULL,group=NULL,timepoint=NULL,mean_reads=NULL)
   df_list<-list()
@@ -1425,8 +1429,9 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1493,8 +1498,9 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
-#' samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-#' samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1522,24 +1528,24 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
   }else{
     plt <- ggplot(ts_data, aes(y = trans_mean , x = timepoint, color = group))
   }
-    plt <- plt + scale_color_manual(values=slot(object,'group_colors')) +
-      geom_line(aes(group = gene_id), alpha = 0.4) +
-      geom_point() +
-      geom_line(
-        data = ts_mean_data, lwd = 1.5, color = "grey50",
-        aes(group = group)
-      ) +
-      scale_x_continuous(expand = c(0, 0)) +
-      # scale_y_continuous(expand = c(0, 0))+
-      ylab('scaled expression') +
-      facet_wrap(~labels, scales = 'free_x', ncol = num_col)
+  plt <- plt + scale_color_manual(values=slot(object,'group_colors')) +
+    geom_line(aes(group = gene_id), alpha = 0.4) +
+    geom_point() +
+    geom_line(
+      data = ts_mean_data, lwd = 1.5, color = "grey50",
+      aes(group = group)
+    ) +
+    scale_x_continuous(expand = c(0, 0)) +
+    # scale_y_continuous(expand = c(0, 0))+
+    ylab('scaled expression') +
+    facet_wrap(~labels, scales = 'free_x', ncol = num_col)
 
-      if(rem_legend_axis==TRUE){
-        plt<-plt + theme(legend.position = "none") +
-          theme(axis.title.x = element_blank()) +
-          theme(axis.title.y = element_blank())
-      }
-      plt <- plt + theme(strip.text.x = element_text(size = title_text_size))
+  if(rem_legend_axis==TRUE){
+    plt<-plt + theme(legend.position = "none") +
+      theme(axis.title.x = element_blank()) +
+      theme(axis.title.y = element_blank())
+  }
+  plt <- plt + theme(strip.text.x = element_text(size = title_text_size))
 
   return(plt)
 }
@@ -1569,7 +1575,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
 #' @export
 calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
   #Create a list of genes of interest
-  my_dta<-slot(time_object,'count_matrix')$norm[target_gene,]
+  my_dta<-exp_matrix(time_object,'norm')[target_gene,]
 
   my_dta<-melt(my_dta,id.vars = NULL)
   my_dta$sample<-row.names(my_dta)
@@ -1578,7 +1584,8 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
   }else{
     colnames(my_dta)=c('sample','reads')
   }
-  my_dta<-merge(my_dta,slot(time_object,'sample_data'),by='sample')
+  sample_data<-exp_sample_data(time_object)
+  my_dta<-merge(my_dta,sample_data,by='sample')
   mean_data_list<-list()
   for (group in unique(my_dta$group)){
     for (tp in unique(my_dta$timepoint)){
@@ -1636,15 +1643,15 @@ plot_single_gene_traj<-function(mean_data,color_vector=NULL){
     plt <- ggplot(mean_data,aes(x = timepoint, y = reads, color = group))+
       geom_smooth(aes(x = timepoint ), lwd = 1.5,se=FALSE,formula = y ~ x, method = "loess")
   }
-   plt <- plt +
+  plt <- plt +
     scale_color_manual(values=color_vector) +
     geom_point(size = 3) +
     # scale_x_continuous(expand = c(0, 0)) +
     facet_wrap(~ label, scales = 'free_x', ncol = 1)
 
-   if(length(unique(mean_data$timepoint))<3){
-     plt<-plt+geom_line(aes(group = group))
-   }
+  if(length(unique(mean_data$timepoint))<3){
+    plt<-plt+geom_line(aes(group = group))
+  }
 
   return(plt)
 }
@@ -1719,7 +1726,7 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #'
 create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_location,DE_type=c('conditional','temporal'),log_tp=FALSE){
   DE_res<-slot(object,'DE_results')
-  count_matrix<-slot(object,'count_matrix')
+  count_matrix<-exp_matrix(object,'norm')
   for(DE in DE_type){
     if(!(DE %in% names(DE_res))){
       message(paste0(DE,' not found, removing from genes of interest analysis'))
@@ -1761,7 +1768,7 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
       write.csv(gene_df,paste0(save_location,gene,'.csv'),row.names=FALSE)
     }
     #Plot gene trajectory if gene is in time object
-    if(gene %in% row.names(count_matrix$norm)){
+    if(gene %in% row.names(count_matrix)){
       gene_traj_dta<-calculate_gene_traj_data(object,gene,log_tp)
       #Capture output to prevent useless warnings
       gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(object,'group_colors'))
@@ -1771,7 +1778,7 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
     }
   }
   upstream_save_loc<-strsplit(save_location,'/')[[1]][1]
-  genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(count_matrix$norm)]
+  genes_not_found<-genes_of_interest[!genes_of_interest %in% row.names(count_matrix)]
   if(length(genes_not_found)>0){
     write.csv(genes_not_found,paste0(upstream_save_loc,'/','genes_of_interest_not_found.csv'),row.names=FALSE)
   }

@@ -32,7 +32,7 @@ conditional_DE_wrapper<-function(time_object){
   group_names<-slot(time_object,'group_names')
   DE_res<-slot(time_object,'DE_results')
   DE_meth<-slot(time_object,'DE_method')
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
   if ('conditional' %in% names(DE_res)){
     message('Conditional differential expression results already exist')
     return(time_object)
@@ -88,7 +88,7 @@ conditional_DE_wrapper<-function(time_object){
 temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 
   DE_res<-slot(time_object,'DE_results')
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
 
   if ('temporal' %in% names(DE_res)){
     message('Temporal differential expression results already exist')
@@ -194,7 +194,8 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 #' group_names<-TS_object@group_names
 #' tp<-'1'
 #' exp_name<-paste0(group_names[1],'_vs_',group_names[2],'_TP_',tp)
-#' samps_interest<-TS_object@sample_data$sample[TS_object@sample_data$timepoint==tp]
+#' sample_data<-exp_sample_data(TS_object)
+#' samps_interest<-sample_data$sample[sample_data$timepoint==tp]
 #' TS_object<-DE_using_DESeq2(TS_object,group_names,samps_interest,exp_name,main_key='conditional')
 #'
 #' @importFrom DESeq2 DESeq results
@@ -258,17 +259,22 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #'
 #' @importFrom DESeq2 DESeqDataSetFromMatrix estimateSizeFactors counts
+#' @importFrom SummarizedExperiment assays
 #'
 #' @export
 #'
 normalize_timeSeries_with_deseq2 <- function(time_object){
 
   groups<-slot(time_object,'group_names')
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
+  count_matrix<-exp_matrix(time_object,'raw')
+
+  condition<-factor(samp_dta_full$group)
+
   #Assign Condition to all of the columns/samples/patients
-  condition <- factor(c(rep(groups[1], nrow(samp_dta_full[samp_dta_full$group==groups[1],])),
-                        rep(groups[2], nrow(samp_dta_full[samp_dta_full$group==groups[2],]))))
-  my_matrix<-as.matrix(round(slot(time_object,'count_matrix')$raw))
+  # condition <- factor(c(rep(groups[1], nrow(samp_dta_full[samp_dta_full$group==groups[1],])),
+  #                       rep(groups[2], nrow(samp_dta_full[samp_dta_full$group==groups[2],]))))
+  my_matrix<-as.matrix(round(count_matrix))
 
   #Create a coldata frame and instantiate the DESeqDataSet
   col_data <- data.frame(row.names=colnames(my_matrix),condition)
@@ -278,10 +284,7 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
   norm_counts <- as.data.frame(counts(dds,normalized=TRUE))
   norm_counts<- na.omit(norm_counts)
 
-  #Re-orders norm as to have the same order as the raw assay, prevents re-ordering issues
-  #Downstream in the pipeline
-  # norm_counts<-norm_counts[,colnames(time_object@count_matrix$raw)]
-  time_object@count_matrix$norm<-norm_counts
+  assays(time_object@exp_data)$norm<-norm_counts
   time_object@DESeq2_obj<-dds
   return(time_object)
 }
@@ -316,7 +319,7 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
 #'
 prep_tp_matrix <- function(time_object,groups_in_ts,target_tp=NULL,do_temporal=FALSE){
   #extract sample data for readability of code
-  samp_dta_full<-slot(time_object,'sample_data')
+  samp_dta_full<-exp_sample_data(time_object)
   if(do_temporal==FALSE){
     group_ctrl<-samp_dta_full$sample[samp_dta_full$group==groups_in_ts[1]]
     group_exp<-samp_dta_full$sample[samp_dta_full$group==groups_in_ts[2]]
@@ -466,7 +469,7 @@ convert_eb_res_to_DE_results<-function(time_object,eb_res,samples_used,exp_name,
   DE_raw =  DE_raw[order(DE_raw$gene_id,DE_raw$padj),]
   DE_raw = DE_raw[ !duplicated(DE_raw$gene_id), ]
 
-  samples_used_df<-slot(time_object,'count_matrix')$norm[,samples_used]
+  samples_used_df<-exp_matrix(time_object,'norm')[,samples_used]
   samples_used_df<-samples_used_df[DE_raw$gene_id,]
 
   DE_raw<-cbind(DE_raw,samples_used_df)
