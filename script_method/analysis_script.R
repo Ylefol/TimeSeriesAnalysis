@@ -1,4 +1,5 @@
 library(TimeSeriesAnalysis)
+library(SummarizedExperiment)
 library(ggplot2)
 
 #Set up physical data in repository for example dataset
@@ -89,8 +90,9 @@ if(obj_name %in% list.files(name_result_folder)==F){
                    group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
                    DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
                    PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
-  TS_object <- create_raw_count_matrix(TS_object,my_path_data)
-  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
+  # TS_object <- TS_load_example_data(TS_object,'PBMC')
+  TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
+  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
 }else{
   load(name_save_obj)
 }
@@ -116,25 +118,28 @@ save(TS_object,file=name_save_obj)
 #Extract genes for PART clustering based on defined log(2)foldChange threshold
 signi_genes<-select_genes_with_l2fc(TS_object)
 
+sample_data<-exp_sample_data(TS_object)
 #Use all samples, but implement a custom order. In this case it is reversed
-samps_2<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[2]]
-samps_1<-TS_object@sample_data$sample[TS_object@sample_data$group==TS_object@group_names[1]]
+samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,
-                                scale=T,target_samples=c(samps_2,samps_1))
+                                scale=TRUE,target_samples=c(samps_2,samps_1))
 
 #Sets a seed for reproducibility
 if (is.null(PART_seed)==FALSE){
   set.seed(as.character(PART_seed))
 }
+
 TS_object<-compute_PART(TS_object,part_recursion=PART_recursion,part_min_clust=PART_min_clust,
-                        dist_param="euclidean", hclust_param="average")
+                        custom_seed=PART_seed,dist_param="euclidean", hclust_param="average")
 #Save the TimeSeries object to the directory to prevent loss of data in the event
 #of a downstream error
 save(TS_object,file=name_save_obj)
 
 #GPROFILER SECTION
+# load('timeseries_obj_res.Rdata')
 TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
 #Save the results in a Rdata obbject
 save(TS_object,file=name_save_obj)

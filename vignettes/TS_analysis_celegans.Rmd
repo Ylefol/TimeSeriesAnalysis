@@ -296,8 +296,8 @@ while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. No
 
 ```{r genes_interest, echo=FALSE, message=FALSE, warning=FALSE, out.width= "65%", out.extra='style="float:right; padding:10px"'}
 #Subset for genes in the analysis
-count_matrix_lst<-slot(TS_object,'count_matrix')
-gene_matrix_interest<-count_matrix_lst$norm[row.names(count_matrix_lst$norm) %in% genes_of_interest,]
+count_matrix_norm<-exp_matrix(TS_object,'norm')
+gene_matrix_interest<-count_matrix_norm[row.names(count_matrix_norm) %in% genes_of_interest,]
 if(nrow(gene_matrix_interest)>0){
   var_vect <- apply(gene_matrix_interest, 1, stats::var)
   selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]

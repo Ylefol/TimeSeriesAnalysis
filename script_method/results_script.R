@@ -14,6 +14,10 @@ load(file = paste0(name_result_folder,obj_name))
 TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
 ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
 
+#Creating sample_data without row.names for illustration in Rmarkdown format
+sample_dta<-exp_sample_data(TS_object)
+row.names(sample_dta)=NULL
+
 #Used to highlight specific genes regardless of differential gene expression significance
 genes_of_interest <- c('AICDA','APOBEC3H','APOBEC3F','APOBEC3D','APOBEC3C','APOBEC3G','APOBEC3B','APOBEC3A','SMUG1','UNG','EGFR')
 
@@ -48,9 +52,11 @@ my_ont_gpro=paste0('GO:',my_ont_sem_sim)
 #Create standard gprofiler results
 gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = name_result_folder)
 GO_clusters<-gpro_res[['GO_df']]
+sem_dta<-slot(TS_object,'sem_list')
+
 
 #Plot and save MDS and clustered MDS
-wrapper_MDS_and_MDS_clusters(GO_clusters,TS_object@sem_list,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'))
+wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'))
 
 
 
@@ -78,5 +84,5 @@ target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042
 ancestor_ontology<-'BP'
 
 GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,TS_object@sem_list,target_dir=name_result_folder)
+ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,target_dir=name_result_folder)
 
