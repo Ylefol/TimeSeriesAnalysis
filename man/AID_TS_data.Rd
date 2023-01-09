@@ -5,13 +5,15 @@
 \alias{AID_TS_data}
 \title{RNAseq counts for AID activation cocktail in PBMC time series experiment}
 \format{
-A list containing a dataframe and another list of count dataframes
+A SummarizedExperiment containing the count matrix as the assay and the sample data as the colData
 \describe{
-  \item{sample_dta}{File indicating which count files belong to which group, timepoint, and replicate}
-  \item{counts}{A list of all the count files}
+  \item{sample_dta}{Dataframe indicating which count files belong to which group, timepoint, and replicate}
+  \item{counts}{A matrix of all the count files}
 }
 }
 \source{
+<https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html>
+
 <https://www.github.com/Ylefol/TimeSeriesAnalysis>
 }
 \usage{

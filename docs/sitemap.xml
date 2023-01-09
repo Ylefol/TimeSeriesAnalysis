@@ -49,7 +49,13 @@
     <loc>/reference/SS_GO_clusters.html</loc>
   </url>
   <url>
+    <loc>/reference/TS_load_example_data.html</loc>
+  </url>
+  <url>
     <loc>/reference/TimeSeries_Object-class.html</loc>
+  </url>
+  <url>
+    <loc>/reference/add_experiment_data.html</loc>
   </url>
   <url>
     <loc>/reference/add_semantic_similarity_data.html</loc>
@@ -173,6 +179,12 @@
   </url>
   <url>
     <loc>/reference/example_location/gprofiler_results/figures/C9_overview.html</loc>
+  </url>
+  <url>
+    <loc>/reference/exp_matrix.html</loc>
+  </url>
+  <url>
+    <loc>/reference/exp_sample_data.html</loc>
   </url>
   <url>
     <loc>/reference/findPartition.html</loc>

@@ -13,10 +13,7 @@ any intermediate results that may be used for plot creation
 \section{Slots}{
 
 \describe{
-\item{\code{count_matrix}}{A list used to store the raw and normalized count matrices}
-
-\item{\code{sample_data}}{A dataframe created by the user indicating the grouping, timepoints,
-and replicates to which the samples belong}
+\item{\code{exp_data}}{A summarized experiment which will contain the sample data and the count matrix}
 
 \item{\code{group_names}}{A vector for the group names used, should be in order for
 which the differential expression comparisons will occur, where the first

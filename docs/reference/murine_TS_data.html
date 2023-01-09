@@ -3,17 +3,7 @@
 Two groups exist: Control (no cocktail) and Treated (with activation cocktail).
 Initial experiment harvested timepoints at 0, 15min, 30min, 1h, 2h, 3h, 6h, 12h, 24h, and 48h.
 Only one replicate exists per group per timepoint, so subsequent timepoint of the same groups have been merged
-as a singular timepoint. For example, timepoints 0 and 15m became timepoint 7.5 minutes.
-#' @format A list containing a dataframe and another list of count dataframes
-  sample_dta
-File indicating which count files belong to which group, timepoint, and replicate
-
-  counts
-A list of all the count files
-
-
-
-"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+as a singular timepoint. For example, timepoints 0 and 15m became timepoint 7.5 minutes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -81,14 +71,7 @@ Two groups exist: Control (no cocktail) and Treated (with activation cocktail).
 Initial experiment harvested timepoints at 0, 15min, 30min, 1h, 2h, 3h, 6h, 12h, 24h, and 48h.
 Only one replicate exists per group per timepoint, so subsequent timepoint of the same groups have been merged
 as a singular timepoint. For example, timepoints 0 and 15m became timepoint 7.5 minutes.</p>
-<p>#' @format A list containing a dataframe and another list of count dataframes</p><dl><dt>sample_dta</dt>
-<dd><p>File indicating which count files belong to which group, timepoint, and replicate</p></dd>
-
-  <dt>counts</dt>
-<dd><p>A list of all the count files</p></dd>
-
-
-</dl></div>
+    </div>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">murine_TS_data</span></span></code></pre></div>
@@ -96,11 +79,18 @@ as a singular timepoint. For example, timepoints 0 and 15m became timepoint 7.5 
 
     <div id="format">
     <h2>Format</h2>
-    <p>An object of class <code>list</code> of length 2.</p>
-    </div>
+    <p>A SummarizedExperiment containing the count matrix as the assay and the sample data as the colData</p><dl><dt>sample_dta</dt>
+<dd><p>Dataframe indicating which count files belong to which group, timepoint, and replicate</p></dd>
+
+  <dt>counts</dt>
+<dd><p>A matrix of all the count files</p></dd>
+
+
+</dl></div>
     <div id="source">
     <h2>Source</h2>
-    <p>&lt;https://www.github.com/Ylefol/TimeSeriesAnalysis&gt;</p>
+    <p>&lt;https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html&gt;</p>
+<p>&lt;https://www.github.com/Ylefol/TimeSeriesAnalysis&gt;</p>
     </div>
 
   </div>

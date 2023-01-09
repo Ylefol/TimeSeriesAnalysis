@@ -76,6 +76,7 @@ for limma the function expects a csv file with all samples and genes.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_raw_count_matrix</span><span class="op">(</span></span>
 <span>  <span class="va">time_object</span>,</span>
+<span>  <span class="va">samp_data</span>,</span>
 <span>  path_to_data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  limma_id_replace <span class="op">=</span> <span class="st">"GeneName"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -87,6 +88,10 @@ for limma the function expects a csv file with all samples and genes.</p>
 <dd><p>A timeseries object</p></dd>
 
 
+<dt>samp_data</dt>
+<dd><p>dataframe containing the sample data</p></dd>
+
+
 <dt>path_to_data</dt>
 <dd><p>The path towards the count files.</p></dd>
 
@@ -95,35 +100,14 @@ for limma the function expects a csv file with all samples and genes.</p>
 <dd><p>The name of gene id's to use from the 'genes' dataframe
 in the Elist</p></dd>
 
-
-<dt>limma_from_raw</dt>
-<dd><p>Indicates if raw data is provided for microarrays or if an
-Elist was given</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The timeseries object with the raw count matrix added to it</p>
+<p>The time_object, count matrix, and the slot to save it in</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="write_example_data_to_dir.html">write_example_data_to_dir</a></span><span class="op">(</span><span class="st">'PBMC'</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'data/PBMC' already exists</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'data/PBMC/raw_counts_TS' already exists</span>
-<span class="r-in"><span><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="st">'data/PBMC/raw_counts_TS'</span></span></span>
-<span class="r-in"><span><span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="st">'data/PBMC/sample_file.csv'</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">'TimeSeries_Object'</span>,sample_data<span class="op">=</span><span class="fu"><a href="prep_sample_data.html">prep_sample_data</a></span><span class="op">(</span><span class="va">my_path_sample_dta</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'IgM'</span>,<span class="st">'LPS'</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 group_names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'IgM'</span>,<span class="st">'LPS'</span><span class="op">)</span>,group_colors<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e31a1c"</span>,<span class="st">"#1f78b4"</span><span class="op">)</span>,DE_method<span class="op">=</span><span class="st">'DESeq2'</span>,</span></span>
-<span class="r-in"><span>                 DE_p_filter<span class="op">=</span><span class="st">'padj'</span>,DE_p_thresh<span class="op">=</span><span class="fl">0.05</span>,DE_l2fc_thresh<span class="op">=</span><span class="fl">1</span>,</span></span>
-<span class="r-in"><span>                 PART_l2fc_thresh<span class="op">=</span><span class="fl">4</span>,sem_sim_org<span class="op">=</span><span class="st">'org.Hs.eg.db'</span>,Gpro_org<span class="op">=</span><span class="st">'hsapiens'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu">create_raw_count_matrix</span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_path_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
