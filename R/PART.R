@@ -112,8 +112,8 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' @export
 #'
 compute_PART<-function(object,part_recursion=100,part_min_clust=10,
-                           dist_param="euclidean", hclust_param="average",
-                           custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE){
+                       dist_param="euclidean", hclust_param="average",
+                       custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE){
   PART_res<-slot(object,'PART_results')
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){

@@ -248,8 +248,8 @@ row.names(sample_dta)=NULL
 ```{r DE_results ,echo=FALSE,message=FALSE,warning=FALSE}
 
 #Create results for conditional and temporal differential gene expression results
-plot_wrapper_DE_results(object=TS_object,DE_type='conditional',genes_of_interest=genes_of_interest,results_folder=name_result_folder)
-plot_wrapper_DE_results(object=TS_object,DE_type='temporal',genes_of_interest=genes_of_interest,results_folder=name_result_folder)
+plot_wrapper_DE_results(object=TS_object,DE_type='conditional',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
+plot_wrapper_DE_results(object=TS_object,DE_type='temporal',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
 
 #Creates a table for rmarkdown illustration
 DEG_table<-create_DEG_df(TS_object)
@@ -287,17 +287,17 @@ is compared against. For example, TP2_vs_TP1 would have the 'experiment' be TP2 
 while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. Note that TP=time point.
 
 **The conditional heatmap**
-  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_conditional/custom_heat_conditional.svg"))`
+  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_conditional/custom_heat_conditional.png"))`
 
 **The temporal heatmap**
-  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_temporal/custom_heat_temporal.svg"))`
+  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_temporal/custom_heat_temporal.png"))`
 
 ## Genes of interest results
 
 ```{r genes_interest, echo=FALSE, message=FALSE, warning=FALSE, out.width= "65%", out.extra='style="float:right; padding:10px"'}
 #Subset for genes in the analysis
-count_matrix_norm<-exp_matrix(TS_object,'norm')
-gene_matrix_interest<-count_matrix_norm[row.names(count_matrix_norm) %in% genes_of_interest,]
+count_matrix_lst<-slot(TS_object,'count_matrix')
+gene_matrix_interest<-count_matrix_lst$norm[row.names(count_matrix_lst$norm) %in% genes_of_interest,]
 if(nrow(gene_matrix_interest)>0){
   var_vect <- apply(gene_matrix_interest, 1, stats::var)
   selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]
