@@ -9,7 +9,8 @@ plot_wrapper_DE_results(
   DE_type,
   genes_of_interest = c(),
   results_folder = "TS_results/",
-  adjust_missing_temp_samples = TRUE
+  adjust_missing_temp_samples = TRUE,
+  do_SVGs = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ will use to create results. Either conditional or temporal}
 \item{adjust_missing_temp_samples}{Boolean indicating if missing temporal samples should be
 compensated for (NA introduced). Currently, there is no reason to have this set to
 False.}
+
+\item{do_SVGs}{Boolean indicating if SVGs should be saved for the heatmaps}
 }
 \value{
 None
@@ -48,6 +51,6 @@ TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
-plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '')
+plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '',do_SVGs=FALSE)
 
 }

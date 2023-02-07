@@ -30,7 +30,6 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
-
 ## TS performs: 
 
 * data normalization and processing 
@@ -53,14 +52,8 @@ You can install the development version of TimeSeriesAnalysis like so:
 install.packages("devtools")
 devtools::install_github("Ylefol/TimeSeriesAnalysis")
 ```
-The installation of devtools can sometimes be problematic where certain dependencies
-required by devtools are not installed. The approach to solve this is to identify
-the missing dependencies and install them separately, then re-attempt the installation
-of devtools. Repeat until this works.
+To instal Devtools, visit the 
 [Devtools main page](https://www.r-project.org/nosvn/pandoc/devtools.html)
-Note that when installing devtools (or most R packages) on a MAC or Linux distribution, it 
-if beneficial to install it from an R terminal that was launched using sudo rights. This is
-often due to non-R libraries being located in sudo-accessible areas of the computer.
 
 Certain bioconductor packages will have to be installed before
 installation of TimeSeriesAnalysis. The code snippet below gives the method along with
@@ -72,11 +65,6 @@ if (!require("BiocManager", quietly = TRUE))
 bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap')
 BiocManager::install(bio_pkgs)
 ```
-
-On linux and MAC distributions, it may be possible that the installation of pandoc
-and pandoc-cite be done separately. This has not bee tested on windows.
-Pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this
-will not be used, they are not required.
 
 ## Rmarkdown format
 
@@ -165,8 +153,9 @@ Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS
 
 ## Publication
 
-An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and
-the website will be updated when the manuscript is publicly available.
+A manuscript detailing the TimeSeriesAnalysis pipeline has been acepted for publication with NAR genomics and bioinformatics. 
+The version/DOI of this pipeline used within the manuscript is 10.5281/zenodo.7616032.
+A link to the manuscript will be provided upon publication.
 
 
 ## Additional information

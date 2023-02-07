@@ -693,6 +693,9 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
       found_ancestor<-sub_onto$values[sub_onto$values %in% target_ancestors][1]
       temp_df<-data.frame(term_id=GO,ancestor=found_ancestor)
       relations_found<-rbind(relations_found,temp_df)
+    }else if (GO %in% target_ancestors){#Found the ancestor itself
+      temp_df<-data.frame(term_id=GO,ancestor=GO)
+      relations_found<-rbind(relations_found,temp_df)
     }
   }
 
@@ -1409,8 +1412,8 @@ wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_d
   }else if(nrow(GO_df)>0){
     dir.create(paste0(target_dir,'ancestor_plots'))
 
-    custom_width<-8+(length(unique(GO_df$group_name))*0.30)
-    custom_height<-2+(nrow(GO_df)*0.25)
+    custom_width<-10+(length(unique(GO_df$group_name))*0.30)
+    custom_height<-5+(nrow(GO_df)*0.25)
 
     my_dotplot<-dotplot_ancestors(GO_df,enrichment_dta=FALSE,use_names=use_names)
 
@@ -1421,25 +1424,32 @@ wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_d
     my_dotplot<-NULL
   }
 
-
+  #Count the number of rows which are not duplicate (ancestor and ancestor)
+  #An MDS plot will only work if there are two or more rows where ancestor and termID
+  #are not the same
   if(length(unique(GO_df$term_id))>1 & length(unique(GO_df$ancestor_name))>1){
-    plot_data<-calculate_and_format_MDS(GO_df,sem_data)
-    plot_data<-merge_duplicate_modules(plot_data)
+    num_non_same_ancestor<-sum(apply(GO_df[,c('term_id','ancestor')], 1, function(row) length(unique(row)) != 1))
+    if(num_non_same_ancestor>1){
+      plot_data<-calculate_and_format_MDS(GO_df,sem_data)
+      plot_data<-merge_duplicate_modules(plot_data)
 
-    if(use_names==TRUE){
-      for_merger<-GO_df[,c('term_id','ancestor_name','-log10(padj)')]
+      if(use_names==TRUE){
+        for_merger<-GO_df[,c('term_id','ancestor_name','-log10(padj)')]
+      }else{
+        for_merger<-GO_df[,c('term_id','ancestor','-log10(padj)')]
+      }
+
+      colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')
+      plot_data<-merge(plot_data,for_merger,by='GO.ID')
+
+      my_MDS<-plot_ancestor_clust_MDS(plot_data)
+      saveWidget(as_widget(my_MDS), paste0(target_dir,"ancestor_plots/cluster_ancestors.html"))
+      unlink(paste0(target_dir,"ancestor_plots/cluster_ancestors_files"),recursive = TRUE)
+
+      write.csv(GO_df,paste0(target_dir,'ancestor_plots/ancestor_data.csv'),row.names=FALSE)
     }else{
-      for_merger<-GO_df[,c('term_id','ancestor','-log10(padj)')]
+      my_MDS<-NULL
     }
-
-    colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')
-    plot_data<-merge(plot_data,for_merger,by='GO.ID')
-
-    my_MDS<-plot_ancestor_clust_MDS(plot_data)
-    saveWidget(as_widget(my_MDS), paste0(target_dir,"ancestor_plots/cluster_ancestors.html"))
-    unlink(paste0(target_dir,"ancestor_plots/cluster_ancestors_files"),recursive = TRUE)
-
-    write.csv(GO_df,paste0(target_dir,'ancestor_plots/ancestor_data.csv'),row.names=FALSE)
   }else{
     my_MDS<-NULL
   }

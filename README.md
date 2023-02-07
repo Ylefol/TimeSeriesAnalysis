@@ -11,7 +11,7 @@ RNA sequencing and microarray data
 
 ## Overview
 
-TimeSeriesAnalysis (TSA) is an analysis and visualization package for
+TimeSeriesAnalysis (TiSA) is an analysis and visualization package for
 RNAseq and microarray data. TS extracts significant genes from time
 course transcriptomic data by performing differential gene expression on
 both the conditional and temporal axes. It then employs partitioning
@@ -19,19 +19,23 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
+## Version DOI
+
+10.5281/zenodo.7616032
+
 ## TS performs:
 
--   data normalization and processing
--   PCA plots
--   Differential gene expression (conditional and temporal)
--   PART clustering
--   Heatmaps for both differential expression summary and clustering
-    results
--   Trajectory of identified clusters
--   Gprofiler (functional enrichment) analysis of clusters
--   Dotplots and MDS plots of Gprofiler results
--   Nearest ancestor clustering of GOs
--   GO ancestor queries
+- data normalization and processing
+- PCA plots
+- Differential gene expression (conditional and temporal)
+- PART clustering
+- Heatmaps for both differential expression summary and clustering
+  results
+- Trajectory of identified clusters
+- Gprofiler (functional enrichment) analysis of clusters
+- Dotplots and MDS plots of Gprofiler results
+- Nearest ancestor clustering of GOs
+- GO ancestor queries
 
 ## Installation
 
@@ -42,16 +46,8 @@ install.packages("devtools")
 devtools::install_github("Ylefol/TimeSeriesAnalysis")
 ```
 
-The installation of devtools can sometimes be problematic where certain
-dependencies required by devtools are not installed. The approach to
-solve this is to identify the missing dependencies and install them
-separately, then re-attempt the installation of devtools. Repeat until
-this works. [Devtools main
-page](https://www.r-project.org/nosvn/pandoc/devtools.html) Note that
-when installing devtools (or most R packages) on a MAC or Linux
-distribution, it if beneficial to install it from an R terminal that was
-launched using sudo rights. This is often due to non-R libraries being
-located in sudo-accessible areas of the computer.
+To instal Devtools, visit the [Devtools main
+page](https://www.r-project.org/nosvn/pandoc/devtools.html)
 
 Certain bioconductor packages will have to be installed before
 installation of TimeSeriesAnalysis. The code snippet below gives the
@@ -64,11 +60,6 @@ if (!require("BiocManager", quietly = TRUE))
 bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap')
 BiocManager::install(bio_pkgs)
 ```
-
-On linux and MAC distributions, it may be possible that the installation
-of pandoc and pandoc-cite be done separately. This has not bee tested on
-windows. Pandoc and pandoc-cite are necessary for the use of the
-Rmarkdown format, if this will not be used, they are not required.
 
 ## Rmarkdown format
 
@@ -85,6 +76,9 @@ repository, they are located in the ‘rmarkdown_method’ folder. If users
 prefer a script approach, the equivalent of the rmarkdown report is
 provided in two scripts, one for the computation tasks and a second for
 the analyses. These two scripts are found in the ‘script_method’ folder.
+
+Both the rmarkdown and script methods are found in the
+‘supp_to_bioconductor’ branch.
 
 ## Data
 
