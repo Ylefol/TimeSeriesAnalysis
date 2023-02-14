@@ -1,3 +1,2 @@
 ,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.030099418923572,11,26,2,0.0769230769230769,0.181818181818182,GO:0008331,GO:MF,high voltage-gated calcium channel activity,20166,2101,GO:0005245
-2,query_1,TRUE,0.0105867822945153,2048,27,12,0.444444444444444,0.005859375,TF:M02096,TF,Factor: ipf1; motif: YTAATGN,19943,4244,TF:M00000
+1,query_1,TRUE,0.049907139086204,33,8,2,0.25,0.0606060606060606,WP:WP5088,WP,Prostaglandin signaling,7827,396,WP:000000

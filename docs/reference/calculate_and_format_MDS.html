@@ -144,6 +144,13 @@ colors which are equivalent to the cluster colors</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C11</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C12</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C14</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C16</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C17</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
@@ -153,9 +160,9 @@ colors which are equivalent to the cluster colors</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C6</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C9</span>
 <span class="r-in"><span><span class="co">#Results saved to created directory</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">'example_location'</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'example_location' already exists</span>
@@ -165,8 +172,7 @@ colors which are equivalent to the cluster colors</p>
 <span class="r-in"><span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gpro_res' not found</span>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_semantic_similarity_data.html">add_semantic_similarity_data</a></span><span class="op">(</span><span class="va">TS_object</span>,ont_sem_sim<span class="op">=</span><span class="st">'BP'</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> preparing gene to GO mapping data...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> preparing IC data...</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(name):</span> there is no package called ‘org.Hs.eg.db’</span>
 <span class="r-in"><span><span class="va">plot_data</span><span class="op">&lt;-</span><span class="fu">calculate_and_format_MDS</span><span class="op">(</span><span class="va">GO_clusters</span>,<span class="va">TS_object</span><span class="op">@</span><span class="va">sem_list</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in termSim(GO1, GO2, semData, method = measure):</span> object 'GO_clusters' not found</span>
 <span class="r-in"><span></span></span>
