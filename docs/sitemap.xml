@@ -43,6 +43,9 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PART_heat_map.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PBMC_gpro_res.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PartRec.html</loc>
   </url>
   <url>
@@ -74,6 +77,9 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_mean_cluster_traj.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/celegans_gpro_res.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/compute_PART.html</loc>
@@ -247,10 +253,16 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/murine_TS_data.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/murine_gpro_res.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/normalize_timeSeries_with_deseq2.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part_gprofiler_vignettes.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_MDS.html</loc>

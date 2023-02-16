@@ -47,3 +47,31 @@
 #' @source <https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html>
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
 "Celegans_TS_data"
+
+
+#' @title Gprofiler results for the PBMC example dataset
+#'
+#' @description A list containing the gprofiler results (14 clusters) for the PBMC example.
+#' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#'
+#' @format A list of lists
+#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
+"PBMC_gpro_res"
+
+#' @title Gprofiler results for the celegans example dataset
+#'
+#' @description A list containing the gprofiler results (14 clusters) for the celegans example.
+#' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#'
+#' @format A list of lists
+#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
+"celegans_gpro_res"
+
+#' @title Gprofiler results for the murine example dataset
+#'
+#' @description A list containing the gprofiler results (19 clusters) for the murine example.
+#' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#'
+#' @format A list of lists
+#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
+"murine_gpro_res"

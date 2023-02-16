@@ -4,10 +4,14 @@
 \alias{run_gprofiler_PART_clusters}
 \title{Gprofiler analysis}
 \usage{
-run_gprofiler_PART_clusters(object)
+run_gprofiler_PART_clusters(object, vignette_run = FALSE)
 }
 \arguments{
 \item{object}{A time series object}
+
+\item{vignette_run}{Boolean indicating if this function is being run within
+vignettes, if so it will bypass a network connection error and load mock data
+otherwise the error will terminate the script and send the error back to the user.}
 }
 \value{
 The updated object with the Gprofiler results

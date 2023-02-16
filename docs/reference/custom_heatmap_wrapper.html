@@ -73,7 +73,8 @@ illustrating the significant DEGs of a given differential expression type (DE_ty
 <span>  <span class="va">DE_type</span>,</span>
 <span>  log_transform <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  plot_file_name <span class="op">=</span> <span class="st">"custom_DEG_heatmap"</span>,</span>
-<span>  adjust_missing_temp_samples <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  adjust_missing_temp_samples <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do_SVGs <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -100,6 +101,10 @@ on the heatmap</p></dd>
 <dd><p>Boolean indicating if missing temporal samples should be
 compensated for (NA introduced). Currently, there is no reason to have this set to
 False.</p></dd>
+
+
+<dt>do_SVGs</dt>
+<dd><p>Boolean indicating if SVG files should be saved for the heatmaps</p></dd>
 
 </dl></div>
     <div id="value">
@@ -137,7 +142,7 @@ False.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
 <span class="r-in"><span><span class="co">#Run function, results saved to main directory</span></span></span>
-<span class="r-in"><span><span class="fu">custom_heatmap_wrapper</span><span class="op">(</span><span class="va">TS_object</span>,DE_type <span class="op">=</span> <span class="st">'conditional'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">custom_heatmap_wrapper</span><span class="op">(</span><span class="va">TS_object</span>,DE_type <span class="op">=</span> <span class="st">'conditional'</span>,do_SVGs<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
 <span class="r-in"><span></span></span>

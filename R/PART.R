@@ -216,6 +216,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' in the appropriate slot of the time object
 #'
 #' @param object A time series object
+#' @param vignette_run Boolean indicating if this function is being run within
+#' vignettes, if so it will bypass a network connection error and load mock data
+#' otherwise the error will terminate the script and send the error back to the user.
 #'
 #' @return The updated object with the Gprofiler results
 #'
@@ -241,7 +244,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' @import GOSemSim
 #'
 #' @export
-run_gprofiler_PART_clusters<-function(object){
+run_gprofiler_PART_clusters<-function(object,vignette_run=FALSE){
 
   #Check if gprofiler results already exists
   if(length(slot(object,'Gprofiler_results'))>0){
@@ -256,10 +259,64 @@ run_gprofiler_PART_clusters<-function(object){
     message(paste0('Gprofiler for ',clust))
     gene_vect<-cmap[cmap==clust,]
     gene_vect<-as.vector(row.names(gene_vect))
-    gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
+
+    #If function is called within Vignettes, mock data is used if the URL fails
+    #This should only be done within the context of Vignettes
+    if(vignette_run==TRUE){
+      returned_values<-part_gprofiler_vignettes(object,gene_vect)
+      if(returned_values[[2]]==0){#Indicates that network did not connect
+        message('Could not connect to gprofiler, used save example data instead')
+        return(returned_values[[1]])#Returns object loaded with example data
+      }else{
+        gostres<-returned_values[[1]]
+      }
+    #Vignette_run == FALSE
+    }else{
+      gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
+    }
     if (is.null(gostres)==FALSE){
       object@Gprofiler_results[[clust]]<-gostres
     }
   }
   return(object)
+}
+
+
+
+#' @title Gprofiler analysis for Vignettes
+#'
+#' @description Function which runs the gprofiler function as a try catch. In the
+#' event of a issue with the connection to host (unable to connect to gprofiler)
+#' The function will fetch example data and use that instead.
+#'
+#' @param object A time series object
+#' @param gene_vect The gene vector which will be submitted to gprofiler
+#'
+#' @return Either the gprofiler result, or the object updated with the example data
+#'
+#'
+#' @import gprofiler2
+#' @import GOSemSim
+#'
+#' @export
+part_gprofiler_vignettes<-function(object,gene_vect){
+  gostres <- tryCatch({
+    gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
+  },
+  error=function(cond) {})
+  if(is.null(gostres)==TRUE){#Connectivity error occurred
+    #Load the saved example data, and return object
+    if(slot(object,'Gpro_org')=='hsapiens'){
+      object@Gprofiler_results<-PBMC_gpro_res
+    }else if(slot(object,'Gpro_org')=='celegans'){
+      object@Gprofiler_results<-celegans_gpro_res
+    }else if(slot(object,'Gpro_org')=='mmusculus'){
+      object@Gprofiler_results<-murine_gpro_res
+    }else{
+      stop('No example data found, script terminated -could not connect to gprofiler, check network')
+    }
+    return(list(object,0))
+  }else{
+    return(list(gostres,1))
+  }
 }

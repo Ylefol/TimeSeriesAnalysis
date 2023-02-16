@@ -54,6 +54,11 @@ graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare organism and load library
 org_sem_sim='org.Ce.eg.db'
+if(system.file(package=org_sem_sim) ==''){#Package not installed
+  if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install(org_sem_sim)
+}
 library('org.Ce.eg.db')
 
 #Define specimen and ontology parameters
@@ -197,7 +202,7 @@ object will then contain the gprofiler analysis results and can be used to gener
 plots with the downstream code chunks.
 ```{r run_Gpro ,message=FALSE,warning=FALSE}
 # load('timeseries_obj_res.Rdata')
-TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run = TRUE) #Run the gprofiler analysis
 #Save the results in a Rdata obbject
 save(TS_object,file=name_save_obj)
 

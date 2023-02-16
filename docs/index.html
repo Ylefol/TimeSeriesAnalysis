@@ -89,7 +89,12 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>TimeSeriesAnalysis (TSA) is an analysis and visualization package for RNAseq and microarray data. TS extracts significant genes from time course transcriptomic data by performing differential gene expression on both the conditional and temporal axes. It then employs partitioning algorithm based on recursive thresholding (PART) clustering to identify small genomic clusters of relevance, followed by running the clusters through gprofiler to reveal the biological relevance of each cluster.</p>
+<p>TimeSeriesAnalysis (TiSA) is an analysis and visualization package for RNAseq and microarray data. TS extracts significant genes from time course transcriptomic data by performing differential gene expression on both the conditional and temporal axes. It then employs partitioning algorithm based on recursive thresholding (PART) clustering to identify small genomic clusters of relevance, followed by running the clusters through gprofiler to reveal the biological relevance of each cluster.</p>
+</div>
+<div class="section level2">
+<h2 id="version-doi">Version DOI<a class="anchor" aria-label="anchor" href="#version-doi"></a>
+</h2>
+<p>10.5281/zenodo.7616032</p>
 </div>
 <div class="section level2">
 <h2 id="ts-performs">TS performs:<a class="anchor" aria-label="anchor" href="#ts-performs"></a>
@@ -114,19 +119,19 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis"</span><span class="op">)</span></span></code></pre></div>
-<p>The installation of devtools can sometimes be problematic where certain dependencies required by devtools are not installed. The approach to solve this is to identify the missing dependencies and install them separately, then re-attempt the installation of devtools. Repeat until this works. <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a> Note that when installing devtools (or most R packages) on a MAC or Linux distribution, it if beneficial to install it from an R terminal that was launched using sudo rights. This is often due to non-R libraries being located in sudo-accessible areas of the computer.</p>
+<p>To instal Devtools, visit the <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a></p>
 <p>Certain bioconductor packages will have to be installed before installation of TimeSeriesAnalysis. The code snippet below gives the method along with some of the packages that should be installed via this method.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="va">bio_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'DESeq2'</span>,<span class="st">'GOSemSim'</span>,<span class="st">'GO.db'</span>,<span class="st">'limma'</span>,<span class="st">'ComplexHeatmap'</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">bio_pkgs</span><span class="op">)</span></span></code></pre></div>
-<p>On linux and MAC distributions, it may be possible that the installation of pandoc and pandoc-cite be done separately. This has not bee tested on windows. Pandoc and pandoc-cite are necessary for the use of the Rmarkdown format, if this will not be used, they are not required.</p>
 </div>
 <div class="section level2">
 <h2 id="rmarkdown-format">Rmarkdown format<a class="anchor" aria-label="anchor" href="#rmarkdown-format"></a>
 </h2>
 <p>TimeSeriesAnalysis was developed with user-friendliness in mind, the core script of the package is a Rmarkdown file with explanations of what each code block performs. Computationally intensive code blocks save their work in order to avoid loss of computation time. TimeSeriesAnalysis comes with a test dataset. Users are recommended to first run the package with the test data to then modify the Rmarkdown script with the necessary information for their purposes (input files, organism, genes of interest etc…). The rmarkdown script and the expected result from an example run can be found and downloaded from this repository, they are located in the ‘rmarkdown_method’ folder. If users prefer a script approach, the equivalent of the rmarkdown report is provided in two scripts, one for the computation tasks and a second for the analyses. These two scripts are found in the ‘script_method’ folder.</p>
+<p>Both the rmarkdown and script methods are found in the ‘supp_to_bioconductor’ branch.</p>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>

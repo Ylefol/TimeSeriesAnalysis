@@ -10,7 +10,7 @@ find_relation_to_ancestors(target_ancestors, GOs_to_check, ontology = "BP")
 \item{target_ancestors}{A vector of GO IDs to use as ancestors}
 
 \item{GOs_to_check}{A dataframe created by either \code{gprofiler_for_conditional_DE}
-or \code{gprofiler_cluster_analysis}}
+or \code{gprofiler_cluster_analysis} or within the 'Gpro_org' slot of a time_object}
 
 \item{ontology}{The ontology to be used to search for ancestry}
 }

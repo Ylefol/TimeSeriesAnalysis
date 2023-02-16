@@ -68,13 +68,19 @@ in the appropriate slot of the time object</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_gprofiler_PART_clusters</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_gprofiler_PART_clusters</span><span class="op">(</span><span class="va">object</span>, vignette_run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A time series object</p></dd>
+
+
+<dt>vignette_run</dt>
+<dd><p>Boolean indicating if this function is being run within
+vignettes, if so it will bypass a network connection error and load mock data
+otherwise the error will terminate the script and send the error back to the user.</p></dd>
 
 </dl></div>
     <div id="value">

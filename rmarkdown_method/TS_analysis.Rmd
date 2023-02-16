@@ -51,8 +51,13 @@ name_control<-'LPS' #Name of experiment as seen in the sample file
 name_experiment<-'IgM' #Name of control as seen in the sample file
 graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
-#Declare organism and load library
+#Declare organism and load library, install if necessary
 org_sem_sim='org.Hs.eg.db'
+if(system.file(package=org_sem_sim) ==''){#Package not installed
+  if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install(org_sem_sim)
+}
 library('org.Hs.eg.db')
 
 #Define specimen and ontology parameters
@@ -70,7 +75,7 @@ my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 # this link: https://www.r-bloggers.com/2018/07/%F0%9F%8C%B1-setting-a-seed-in-r-when-using-parallel-simulation/
 PART_seed=123456
 
-PART_l2fc<-2 #log(2)foldChange threshold for PART clustering
+PART_l2fc<-1 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
 PART_recursion<-100 #Number of recursions, default is 100, using 10 for example
 
@@ -198,7 +203,7 @@ plots with the downstream code chunks.
 ```{r run_Gpro ,message=FALSE,warning=FALSE}
 # load('timeseries_obj_res.Rdata')
 TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
-#Save the results in a Rdata obbject
+#Save the results in a Rdata object
 save(TS_object,file=name_save_obj)
 
 ```

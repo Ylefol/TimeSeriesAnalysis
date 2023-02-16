@@ -7,7 +7,7 @@
 calculate_and_format_MDS(GO_df, semantic_data, measure = "Wang")
 }
 \arguments{
-\item{GO_df}{The dataframe of GOs as returned by \code{gprofiler_cluster_analysis}}
+\item{GO_df}{The dataframe of GOs contained in the 'Gpro_org' slot of a time_object}
 
 \item{measure}{the measuring method for semantic distance}
 

@@ -13,7 +13,7 @@ wrapper_MDS_and_MDS_clusters(
 )
 }
 \arguments{
-\item{GO_clusters}{The dataframe of GOs as returned by \code{gprofiler_cluster_analysis}}
+\item{GO_clusters}{The dataframe of GOs contained in the 'Gpro_org' slot of a time_object}
 
 \item{sem_data}{semantic similarity data as created by the godata function}
 
