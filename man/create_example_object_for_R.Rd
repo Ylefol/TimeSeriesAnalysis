@@ -15,4 +15,5 @@ to use within documentation examples
 }
 \examples{
 TS_object<-create_example_object_for_R()
+
 }

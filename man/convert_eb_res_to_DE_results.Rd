@@ -19,6 +19,8 @@ convert_eb_res_to_DE_results(
 
 \item{samples_used}{The samples used to obtain the eb_res object}
 
+\item{exp_name}{The name which will be given to the results obtained by the function.}
+
 \item{DE_type}{Either temporal or conditional for the type of differential gene
 expression experiment performed}
 }

@@ -33,7 +33,7 @@
 #' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 #' TS_object@PART_results$part_matrix
 #'
 #' @export
@@ -73,7 +73,6 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' to put them together. We first order using hierarchical clustering for visual purposes.
 #'
 #' @param object A timeseries object
-#' @param save_name the file name to save the PART data, if NULL no saving
 #' @param part_recursion The number of recursions for PART calculation
 #' @param part_min_clust The minimum number of genes per cluster
 #' @param dist_param The distance parameter for clustering
@@ -100,7 +99,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 #' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
 #'
 #' @import tictoc
@@ -236,9 +235,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 #' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-#' TS_object<-run_gprofiler_PART_clusters(TS_object)
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE)
 #'
 #' @import gprofiler2
 #' @import GOSemSim
@@ -307,7 +306,11 @@ part_gprofiler_vignettes<-function(object,gene_vect){
   if(is.null(gostres)==TRUE){#Connectivity error occurred
     #Load the saved example data, and return object
     if(slot(object,'Gpro_org')=='hsapiens'){
-      object@Gprofiler_results<-PBMC_gpro_res
+      if(slot(object,'PART_l2fc_thresh')==4){#Indicates that the data is for examples, not vignettes
+        object@Gprofiler_results<-AID_example_gpro_res
+      }else{
+        object@Gprofiler_results<-PBMC_gpro_res
+      }
     }else if(slot(object,'Gpro_org')=='celegans'){
       object@Gprofiler_results<-celegans_gpro_res
     }else if(slot(object,'Gpro_org')=='mmusculus'){

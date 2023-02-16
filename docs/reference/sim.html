@@ -71,6 +71,12 @@ Simulate from a uniform distribution according to min and max of the feature vec
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim</span><span class="op">(</span><span class="va">Xcol</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>Xcol</dt>
+<dd><p>Feature vector</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     
@@ -81,11 +87,8 @@ Simulate from a uniform distribution according to min and max of the feature vec
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">example_dta</span><span class="op">&lt;-</span><span class="fu"><a href="create_example_data_for_R.html">create_example_data_for_R</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in 2:ncol(counts_df):</span> argument of length 0</span>
 <span class="r-in"><span><span class="va">X</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">example_dta</span><span class="op">$</span><span class="va">counts</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.matrix(example_dta$counts):</span> object 'example_dta' not found</span>
 <span class="r-in"><span><span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">X</span>,<span class="fl">2</span>,<span class="va">sim</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in apply(X, 2, sim):</span> object 'X' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

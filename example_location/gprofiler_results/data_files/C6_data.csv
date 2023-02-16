@@ -1,0 +1,4 @@
+,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
+1,query_1,TRUE,0.0205031780290536,319,11,4,0.363636363636364,0.0125391849529781,GO:0001933,GO:BP,negative regulation of protein phosphorylation,21092,661,GO:0001932/GO:0006468/GO:0031400/GO:0042326
+2,query_1,TRUE,0.0333237175199686,361,11,4,0.363636363636364,0.0110803324099723,GO:0042326,GO:BP,negative regulation of phosphorylation,21092,11653,GO:0016310/GO:0042325/GO:0045936
+3,query_1,TRUE,0.00178224502790389,54,8,3,0.375,0.0555555555555556,WP:WP395,WP,IL-4 signaling pathway,7827,299,WP:000000

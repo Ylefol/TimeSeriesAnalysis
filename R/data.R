@@ -75,3 +75,14 @@
 #' @format A list of lists
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
 "murine_gpro_res"
+
+
+#' @title Gprofiler results for the function examples
+#'
+#' @description A list containing the gprofiler results (11 clusters) for the AID example.
+#' This data exists to allow for the creation of function examples in the event
+#' that no connection to gprofiler could be made (host connection error)
+#'
+#' @format A list of lists
+#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
+"AID_example_gpro_res"

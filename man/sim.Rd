@@ -6,6 +6,9 @@
 \usage{
 sim(Xcol)
 }
+\arguments{
+\item{Xcol}{Feature vector}
+}
 \value{
 Simulated uniform distribution
 }

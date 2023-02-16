@@ -23,6 +23,7 @@ the values from the different files are merged into a matrix and returned
 write_example_data_to_dir('PBMC')
 my_path_data<-'data/PBMC/raw_counts_TS'
 my_path_sample_dta<-'data/PBMC/sample_file.csv'
+graph_vect<-c("#e31a1c","#1f78b4")
 
 TS_object <- new('TimeSeries_Object',
                  group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
@@ -30,12 +31,13 @@ TS_object <- new('TimeSeries_Object',
                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
 
 TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
-groups<-slot(time_object,'group_names')
+groups<-slot(TS_object,'group_names')
 #Ensures that the order will follow the grouping order
-selected_samples_1<-samp_data$sample[samp_data$group \%in\% groups[1]]
-selected_samples_2<-samp_data$sample[samp_data$group \%in\% groups[2]]
+sample_data<-exp_sample_data(TS_object)
+selected_samples_1<-sample_data$sample[sample_data$group \%in\% groups[1]]
+selected_samples_2<-sample_data$sample[sample_data$group \%in\% groups[2]]
 selected_samples<-c(selected_samples_1,selected_samples_2)
 
 #Prepare the matrix according to the differential expression method (affects input)
- final_counts<-prep_RNAseq_matrix(path_to_data,selected_samples)
+ final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
 }

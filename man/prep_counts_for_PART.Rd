@@ -37,7 +37,7 @@ samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
 samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
-TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 TS_object@PART_results$part_matrix
 
 }

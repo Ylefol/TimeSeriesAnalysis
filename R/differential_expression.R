@@ -403,7 +403,6 @@ calculate_EB <- function(micro_arr_dta,matrix_model,comparison){
 #' @param exp_name The name of the expriment that will be used to store the results
 #' @param target_tp The timepoint being targeted in the case of conditional analysis
 #' @param do_temporal If the analysis is temporal or conditional
-#' @param specific_temporal_group Makes the temporal analysis group specific
 #'
 #' @return The updated timeseries object
 #'
@@ -442,6 +441,7 @@ DE_using_limma<-function(time_object,group_names,exp_name,target_tp=NULL,do_temp
 #' @param time_object A timeseries object
 #' @param eb_res The empirical bayesian results
 #' @param samples_used The samples used to obtain the eb_res object
+#' @param exp_name The name which will be given to the results obtained by the function.
 #' @param DE_type Either temporal or conditional for the type of differential gene
 #' expression experiment performed
 #'

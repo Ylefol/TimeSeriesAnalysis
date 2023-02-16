@@ -43,7 +43,7 @@ significance where the absolute value of the genes must be greater than the thre
 \item{\code{DE_results}}{A list of results for the different differential expression experiments
 performed}
 
-\item{\code{PART_L2FC_thresh}}{A integer indicating the log(2)foldchange threshold for genes
+\item{\code{PART_l2fc_thresh}}{A integer indicating the log(2)foldchange threshold for genes
 to be PART clustered}
 
 \item{\code{PART_results}}{A list of results for the PART clustering analysis}

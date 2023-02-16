@@ -46,6 +46,8 @@ through gprofiler to reveal the biological relevance of each cluster.
 
 ## Installation
 
+**A Bioconductor release is in progress**
+
 You can install the development version of TimeSeriesAnalysis like so:
 
 ``` r
@@ -62,7 +64,8 @@ some of the packages that should be installed via this method.
 ``` r
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap')
+bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
+'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db')
 BiocManager::install(bio_pkgs)
 ```
 

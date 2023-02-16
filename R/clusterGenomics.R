@@ -121,9 +121,10 @@ doKmeans <- function(X,k,nstart){
 #' @description Obtain partitions of the data into k=1,...,Kmax clusters
 #' gives the clustering method, distance measure, and other parameters to be used in the clustering
 #'
-#' @param matrix of values
-#' @param maximum number of clusters
-#' @param dx distance measure
+#' @param X of values
+#' @param Kmax max number of clusters
+#' @param dX distance measure
+#' @param ... extra values to be given
 #'
 #' @return list of cluster labels
 #'
@@ -171,6 +172,7 @@ findPartition <- function(X,Kmax,dX=NULL,...){
 #' @param B number of recursions
 #' @param ref.gen reference gen
 #' @param cl.lab cluster labels
+#' @param ... Extra parameters to be given to the function
 #'
 #' @return list of gaps found
 #'
@@ -260,6 +262,8 @@ gap <- function(X,Kmax=10,B=100,ref.gen="PC",cl.lab=NULL,...){
 #' @description helper-functions only used by GAP:
 #' Simulate from a uniform distribution according to min and max of the feature vector:
 #'
+#' @param Xcol Feature vector
+#'
 #' @return Simulated uniform distribution
 #'
 #' @examples
@@ -280,7 +284,7 @@ sim <- function(Xcol) {
 #'
 #' @description Calulates the total within-cluster dispersion (W_K) for a k=1,...,K:
 #'
-#' @param dx matrix for cluster
+#' @param dX matrix for cluster
 #' @param K current cluster
 #' @param cl.lab cluster labels
 #'
@@ -339,6 +343,8 @@ findW <- function(dX,K,cl.lab){
 #' @param X matrix of values
 #' @param Kmax maximum number of clusters
 #' @param B Number of recursions
+#' @param ref.gen Type of transformation
+#' @param ... Extra parameters to be given to the function
 #'
 #' @return calculated Wb
 #'
@@ -398,10 +404,11 @@ getReferenceW <- function(X,Kmax,B,ref.gen,...)	{
 #' @description Main function for PART:
 #'
 #' @param X matrix of values
-#' @param kmax maximum number of clusters
+#' @param Kmax maximum number of clusters
 #' @param minSize minimum cluster size
 #' @param minDist Minimum distance between clusters
 #' @param cl.lab cluster labels
+#' @param ... Extra parameters to be given
 #'
 #' @return list of identified clusters
 #'
@@ -453,6 +460,7 @@ part <- function(X,Kmax=10,minSize=8,minDist=NULL,cl.lab=NULL,...){
 #' @param Kmax max number of cluster
 #' @param ind number of clusters
 #' @param cl.lab cluster label
+#' @param ... Extra parameters to be used
 #'
 #' @return Either cluster results or recursion elements
 #'
@@ -576,6 +584,7 @@ PartRec <- function(X,Kmax,ind,cl.lab=NULL,...){
 #'
 #' @param X value matrix
 #' @param q q
+#' @param ... Extra parameters to be given to the function
 #'
 #' @return threshold
 #'

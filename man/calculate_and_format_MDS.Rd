@@ -9,9 +9,9 @@ calculate_and_format_MDS(GO_df, semantic_data, measure = "Wang")
 \arguments{
 \item{GO_df}{The dataframe of GOs contained in the 'Gpro_org' slot of a time_object}
 
-\item{measure}{the measuring method for semantic distance}
+\item{semantic_data}{semantic similarity data as created by the godata function}
 
-\item{sem_data}{semantic similarity data as created by the godata function}
+\item{measure}{the measuring method for semantic distance}
 }
 \value{
 res.mds A dataframe containing the MDS dimensions, along with groupings and
@@ -42,10 +42,10 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #Results saved to created directory
 dir.create('example_location')
-gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=dir.create('example_location'))
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
 GO_clusters<-gpro_res[['GO_df']]
 TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)

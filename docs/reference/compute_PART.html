@@ -121,10 +121,6 @@ from the object</p></dd>
 <dd><p>Boolean indicating if the results should be returned
 within the submitted object or as a list</p></dd>
 
-
-<dt>save_name</dt>
-<dd><p>the file name to save the PART data, if NULL no saving</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -169,11 +165,9 @@ within the submitted object or as a list</p></dd>
 <span class="r-in"><span><span class="va">samps_1</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_object</span><span class="op">@</span><span class="va">group_names</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Create the matrix that will be used for PART clustering</span></span></span>
-<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="prep_counts_for_PART.html">prep_counts_for_PART</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">TS_object</span>,target_genes<span class="op">=</span><span class="va">all_genes</span>,scale<span class="op">=</span><span class="cn">TRUE</span>,target_samples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">samps_2</span>,<span class="va">samps_1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in prep_counts_for_PART(object = TS_object, target_genes = all_genes,     scale = TRUE, target_samples = c(samps_2, samps_1)):</span> object 'all_genes' not found</span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="prep_counts_for_PART.html">prep_counts_for_PART</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">TS_object</span>,target_genes<span class="op">=</span><span class="va">signi_genes</span>,scale<span class="op">=</span><span class="cn">TRUE</span>,target_samples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">samps_2</span>,<span class="va">samps_1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu">compute_PART</span><span class="op">(</span><span class="va">TS_object</span>,part_recursion<span class="op">=</span><span class="fl">10</span>,part_min_clust<span class="op">=</span><span class="fl">10</span>,dist_param<span class="op">=</span><span class="st">"euclidean"</span>, hclust_param<span class="op">=</span><span class="st">"average"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing PART clusters</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),     NULL) else NULL):</span> 'data' must be of a vector type, was 'NULL'</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

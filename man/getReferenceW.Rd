@@ -12,6 +12,10 @@ getReferenceW(X, Kmax, B, ref.gen, ...)
 \item{Kmax}{maximum number of clusters}
 
 \item{B}{Number of recursions}
+
+\item{ref.gen}{Type of transformation}
+
+\item{...}{Extra parameters to be given to the function}
 }
 \value{
 calculated Wb
