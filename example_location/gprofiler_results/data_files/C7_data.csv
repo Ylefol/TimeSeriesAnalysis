@@ -1,2 +1,0 @@
-,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.0154838760285676,13,23,2,0.0869565217391304,0.153846153846154,GO:0044194,GO:CC,cytolytic granule,21690,2257,GO:0005764

@@ -1,3 +1,0 @@
-,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.0307984734417535,11,27,2,0.0740740740740741,0.181818181818182,GO:0008331,GO:MF,high voltage-gated calcium channel activity,20166,2101,GO:0005245
-2,query_1,TRUE,0.0167964826544804,2048,28,12,0.428571428571429,0.005859375,TF:M02096,TF,Factor: ipf1; motif: YTAATGN,19943,4244,TF:M00000

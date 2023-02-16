@@ -1,3 +1,0 @@
-,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.0121981793408629,5902,40,23,0.575,0.00389698407319553,GO:0031224,GO:CC,intrinsic component of membrane,21690,1234,GO:0016020/GO:0110165
-2,query_1,TRUE,0.0282654943896468,5746,40,22,0.55,0.00382875043508528,GO:0016021,GO:CC,integral component of membrane,21690,849,GO:0031224

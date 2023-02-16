@@ -1,5 +1,0 @@
-,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
-1,query_1,TRUE,0.0499866285768554,1,2,1,0.5,1,CORUM:3157,CORUM,PR -PRLR complex,3385,1431,CORUM:0000000
-2,query_1,TRUE,0.0203424231581982,1109,12,6,0.5,0.00541027953110911,GO:0072359,GO:BP,circulatory system development,21092,20190,GO:0048731
-3,query_1,TRUE,0.041403721402993,2814,12,8,0.666666666666667,0.00284292821606254,GO:0009605,GO:BP,response to external stimulus,21092,3973,GO:0050896
-4,query_1,TRUE,0.00541168659826425,19,12,2,0.166666666666667,0.105263157894737,GO:0043083,GO:CC,synaptic cleft,21690,2099,GO:0005576
