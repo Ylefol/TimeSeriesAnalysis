@@ -173,14 +173,11 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
 #' TS_object <- TS_load_example_data(TS_object,'PBMC')
 #'
 #' @import SummarizedExperiment
-<<<<<<< HEAD
-=======
 #' @import BiocManager
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 #' @import org.Ce.eg.db
 #'
->>>>>>> dev
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
@@ -258,11 +255,7 @@ exp_matrix<-function(time_object,matrix_name){
 #' @importFrom SummarizedExperiment assays
 #'
 #' @export
-<<<<<<< HEAD
-exp_sample_data<-function(time_object,matrix_name){
-=======
 exp_sample_data<-function(time_object){
->>>>>>> dev
   samp_dta<-data.frame(colData(slot(time_object,'exp_data')))
   return(samp_dta)
 }
@@ -370,10 +363,7 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' write_example_data_to_dir('PBMC')
 #' my_path_data<-'data/PBMC/raw_counts_TS'
 #' my_path_sample_dta<-'data/PBMC/sample_file.csv'
-<<<<<<< HEAD
-=======
 #' graph_vect<-c("#e31a1c","#1f78b4")
->>>>>>> dev
 #'
 #' TS_object <- new('TimeSeries_Object',
 #'                  group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
@@ -436,16 +426,6 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
 #'
 #' TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
-<<<<<<< HEAD
-#' groups<-slot(time_object,'group_names')
-#' #Ensures that the order will follow the grouping order
-#' selected_samples_1<-samp_data$sample[samp_data$group %in% groups[1]]
-#' selected_samples_2<-samp_data$sample[samp_data$group %in% groups[2]]
-#' selected_samples<-c(selected_samples_1,selected_samples_2)
-#'
-#' #Prepare the matrix according to the differential expression method (affects input)
-#'  final_counts<-prep_RNAseq_matrix(path_to_data,selected_samples)
-=======
 #' groups<-slot(TS_object,'group_names')
 #' #Ensures that the order will follow the grouping order
 #' sample_data<-exp_sample_data(TS_object)
@@ -455,7 +435,6 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #'
 #' #Prepare the matrix according to the differential expression method (affects input)
 #'  final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
->>>>>>> dev
 #' @export
 #'
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){

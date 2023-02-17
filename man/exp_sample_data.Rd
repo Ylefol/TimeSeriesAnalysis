@@ -4,11 +4,7 @@
 \alias{exp_sample_data}
 \title{Fetches the sample data}
 \usage{
-<<<<<<< HEAD
-exp_sample_data(time_object, matrix_name)
-=======
 exp_sample_data(time_object)
->>>>>>> dev
 }
 \arguments{
 \item{time_object}{A timeseries object}

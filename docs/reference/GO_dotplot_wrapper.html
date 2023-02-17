@@ -170,7 +170,6 @@ gpro_file_location parameter.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C11</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C2</span>
-<<<<<<< HEAD
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C4</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C5</span>
@@ -178,30 +177,24 @@ gpro_file_location parameter.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C9</span>
-=======
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Could not connect to gprofiler, used save example data instead</span>
->>>>>>> dev
 <span class="r-in"><span><span class="co">#Set to NULL to not save results</span></span></span>
 <span class="r-in"><span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'GO:BP'</span>,save_path<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `$&lt;-.data.frame`(`*tmp*`, "group_color", value = character(0)):</span> replacement has 0 rows, data has 3</span>
 <span class="r-in"><span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gpro_res' not found</span>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_semantic_similarity_data.html">add_semantic_similarity_data</a></span><span class="op">(</span><span class="va">TS_object</span>,ont_sem_sim<span class="op">=</span><span class="st">'BP'</span><span class="op">)</span></span></span>
-<<<<<<< HEAD
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(name):</span> there is no package called ‘org.Hs.eg.db’</span>
-=======
 <span class="r-msg co"><span class="r-pr">#&gt;</span> preparing gene to GO mapping data...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> preparing IC data...</span>
->>>>>>> dev
 <span class="r-in"><span><span class="va">target_ancestors</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'GO:0002253'</span>,<span class="st">'GO:0019882'</span>,<span class="st">'GO:0002404'</span>,<span class="st">'GO:0002339'</span>,<span class="st">'GO:0042386'</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">'GO:0035172'</span>,<span class="st">'GO:0002252'</span>,<span class="st">'GO:0006955'</span>,<span class="st">'GO:0002520'</span>,<span class="st">'GO:0090713'</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">'GO:0045321'</span>,<span class="st">'GO:0001776'</span>,<span class="st">'GO:0050900'</span>,<span class="st">'GO:0031294'</span>,<span class="st">'GO:0002262'</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">'GO:0002683'</span>,<span class="st">'GO:0002684'</span>,<span class="st">'GO:0002440'</span>,<span class="st">'GO:0002682'</span>,<span class="st">'GO:0002200'</span>,</span></span>
 <span class="r-in"><span>                    <span class="st">'GO:0045058'</span>,<span class="st">'GO:0002507'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">GOs_ancestors_clust</span><span class="op">&lt;-</span><span class="fu"><a href="find_relation_to_ancestors.html">find_relation_to_ancestors</a></span><span class="op">(</span><span class="va">target_ancestors</span>,<span class="va">GO_clusters</span>,ontology <span class="op">=</span> <span class="st">'BP'</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in stack(onto[GOs_to_check$term_id]):</span> object 'GO_clusters' not found</span>
 <span class="r-in"><span><span class="va">my_dotplot</span><span class="op">&lt;-</span><span class="fu"><a href="dotplot_ancestors.html">dotplot_ancestors</a></span><span class="op">(</span><span class="va">GOs_ancestors_clust</span>,enrichment_dta<span class="op">=</span><span class="cn">FALSE</span>,use_names<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="co">#'</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dotplot_ancestors(GOs_ancestors_clust, enrichment_dta = FALSE,     use_names = TRUE):</span> object 'GOs_ancestors_clust' not found</span>
 </code></pre></div>
     </div>
   </div>

@@ -5,12 +5,5 @@ articles:
   TS_analysis_PBMC: TS_analysis_PBMC.html
   TS_analysis_celegans: TS_analysis_celegans.html
   TS_analysis_murine: TS_analysis_murine.html
-<<<<<<< HEAD
-last_built: 2023-02-08T23:52Z
-=======
-last_built: 2023-02-16T19:57Z
-urls:
-  reference: http://Ylefol.github.io/TimeSeriesAnalysis/reference
-  article: http://Ylefol.github.io/TimeSeriesAnalysis/articles
->>>>>>> dev
+last_built: 2023-02-17T11:20Z
 

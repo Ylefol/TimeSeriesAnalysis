@@ -152,36 +152,18 @@ clustering parameters are pre-set within the function.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C3</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C5</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
-<<<<<<< HEAD
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C9</span>
-<span class="r-in"><span><span class="co">#Results saved to created directory</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">'example_location'</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'example_location' already exists</span>
-<span class="r-in"><span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'GO:BP'</span>,save_path<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">'example_location'</span><span class="op">)</span><span class="op">)</span></span></span>
-=======
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Could not connect to gprofiler, used save example data instead</span>
 <span class="r-in"><span><span class="co">#Results saved to created directory</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">'example_location'</span><span class="op">)</span></span></span>
->>>>>>> dev
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'example_location' already exists</span>
 <span class="r-in"><span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'GO:BP'</span>,save_path<span class="op">=</span><span class="st">'example_location'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `$&lt;-.data.frame`(`*tmp*`, "group_color", value = character(0)):</span> replacement has 0 rows, data has 3</span>
 <span class="r-in"><span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gpro_res' not found</span>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_semantic_similarity_data.html">add_semantic_similarity_data</a></span><span class="op">(</span><span class="va">TS_object</span>,ont_sem_sim<span class="op">=</span><span class="st">'BP'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(name):</span> there is no package called ‘org.Hs.eg.db’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> preparing gene to GO mapping data...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> preparing IC data...</span>
 <span class="r-in"><span><span class="va">found_clusters</span><span class="op">&lt;-</span><span class="fu"><a href="find_clusters_from_termdist.html">find_clusters_from_termdist</a></span><span class="op">(</span><span class="va">GO_clusters</span>,<span class="va">TS_object</span><span class="op">@</span><span class="va">sem_list</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in termSim(GO1, GO2, semData, method = measure):</span> object 'GO_clusters' not found</span>
 <span class="r-in"><span><span class="va">calculated_SS</span><span class="op">&lt;-</span><span class="fu">SS_GO_clusters</span><span class="op">(</span><span class="va">TS_object</span><span class="op">@</span><span class="va">sem_list</span>,<span class="va">found_clusters</span>,<span class="st">'BP'</span>,distance<span class="op">=</span><span class="st">"BMA"</span>,measure<span class="op">=</span><span class="st">'Wang'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in SS_GO_clusters(TS_object@sem_list, found_clusters, "BP", distance = "BMA",     measure = "Wang"):</span> object 'found_clusters' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:1 mapping between keys and columns</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
