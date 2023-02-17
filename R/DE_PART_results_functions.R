@@ -114,10 +114,12 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' the figures clean. If multiple figures are created, they will be names
 #' 1_of_x until it reaches x_of_x.
 #'
+#' @param object A timeseries object
 #' @param cluster_traj_dta The trajectory data for all clusters being calculated
 #' The data is calculated/obtained from \code{calculate_cluster_traj_data} function
-#' @param mean_cluster_traj_data The mean value for each clusters trajectory,
+#' @param mean_cluster_traj_dta The mean value for each clusters trajectory,
 #' the data is calculated/obtained from \code{calculated_mean_cluster_traj} function
+#' @param log_TP Boolean indicating if timepoints (x axis) should be log10 transformed
 #' @param plot_name The name given to the plot file as it is saved
 #'
 #' @return None
@@ -349,7 +351,8 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)#' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
 #' ma_plot
 #'
 #' @import ggplot2
@@ -1308,6 +1311,7 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' by the rowSum of the gene (the addition of the gene's values across all samples)
 #'
 #' @param object A timeseries object
+#' @param custom_cmap A custom cluster map to be used instead of the cmap contained within the object
 #' @param scale_feat If the genes should be scaled/transformed using scale feature sum
 #'
 #' @return A dataframe containing the transformed or non-transformed gene values for
@@ -1396,7 +1400,7 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
   my_cmap<-my_cmap[,c('gene_id','cluster')]
   clust_df<-as.data.frame(table(my_cmap$cluster))
   colnames(clust_df)=c('cluster','nGenes')
-  clust_df$labels<-paste0(clust_df$cluster,' – ',clust_df$nGenes,' genes |')
+  clust_df$labels<-paste0(clust_df$cluster,' - ',clust_df$nGenes,' genes |')
 
   ts_df<-merge(ts_df,my_cmap,by='gene_id')
   ts_df<-merge(ts_df,clust_df,by='cluster')
@@ -1796,7 +1800,7 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
 #' whether more columns/rows need to be excluded
 #'
 #'
-#' Function taken from github user–slagtermaarten
+#' Function taken from github user-slagtermaarten
 #' from the ComplexHeatmap issue number 155:
 #' https://github.com/jokergoo/ComplexHeatmap/issues/155
 #'

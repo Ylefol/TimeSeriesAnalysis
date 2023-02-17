@@ -4,10 +4,14 @@
 \alias{run_gprofiler_PART_clusters}
 \title{Gprofiler analysis}
 \usage{
-run_gprofiler_PART_clusters(object)
+run_gprofiler_PART_clusters(object, vignette_run = FALSE)
 }
 \arguments{
 \item{object}{A time series object}
+
+\item{vignette_run}{Boolean indicating if this function is being run within
+vignettes, if so it will bypass a network connection error and load mock data
+otherwise the error will terminate the script and send the error back to the user.}
 }
 \value{
 The updated object with the Gprofiler results
@@ -30,8 +34,8 @@ samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
 samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
-TS_object<-prep_counts_for_PART(object=TS_object,target_genes=all_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-TS_object<-run_gprofiler_PART_clusters(TS_object)
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE)
 
 }

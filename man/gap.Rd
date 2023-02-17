@@ -16,6 +16,8 @@ gap(X, Kmax = 10, B = 100, ref.gen = "PC", cl.lab = NULL, ...)
 \item{ref.gen}{reference gen}
 
 \item{cl.lab}{cluster labels}
+
+\item{...}{Extra parameters to be given to the function}
 }
 \value{
 list of gaps found

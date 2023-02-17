@@ -97,11 +97,13 @@ the values from the different files are merged into a matrix and returned</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'data/PBMC/raw_counts_TS' already exists</span>
 <span class="r-in"><span><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="st">'data/PBMC/raw_counts_TS'</span></span></span>
 <span class="r-in"><span><span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="st">'data/PBMC/sample_file.csv'</span></span></span>
+<span class="r-in"><span><span class="va">graph_vect</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e31a1c"</span>,<span class="st">"#1f78b4"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu">new</span><span class="op">(</span><span class="st">'TimeSeries_Object'</span>,</span></span>
 <span class="r-in"><span>                 group_names<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'IgM'</span>,<span class="st">'LPS'</span><span class="op">)</span>,group_colors<span class="op">=</span><span class="va">graph_vect</span>,DE_method<span class="op">=</span><span class="st">'DESeq2'</span>,</span></span>
 <span class="r-in"><span>                 DE_p_filter<span class="op">=</span><span class="st">'padj'</span>,DE_p_thresh<span class="op">=</span><span class="fl">0.05</span>,DE_l2fc_thresh<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                 PART_l2fc_thresh<span class="op">=</span><span class="fl">4</span>,sem_sim_org<span class="op">=</span><span class="st">'org.Hs.eg.db'</span>,Gpro_org<span class="op">=</span><span class="st">'hsapiens'</span><span class="op">)</span></span></span>
+<<<<<<< HEAD
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in initialize(value, ...):</span> object 'graph_vect' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_experiment_data.html">add_experiment_data</a></span><span class="op">(</span><span class="va">TS_object</span>,sample_dta_path<span class="op">=</span><span class="va">my_path_sample_dta</span>,count_dta_path<span class="op">=</span><span class="va">my_path_data</span><span class="op">)</span></span></span>
@@ -113,12 +115,25 @@ the values from the different files are merged into a matrix and returned</p>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'samp_data' not found</span>
 <span class="r-in"><span><span class="va">selected_samples_2</span><span class="op">&lt;-</span><span class="va">samp_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">samp_data</span><span class="op">$</span><span class="va">group</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">groups</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'samp_data' not found</span>
+=======
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_experiment_data.html">add_experiment_data</a></span><span class="op">(</span><span class="va">TS_object</span>,sample_dta_path<span class="op">=</span><span class="va">my_path_sample_dta</span>,count_dta_path<span class="op">=</span><span class="va">my_path_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">groups</span><span class="op">&lt;-</span><span class="fu">slot</span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'group_names'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#Ensures that the order will follow the grouping order</span></span></span>
+<span class="r-in"><span><span class="va">sample_data</span><span class="op">&lt;-</span><span class="fu"><a href="exp_sample_data.html">exp_sample_data</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">selected_samples_1</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">groups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">selected_samples_2</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">groups</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+>>>>>>> dev
 <span class="r-in"><span><span class="va">selected_samples</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">selected_samples_1</span>,<span class="va">selected_samples_2</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'selected_samples_1' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Prepare the matrix according to the differential expression method (affects input)</span></span></span>
+<<<<<<< HEAD
 <span class="r-in"><span> <span class="va">final_counts</span><span class="op">&lt;-</span><span class="fu">prep_RNAseq_matrix</span><span class="op">(</span><span class="va">path_to_data</span>,<span class="va">selected_samples</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in list.files(path_to_counts):</span> object 'path_to_data' not found</span>
+=======
+<span class="r-in"><span> <span class="va">final_counts</span><span class="op">&lt;-</span><span class="fu">prep_RNAseq_matrix</span><span class="op">(</span><span class="va">my_path_data</span>,<span class="va">selected_samples</span><span class="op">)</span></span></span>
+>>>>>>> dev
 </code></pre></div>
     </div>
   </div>

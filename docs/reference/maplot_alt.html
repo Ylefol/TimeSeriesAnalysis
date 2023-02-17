@@ -133,7 +133,7 @@ significance</p></dd>
 <span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="normalize_timeSeries_with_deseq2.html">normalize_timeSeries_with_deseq2</a></span><span class="op">(</span>time_object<span class="op">=</span><span class="va">TS_object</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> converting counts to integer mode</span>
 <span class="r-in"><span><span class="co">#Perform conditional differential gene expression analysis</span></span></span>
-<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span><span class="co">#' ma_plot&lt;-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> using pre-existing size factors</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> estimating dispersions</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> gene-wise dispersion estimates</span>
@@ -152,8 +152,9 @@ significance</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
+<span class="r-in"><span><span class="va">ma_plot</span><span class="op">&lt;-</span><span class="fu">maplot_alt</span><span class="op">(</span>DE_res <span class="op">=</span> <span class="va">TS_object</span><span class="op">@</span><span class="va">DE_results</span><span class="op">$</span><span class="va">conditional</span><span class="op">$</span><span class="va">IgM_vs_LPS_TP_1</span><span class="op">$</span><span class="va">DE_raw_data</span>,filter_choice <span class="op">=</span> <span class="st">'padj'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ma_plot</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'ma_plot' not found</span>
+<span class="r-plt img"><img src="maplot_alt-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

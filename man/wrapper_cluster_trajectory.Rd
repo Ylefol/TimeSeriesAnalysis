@@ -13,13 +13,17 @@ wrapper_cluster_trajectory(
 )
 }
 \arguments{
+\item{object}{A timeseries object}
+
 \item{cluster_traj_dta}{The trajectory data for all clusters being calculated
 The data is calculated/obtained from \code{calculate_cluster_traj_data} function}
 
-\item{plot_name}{The name given to the plot file as it is saved}
-
-\item{mean_cluster_traj_data}{The mean value for each clusters trajectory,
+\item{mean_cluster_traj_dta}{The mean value for each clusters trajectory,
 the data is calculated/obtained from \code{calculated_mean_cluster_traj} function}
+
+\item{log_TP}{Boolean indicating if timepoints (x axis) should be log10 transformed}
+
+\item{plot_name}{The name given to the plot file as it is saved}
 }
 \value{
 None

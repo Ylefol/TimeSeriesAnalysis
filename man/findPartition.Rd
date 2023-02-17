@@ -7,11 +7,13 @@
 findPartition(X, Kmax, dX = NULL, ...)
 }
 \arguments{
-\item{matrix}{of values}
+\item{X}{of values}
 
-\item{maximum}{number of clusters}
+\item{Kmax}{max number of clusters}
 
-\item{dx}{distance measure}
+\item{dX}{distance measure}
+
+\item{...}{extra values to be given}
 }
 \value{
 list of cluster labels

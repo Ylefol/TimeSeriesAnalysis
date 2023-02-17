@@ -10,7 +10,7 @@ find_relation_to_ancestors(target_ancestors, GOs_to_check, ontology = "BP")
 \item{target_ancestors}{A vector of GO IDs to use as ancestors}
 
 \item{GOs_to_check}{A dataframe created by either \code{gprofiler_for_conditional_DE}
-or \code{gprofiler_cluster_analysis}}
+or \code{gprofiler_cluster_analysis} or within the 'Gpro_org' slot of a time_object}
 
 \item{ontology}{The ontology to be used to search for ancestry}
 }
@@ -46,7 +46,7 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #Save path set to NULL to not save results
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]

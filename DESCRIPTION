@@ -10,7 +10,12 @@ VignetteBuilder: knitr
 Imports:
 	stringr,
 	DESeq2,
+	SummarizedExperiment,
 	limma,
+	BiocManager,
+	org.Hs.eg.db,
+	org.Mm.eg.db,
+	org.Ce.eg.db,
 	grid,
 	ggrepel,
 	ggplot2,
@@ -26,6 +31,7 @@ Imports:
 	data.table,
 	htmltools,
 	dynamicTreeCut,
+	methods,
 	stringi,
 	rstudioapi,
 	AnnotationDbi,
@@ -37,7 +43,7 @@ Imports:
 	stats,
 	utils
 Depends: 
-	R (>= 4.1)
+	R (>= 4.2)
 Suggests: knitr,
 	rmarkdown,
 URL: https://github.com/Ylefol/TimeSeriesAnalysis

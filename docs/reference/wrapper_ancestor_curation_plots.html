@@ -150,21 +150,14 @@ and the plotly object for the MDS plot.</p>
 <span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="prep_counts_for_PART.html">prep_counts_for_PART</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">TS_object</span>,target_genes<span class="op">=</span><span class="va">signi_genes</span>,scale<span class="op">=</span><span class="cn">TRUE</span>,target_samples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">samps_2</span>,<span class="va">samps_1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="compute_PART.html">compute_PART</a></span><span class="op">(</span><span class="va">TS_object</span>,part_recursion<span class="op">=</span><span class="fl">10</span>,part_min_clust<span class="op">=</span><span class="fl">10</span>,dist_param<span class="op">=</span><span class="st">"euclidean"</span>, hclust_param<span class="op">=</span><span class="st">"average"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing PART clusters</span>
-<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="run_gprofiler_PART_clusters.html">run_gprofiler_PART_clusters</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span> <span class="co">#Run the gprofiler analysis</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="run_gprofiler_PART_clusters.html">run_gprofiler_PART_clusters</a></span><span class="op">(</span><span class="va">TS_object</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">#Run the gprofiler analysis</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> running Gprofiler on PART clusters</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C3</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C5</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C7</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No results to show</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Please make sure that the organism is correct or set significant = FALSE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gprofiler for C9</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Could not connect to gprofiler, used save example data instead</span>
 <span class="r-in"><span><span class="co">#Create directory</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">'example_location'</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'example_location' already exists</span>
@@ -181,7 +174,10 @@ and the plotly object for the MDS plot.</p>
 <span class="r-in"><span><span class="co">#Plots will be returned, but also saved to directory</span></span></span>
 <span class="r-in"><span><span class="va">ancestor_plots</span><span class="op">&lt;-</span><span class="fu">wrapper_ancestor_curation_plots</span><span class="op">(</span><span class="va">GOs_ancestors_clust</span>,<span class="va">TS_object</span><span class="op">@</span><span class="va">sem_list</span>,return_plot<span class="op">=</span><span class="cn">TRUE</span>,target_dir<span class="op">=</span><span class="st">'example_location/'</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'example_location/ancestor_plots' already exists</span>
+<<<<<<< HEAD
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (ont == "DO") {    .DOSEEnv &lt;- get(".DOSEEnv", envir = .GlobalEnv)    rel_df &lt;- get("dotbl", envir = .DOSEEnv)} else if (ont %in% c("BP", "CC", "MF")) {    if (!exists(".GOSemSimEnv"))         .initial()    .GOSemSimEnv &lt;- get(".GOSemSimEnv", envir = .GlobalEnv)    rel_df &lt;- get("gotbl", envir = .GOSemSimEnv)} else {    .meshesEnv &lt;- get(".meshesEnv", envir = .GlobalEnv)    rel_df &lt;- get("meshtbl", envir = .meshesEnv)}:</span> argument is of length zero</span>
+=======
+>>>>>>> dev
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

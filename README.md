@@ -19,6 +19,10 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
+## Version DOI
+
+10.5281/zenodo.7616032
+
 ## TS performs:
 
 - data normalization and processing

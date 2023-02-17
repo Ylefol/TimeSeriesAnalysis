@@ -22,7 +22,7 @@ identifies the most aggravating column/row, excludes that column/row and checks
 whether more columns/rows need to be excluded
 
 
-Function taken from github user–slagtermaarten
+Function taken from github user-slagtermaarten
 from the ComplexHeatmap issue number 155:
 https://github.com/jokergoo/ComplexHeatmap/issues/155
 }

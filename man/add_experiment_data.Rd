@@ -33,6 +33,10 @@ groups and then creates a SummarizedExperiment to then store this into the TimeS
 write_example_data_to_dir('PBMC')
 my_path_data<-'data/PBMC/raw_counts_TS'
 my_path_sample_dta<-'data/PBMC/sample_file.csv'
+<<<<<<< HEAD
+=======
+graph_vect<-c("#e31a1c","#1f78b4")
+>>>>>>> dev
 
 TS_object <- new('TimeSeries_Object',
                  group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',

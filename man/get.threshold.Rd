@@ -10,6 +10,8 @@ get.threshold(X, q, ...)
 \item{X}{value matrix}
 
 \item{q}{q}
+
+\item{...}{Extra parameters to be given to the function}
 }
 \value{
 threshold

@@ -14,6 +14,8 @@ PartRec(X, Kmax, ind, cl.lab = NULL, ...)
 \item{ind}{number of clusters}
 
 \item{cl.lab}{cluster label}
+
+\item{...}{Extra parameters to be used}
 }
 \value{
 Either cluster results or recursion elements

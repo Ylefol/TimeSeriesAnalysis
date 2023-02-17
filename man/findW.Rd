@@ -7,11 +7,11 @@
 findW(dX, K, cl.lab)
 }
 \arguments{
+\item{dX}{matrix for cluster}
+
 \item{K}{current cluster}
 
 \item{cl.lab}{cluster labels}
-
-\item{dx}{matrix for cluster}
 }
 \value{
 The within cluster distribution

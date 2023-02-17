@@ -9,6 +9,8 @@ calculate_cluster_traj_data(object, custom_cmap = NULL, scale_feat = TRUE)
 \arguments{
 \item{object}{A timeseries object}
 
+\item{custom_cmap}{A custom cluster map to be used instead of the cmap contained within the object}
+
 \item{scale_feat}{If the genes should be scaled/transformed using scale feature sum}
 }
 \value{
