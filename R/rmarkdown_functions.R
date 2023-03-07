@@ -27,7 +27,7 @@
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
 #' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-#' TS_object<-run_gprofiler_PART_clusters(TS_object) #Run the gprofiler analysis
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #' target_clust<-find_most_variable_cluster(TS_object,mean_ts_data)
@@ -44,8 +44,8 @@ find_most_variable_cluster<-function(time_object,mean_ts_data){
   for(clust in unique(mean_ts_data$cluster)){
     dif_vect<-c()
     for(tp in unique(mean_ts_data$timepoint)){
-      val_exp<-mean_ts_data$trans_mean[mean_ts_data$timepoint==tp & mean_ts_data$cluster==clust & mean_ts_data$group==TS_object@group_names[1]]
-      val_control<-mean_ts_data$trans_mean[mean_ts_data$timepoint==tp & mean_ts_data$cluster==clust & mean_ts_data$group==TS_object@group_names[2]]
+      val_exp<-mean_ts_data$trans_mean[mean_ts_data$timepoint==tp & mean_ts_data$cluster==clust & mean_ts_data$group==time_object@group_names[1]]
+      val_control<-mean_ts_data$trans_mean[mean_ts_data$timepoint==tp & mean_ts_data$cluster==clust & mean_ts_data$group==time_object@group_names[2]]
 
       dif_val<-abs(val_exp-val_control)
       dif_vect<-c(dif_vect,dif_val)

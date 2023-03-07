@@ -170,8 +170,8 @@ temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
 #' The function subsets the DESeq2_obj if necessary and adjust the condition in the
 #' event of a temporal differential gene expression analysis.
 #'
-#' The function then runs through the standard DESeq2 pipeline. It saves the dds
-#' object, the raw differential expression results, and the significant differential
+#' The function then runs through the standard DESeq2 pipeline. It saves the raw
+#' differential expression results, and the significant differential
 #' expression results.
 #'
 #'
@@ -234,7 +234,8 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 
   DE_sig<-DE_results[DE_results[filter_type]<pval_thresh & abs(DE_results$log2FoldChange)>l2fc_thresh,]
 
-  res_list<-list(sub_dds=dds,DE_raw_data=DE_results, DE_sig_data=DE_sig)
+  # res_list<-list(sub_dds=dds,DE_raw_data=DE_results, DE_sig_data=DE_sig)
+  res_list<-list(DE_raw_data=DE_results, DE_sig_data=DE_sig)
 
   time_object@DE_results[[main_key]][[exp_name]]<-res_list
 

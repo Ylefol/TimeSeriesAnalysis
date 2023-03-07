@@ -42,13 +42,6 @@
 #'
 #' @return None
 #'
-#' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '',do_SVGs=FALSE)
-#'
 #' @export
 plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE,do_SVGs=TRUE){
   #Create path to DE type and create directory
@@ -107,6 +100,44 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#' @title Creates differential expression results for Vignettes
+#'
+#' @description The function will generate two summary heatmaps of the differential
+#' gene expression results. The function was originally written to be used in Vignettes.
+#' Full sets of differential gene expression results can be obtained with the
+#' \code{plot_wrapper_DE_results} function
+#'
+#' @param object A timeseries object
+#'
+#' @import ggplot2
+#'
+#' @return list of heatmaps (contains conditional and temporal plot)
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-temporal_DE_wrapper(TS_object)
+#' plot_list<-DE_plots_vignettes(TS_object)
+#' @export
+DE_plots_vignettes<-function(object){
+
+  cond_heat_plot<- custom_heatmap_wrapper(object,DE_type='conditional',log_transform=TRUE,
+                                          plot_file_name = NULL,do_SVGs=FALSE)
+
+  temp_heat_plot<- custom_heatmap_wrapper(object,DE_type='temporal',log_transform=TRUE,
+                                          plot_file_name = NULL,do_SVGs=FALSE)
+
+  heat_list<-list('conditional'=cond_heat_plot,'temporal'=temp_heat_plot)
+
+  return(heat_list)
+
+}
+
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 #' @title Plot cluster trajectory for all PART clusters
 #'
 #' @description Function which plots the trajectory of all the clusters given
@@ -123,27 +154,6 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' @param plot_name The name given to the plot file as it is saved
 #'
 #' @return None
-#'
-#' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#'
-#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
-#' signi_genes<-select_genes_with_l2fc(TS_object)
-#'
-#' #Use all samples, but implement a custom order. In this case it is reversed
-#' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
-#'
-#' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-#' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
-#' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
-#' wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=FALSE,plot_name='Ctraj')
 #'
 #' @export
 wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
@@ -241,7 +251,6 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' v_plot<-volcanoplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data)
-#' v_plot
 #'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
@@ -353,7 +362,6 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
-#' ma_plot
 #'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
@@ -431,6 +439,7 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' @param exp_name The name of the experiment for which the PCA is plotted
 #' @param DE_type Either conditional or temporal for the type of differential experiment
 #' being plotted
+#' @param show_names boolean indicating if sample names should be put on the pca or not
 #'
 #' @return the pca_plot
 #'
@@ -441,7 +450,6 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
 #' TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
-#' TS_pca
 #'
 #' @import ggplot2
 #' @importFrom stats prcomp
@@ -449,7 +457,7 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #'
 #' @export
 #'
-plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
+plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE){
   samp_dta_full<-exp_sample_data(time_object)
 
   if(DE_type=='all'){
@@ -506,21 +514,31 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
   }
   num_shapes<-length(unique(samp_dta_full$timepoint))
   if (is.null(DE_res)==TRUE){
-    pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint,label = name)) +
-      geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
-                       box.padding = unit(0.35, "lines"),
-                       point.padding = unit(0.5, "lines"),
-                       segment.color = 'grey50') +
+    if(show_names==TRUE){
+      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint,label = name)) +
+        geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
+                         box.padding = unit(0.35, "lines"),
+                         point.padding = unit(0.5, "lines"),
+                         segment.color = 'grey50')
+    }else{
+      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint))
+    }
+      pca_plot<-pca_plot+
       scale_shape_manual(values=1:num_shapes) +
       geom_point(size=2, stroke = 2) +
       xlab(paste0("PC1: ",percentVar[1],"% variance")) +
       ylab(paste0("PC2: ",percentVar[2],"% variance"))
   }else{
-    pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=group,label = name)) +
-      geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
-                       box.padding = unit(0.35, "lines"),
-                       point.padding = unit(0.5, "lines"),
-                       segment.color = 'grey50') +
+    if(show_names==TRUE){
+      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=group,label = name)) +
+        geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
+                         box.padding = unit(0.35, "lines"),
+                         point.padding = unit(0.5, "lines"),
+                         segment.color = 'grey50')
+    }else{
+      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=group))
+    }
+      pca_plot<-pca_plot+
       scale_shape_manual(values=1:num_shapes) +
       geom_point(size=2, stroke = 2) +
       xlab(paste0("PC1: ",percentVar[1],"% variance")) +
@@ -548,15 +566,16 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL){
 #' compensated for (NA introduced). Currently, there is no reason to have this set to
 #' False.
 #' @param do_SVGs Boolean indicating if SVG files should be saved for the heatmaps
-#' @return none
+#' @return none or heatmap plot
 #'
 #' @examples
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
-#' #Run function, results saved to main directory
-#' custom_heatmap_wrapper(TS_object,DE_type = 'conditional',do_SVGs=FALSE)
+#' heat_plot<-custom_heatmap_wrapper(TS_object,DE_type='conditional',log_transform=TRUE,
+#'                                   plot_file_name = NULL,
+#'                                   adjust_missing_temp_samples=TRUE,do_SVGs=FALSE)
 #'
 #' @export
 #'
@@ -590,8 +609,17 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
   }else{
     legend_val<-'counts'
   }
-  plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,my_l2fc_vect,log_transform = log_transform,
-                         legend_value=legend_val, plot_file_name = plot_file_name,do_SVG=do_SVGs)
+  if(is.null(plot_file_name)==TRUE){
+    heat_plot<- plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,
+                                       my_l2fc_vect,log_transform = log_transform,
+                                       legend_value=legend_val, plot_file_name = plot_file_name,
+                                       do_SVG=do_SVGs)
+    return(heat_plot)
+  }else{
+    plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,my_l2fc_vect,log_transform = log_transform,
+                           legend_value=legend_val, plot_file_name = plot_file_name,do_SVG=do_SVGs)
+  }
+
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -886,7 +914,6 @@ prepare_heat_data <- function(matrix_list,log_transform){
     heat_matrix<-log10(as.matrix(heat_matrix+1))
   }
 
-
   group_split<-matrix_list[['group_vector']]
 
   numbered_regions<-matrix_list[['gene_vector']]
@@ -980,7 +1007,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param custom_height The height of the heatmap
 #' @param do_SVG Boolean to check if the SVG file should be created or not
 #'
-#' @return None
+#' @return none or heatmap plot
 #'
 #' @examples
 #' TS_object<-create_example_object_for_R()
@@ -992,9 +1019,10 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #'
 #' log_l2fc<-log_transform_l2fc_vect(heat_dta[['l2fc_vector']])
 #'
-#' plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
-#'                       heat_dta[['group_split']],log_l2fc,log_transform = TRUE,
-#'                       do_SVG=FALSE)
+#' heat_plot<- plot_custom_DE_heatmap(heat_dta[['heat_matrix']],heat_dta[['region_split']],
+#'                                    heat_dta[['group_split']],log_l2fc,log_transform = TRUE,
+#'                                    legend_value='counts', plot_file_name = NULL,
+#'                                    do_SVG=FALSE)
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation anno_barplot rowAnnotation anno_block Heatmap draw Legend
 #' @importFrom grid gpar
@@ -1049,6 +1077,22 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
     clust_cols<-TRUE
   }
 
+  if(is.null(plot_file_name)==TRUE){
+    pdf(NULL)
+    heat_plot<-draw(Heatmap(heat_mat,name=count_legend,cluster_rows = clust_rows,cluster_columns = clust_cols,
+                              show_column_names = FALSE,show_row_names = FALSE,row_names_side='left',
+                              row_split = row_splits,column_split=col_split,
+                              border=TRUE,na_col = 'gray',column_title = NULL,row_title = NULL,
+                              top_annotation = top_annot,left_annotation=left_annot,
+                              bottom_annotation = bottom_histo,
+                              cluster_column_slices=FALSE,cluster_row_slices = FALSE),
+                      annotation_legend_list = lgd,
+                      annotation_legend_side = 'bottom'
+    )
+    trash<-capture.output(dev.off())#Capture output to prevent print
+    return(heat_plot)
+  }
+
   if(do_SVG==TRUE){
     save_name_svg<-paste0(plot_file_name,'.svg')
     svg(save_name_svg,width=custom_width,height=custom_height)
@@ -1064,7 +1108,6 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
     )
     dev.off()
   }
-
 
   save_name_png<-paste0(plot_file_name,'.png')
 
@@ -1120,7 +1163,7 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' top_annot<-prepare_top_annotation_PART_heat(TS_object)
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation
@@ -1197,7 +1240,7 @@ prepare_top_annotation_PART_heat<-function(object){
 #' @importFrom ComplexHeatmap rowAnnotation Heatmap draw
 #' @importFrom grid gpar
 #'
-#' @return none
+#' @return none or PART heatmap if heat_name is set to NULL
 #'
 #' @examples
 #' TS_object<-create_example_object_for_R()
@@ -1215,9 +1258,9 @@ prepare_top_annotation_PART_heat<-function(object){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' #Heatmap will be saved to main directory
-#' PART_heat_map(TS_object,'PART_heat') #Create a summary heatmap
+#' PART_heat<-PART_heat_map(TS_object,NULL) #Create a summary heatmap
 #'
 #' @export
 #'
@@ -1258,17 +1301,33 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
                legend_gp = gpar(fill = unname(group_cols)))
 
 
-
-  PART_save_data<-paste0(heat_name,'_data.csv')
-  PART_save_cmap<-paste0(heat_name,'_cmap.csv')
-  write.csv(PART_res$part_matrix,PART_save_data)
-  write.csv(PART_res$cluster_map,PART_save_cmap)
-
   #Extract matrix for plotting
   sorted_matrix<-as.matrix(PART_res$part_data[,3:ncol(PART_res$part_data)])
 
-  #Plot the heatmap
+  #If save location is NULL, return the plot instead of saving
+  if(is.null(heat_name)==TRUE){
+    pdf(NULL)
+    PART_plot<- draw(
+      Heatmap(
+        sorted_matrix, name = "Z-score", cluster_columns = FALSE,
+        cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
+        show_column_dend = TRUE,show_row_dend = FALSE,
+        row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
+        row_order = row.names(PART_res$part_data),
+        show_row_names = FALSE,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
+        column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
+      annotation_legend_list = lgd
+    )
+    dev.off()
+    return(PART_plot)
+  }else{
+    PART_save_data<-paste0(heat_name,'_data.csv')
+    PART_save_cmap<-paste0(heat_name,'_cmap.csv')
+    write.csv(PART_res$part_matrix,PART_save_data)
+    write.csv(PART_res$cluster_map,PART_save_cmap)
+  }
 
+  #Plot the heatmap
   svg(paste0(heat_name,"_with_names.svg"),height=30,width=20)
   draw(
     Heatmap(
@@ -1333,7 +1392,7 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #'
 #' @importFrom reshape2 melt
@@ -1439,7 +1498,7 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #'
@@ -1508,7 +1567,7 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #' clust_traj<-plot_cluster_traj(TS_object,ts_data,mean_ts_data)
@@ -1685,7 +1744,7 @@ plot_single_gene_traj<-function(mean_data,color_vector=NULL){
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' #Below function will save results to main directory
-#' create_DE_data_results(TS_object,DE_type='conditional',exp_name='IgM_vs_LPS_TP_1',save_location='')
+#' my_res<-create_DE_data_results(TS_object,DE_type='conditional',exp_name='IgM_vs_LPS_TP_1',save_location=NULL)
 #'
 #' @export
 #'
@@ -1694,8 +1753,12 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
   DE_raw<-DE_res[[DE_type]][[exp_name]][['DE_raw_data']]
   DE_sig<-DE_res[[DE_type]][[exp_name]][['DE_sig_data']]
 
-  write.csv(DE_raw,paste0(save_location,'DE_raw_data.csv'))
-  write.csv(DE_sig,paste0(save_location,'DE_sig_data.csv'))
+  if(is.null(save_location)==TRUE){
+    return_list<-list('DE_raw'=DE_raw,'DE_sig'=DE_sig)
+  }else{
+    write.csv(DE_raw,paste0(save_location,'DE_raw_data.csv'))
+    write.csv(DE_sig,paste0(save_location,'DE_sig_data.csv'))
+  }
 }
 
 
@@ -1715,14 +1778,6 @@ create_DE_data_results<-function(object,DE_type,exp_name,save_location){
 #' @param log_tp Boolean indicating if timepoints should be log10 transformed for the plot
 #'
 #' @return None
-#'
-#' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' #Below function will save results to main directory
-#' create_tables_genes_of_interest_DE(TS_object,c('AICDA'),save_location='',log_tp = FALSE)
 #'
 #' @import ggplot2
 #'
@@ -1774,10 +1829,8 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
     #Plot gene trajectory if gene is in time object
     if(gene %in% row.names(count_matrix)){
       gene_traj_dta<-calculate_gene_traj_data(object,gene,log_tp)
-      #Capture output to prevent useless warnings
       gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(object,'group_colors'))
       #May cause LOESS warnings if there are too few datapoints
-      #Capture output to prevent useless warnings
       ggsave(plot=gene_traj_plot,filename = paste0(save_location,gene,'_trajectory.png'))
     }
   }

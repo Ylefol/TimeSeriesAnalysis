@@ -44,11 +44,10 @@
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #'
 #' @importFrom gprofiler2 gostplot
 #' @importFrom htmltools save_html
@@ -87,10 +86,10 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
       extracted_results$group_name<-rep(unique(cluster_map$cluster[cluster_map$cluster==clust]),nrow(extracted_results))
       GO_df<-rbind(GO_df,extracted_results)
     }
-
+    cluster_name<-strsplit(clust,'.csv')[[1]]
     #If a save_path was given, save the data
     if (is.null(save_path)==FALSE){
-      cluster_name<-strsplit(clust,'.csv')[[1]]
+
       save_name_fig<-paste0(save_fig_location,'/',cluster_name,'_overview.html')
       save_name_data<-paste0(save_data_location,'/',cluster_name,'_data.csv')
       #save plot
@@ -101,11 +100,10 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
       write.csv(x=gprof_dta,file=save_name_data,quote=FALSE)
       #Delete extra folder created by htmlwidgets
       unlink(paste0(save_fig_location,'/',cluster_name,'_overview_files'),recursive = TRUE)
-
-      if(is.null(return_specific_cluster)==FALSE){
-        if(cluster_name==return_specific_cluster){
-          return_clust<-p
-        }
+    }
+    if(is.null(return_specific_cluster)==FALSE){
+      if(cluster_name==return_specific_cluster){
+        return_clust<-p
       }
     }
   }
@@ -150,11 +148,10 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
@@ -219,7 +216,7 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -322,11 +319,10 @@ find_merged_color<-function(group){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
@@ -415,11 +411,10 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
@@ -565,11 +560,10 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
@@ -651,7 +645,7 @@ create_clustered_module_dataframe<-function(cluster_df){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Save path set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -734,12 +728,12 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 
 #' @title Read gprofiler data from results folder
 #'
-#' @description Function which reads the grprofiler data results from the time series analysis
+#' @description Function which reads the grprofiler data results from the time series object
 #'
 #' The function reads the information for each cluster and filters for the required
 #' columns, ontology, and number of GOs. It then adds a -log10 FDR
 #'
-#' @param res_location The location of the gprofiler_results folder
+#' @param object A time series object
 #' @param ont The ontology to be filtered for
 #' @param top_n The number of top GOs to be filtered for
 #'
@@ -760,36 +754,40 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
-#' GO_top_cluster<-read_gprofiler_results(res_location='example_location',ont='GO:BP',top_n=10)
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+#' GO_top_cluster<-read_gprofiler_results(TS_object,ont='GO:BP',top_n=10)
 #'
 #' @export
-read_gprofiler_results<-function(res_location='TS_results/',ont='REAC',top_n=NULL){
-  GO_cluster<-data.frame(NULL)
-  for(file in list.files(paste0(res_location,'/gprofiler_results/data_files'))){
-    read_path<-paste0(res_location,'/gprofiler_results/data_files/',file)
-    cluster<-strsplit(file,'_')[[1]][1]
-    sub_df<-read.csv(read_path)
-    sub_df<-sub_df[sub_df$source==ont,]
-    sub_df$group_name<-rep(cluster,nrow(sub_df))
+read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
+  object_gpro_res<-slot(object,'Gprofiler_results')
+  object_part_res<-slot(object,'PART_results')
+  cluster_map<-object_part_res$cluster_map
 
-    sub_df<-sub_df[,c('term_id','term_name','p_value','source','term_size','group_name')]
-    if(nrow(GO_cluster)==0){
-      GO_cluster<-sub_df
-    }else{
-      GO_cluster<-rbind(GO_cluster,sub_df)
+  GO_df<-as.data.frame(NULL)
+  for (clust in names(object_gpro_res)){
+    #Produce data results - conversion of parent column (collapse list)
+    gprof_dta<-object_gpro_res[[clust]]$result
+    for (idx in 1:nrow(gprof_dta)){
+      gprof_dta$parents[idx]<-paste(unlist(gprof_dta$parents[idx]), collapse = '/')
     }
+    gprof_dta$parents<-unlist(gprof_dta$parents)
 
+    #Add to list for subsequent plotting
+    if (ont %in% gprof_dta$source == TRUE){
+      extracted_results<-gprof_dta[c('term_id','term_name','p_value','term_size')][gprof_dta$source==ont,]
+      extracted_results$group_color<-rep(unique(cluster_map$cluster_col[cluster_map$cluster==clust]),nrow(extracted_results))
+      extracted_results$group_name<-rep(unique(cluster_map$cluster[cluster_map$cluster==clust]),nrow(extracted_results))
+      GO_df<-rbind(GO_df,extracted_results)
+    }
   }
-  if(nrow(GO_cluster)>0){
+  if(nrow(GO_df)>0){
     if(is.null(top_n)==FALSE){
       new_GO_df<-data.frame(NULL)
-      for(clust in unique(GO_cluster$group_name)){
-        sub_df<-GO_cluster[GO_cluster$group_name==clust,]
+      for(clust in unique(GO_df$group_name)){
+        sub_df<-GO_df[GO_df$group_name==clust,]
         if(nrow(sub_df)>top_n){
           sub_df<-sub_df[1:top_n,]
         }
@@ -800,12 +798,12 @@ read_gprofiler_results<-function(res_location='TS_results/',ont='REAC',top_n=NUL
           new_GO_df<-rbind(new_GO_df,sub_df)
         }
       }
-      GO_cluster<-new_GO_df
+      GO_df<-new_GO_df
     }
-    GO_cluster[['-log10(padj)']]<--log10(p.adjust(GO_cluster$p_value, method = p.adjust.methods, n = length(GO_cluster$p_value)))
-    GO_cluster<-GO_cluster[,c('term_id','term_name','p_value','-log10(padj)','term_size','group_name')]
+    GO_df[['-log10(padj)']]<--log10(p.adjust(GO_df$p_value, method = p.adjust.methods, n = length(GO_df$p_value)))
+    GO_df<-GO_df[,c('term_id','term_name','p_value','-log10(padj)','term_size','group_name')]
   }
-  return(GO_cluster)
+  return(GO_df)
 }
 
 # plotting functions  -------------------
@@ -834,7 +832,7 @@ read_gprofiler_results<-function(res_location='TS_results/',ont='REAC',top_n=NUL
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -919,7 +917,7 @@ plot_ancestor_clust_MDS<-function(the_data){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1155,11 +1153,10 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
@@ -1215,7 +1212,8 @@ plot_MDS<-function(the_data){
 #' The function will save the plot in the location provided through the
 #' gpro_file_location parameter.
 #'
-#' @param gpro_file_location The location where the 'gprofiler_results' folder is
+#' @param object A time series object
+#' @param file_loc The location where the files are to be saved
 #' @param target_ontology The targeted ontology ex: 'REAC' or 'GO:BP'
 #' @param top_n The number of top GOs to plot per cluster
 #' @param custom_width A custom value for the width of the plot
@@ -1239,24 +1237,17 @@ plot_MDS<-function(the_data){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
-#' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
-#'                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
-#'                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
-#'                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
-#'                     'GO:0045058','GO:0002507')
-#' GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-#' my_dotplot<-dotplot_ancestors(GOs_ancestors_clust,enrichment_dta=FALSE,use_names=TRUE)#'
+#' gpro_dotplot<-GO_dotplot_wrapper(TS_object,file_loc=NULL,target_ontology='GO:BP',top_n=10,return_plot=TRUE)
+#'
 #' @import ggplot2
 #'
 #' @export
-GO_dotplot_wrapper<-function(gpro_file_location,target_ontology,top_n,custom_width=NULL,custom_height=NULL,return_plot=FALSE){
-  GO_top_cluster<-read_gprofiler_results(gpro_file_location,target_ontology,top_n)
+GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=NULL,custom_height=NULL,return_plot=FALSE){
+  GO_top_cluster<-read_gprofiler_results(object,target_ontology,top_n)
   if(nrow(GO_top_cluster)>0){
     GO_top_cluster <- GO_top_cluster[order(GO_top_cluster[,'term_id'],-GO_top_cluster[,'-log10(padj)']),]
     # GO_top_cluster <- GO_top_cluster[!duplicated(GO_top_cluster$term_id),]
@@ -1270,12 +1261,17 @@ GO_dotplot_wrapper<-function(gpro_file_location,target_ontology,top_n,custom_wid
 
     #If semicolon is found, replace with underscore
     target_ontology<-gsub(x = target_ontology, pattern = ':',replacement = '_')
-    svg(paste0(gpro_file_location,'/gprofiler_results/',target_ontology,'_dotplot.svg'),width=custom_width,height=custom_height)
-    print(plt)
-    trash<-capture.output(dev.off())
-
+    if(is.null(file_loc)==FALSE){
+      svg(paste0(file_loc,'/gprofiler_results/',target_ontology,'_dotplot.svg'),width=custom_width,height=custom_height)
+      print(plt)
+      trash<-capture.output(dev.off())
+    }
     if(return_plot==TRUE){
       return(plt)
+    }
+  }else{#Ensure that NULL is return if a return is expected
+    if(return_plot==TRUE){
+      return(NULL)
     }
   }
 }
@@ -1301,31 +1297,6 @@ GO_dotplot_wrapper<-function(gpro_file_location,target_ontology,top_n,custom_wid
 #' @return if specified, will return a list containing the two plotly objects for
 #' both the GO term MDS and clustered GO term MDS.
 #'
-#' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
-#' signi_genes<-select_genes_with_l2fc(TS_object)
-#'
-#' #Use all samples, but implement a custom order. In this case it is reversed
-#' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
-#'
-#' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
-#' #Create directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
-#' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' #Plots will be returned, but also saved to directory
-#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,TS_object@sem_list,'BP',target_dir='example_location/gprofiler_results/',return_plot=TRUE)
-#'
 #' @importFrom plotly plot_ly add_markers as_widget
 #' @import htmlwidgets
 #'
@@ -1335,18 +1306,18 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
   plot_data<-merge_duplicate_modules(plot_data)
   my_plot<-plot_MDS(plot_data)
 
-  saveWidget(as_widget(my_plot), paste0(target_dir,"MDS_GO_terms.html"))
-  unlink(paste0(target_dir,"MDS_GO_terms_files"),recursive = TRUE)
-
   found_clusters<-find_clusters_from_termdist(GO_clusters,sem_data)
   # calculate semantic similarites between clusters of GO terms
   calculated_SS<-SS_GO_clusters(sem_data,found_clusters,sem_ontology,distance="BMA",measure='Wang')
   clustered_module_df<-create_clustered_module_dataframe(found_clusters)
 
   clust_plot<-plot_clustered_mds(calculated_SS,clustered_module_df)
-  saveWidget(as_widget(clust_plot), paste0(target_dir,"MDS_GO_clusters.html"))
-  unlink(paste0(target_dir,"MDS_GO_clusters_files"),recursive = TRUE)
-
+  if(is.null(target_dir)==FALSE){
+    saveWidget(as_widget(my_plot), paste0(target_dir,"MDS_GO_terms.html"))
+    unlink(paste0(target_dir,"MDS_GO_terms_files"),recursive = TRUE)
+    saveWidget(as_widget(clust_plot), paste0(target_dir,"MDS_GO_clusters.html"))
+    unlink(paste0(target_dir,"MDS_GO_clusters_files"),recursive = TRUE)
+  }
   if(return_plot==TRUE){
     return(list(MDS_term=my_plot,MDS_clust=clust_plot))
   }
@@ -1372,37 +1343,6 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' @return if specified, will return a list containing the ggplot2 object for the dotplot
 #' and the plotly object for the MDS plot.
 #'
-#' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
-#' signi_genes<-select_genes_with_l2fc(TS_object)
-#'
-#' #Use all samples, but implement a custom order. In this case it is reversed
-#' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
-#'
-#' #Create the matrix that will be used for PART clustering
-#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
-#' #Create directory
-#' dir.create('example_location')
-#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
-#' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
-#'                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
-#'                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
-#'                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
-#'                     'GO:0045058','GO:0002507')
-#' GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-#' #Plots will be returned, but also saved to directory
-#' ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,TS_object@sem_list,return_plot=TRUE,target_dir='example_location/')
-#'
 #' @import ggplot2
 #' @importFrom plotly plot_ly add_markers as_widget
 #' @importFrom htmlwidgets saveWidget
@@ -1413,16 +1353,19 @@ wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_d
   if(is.null(GO_df)==TRUE){
     return(NULL)
   }else if(nrow(GO_df)>0){
-    dir.create(paste0(target_dir,'ancestor_plots'))
+
 
     custom_width<-10+(length(unique(GO_df$group_name))*0.30)
     custom_height<-5+(nrow(GO_df)*0.25)
 
     my_dotplot<-dotplot_ancestors(GO_df,enrichment_dta=FALSE,use_names=use_names)
 
-    svg(paste0(target_dir,'ancestor_plots/ancestors_clusters.svg'),width=custom_width,height=custom_height)
-    print(my_dotplot)
-    dev.off()
+    if(is.null(target_dir)==FALSE){
+      dir.create(paste0(target_dir,'ancestor_plots'))
+      svg(paste0(target_dir,'ancestor_plots/ancestors_clusters.svg'),width=custom_width,height=custom_height)
+      print(my_dotplot)
+      dev.off()
+    }
   }else{
     my_dotplot<-NULL
   }
@@ -1446,10 +1389,13 @@ wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_d
       plot_data<-merge(plot_data,for_merger,by='GO.ID')
 
       my_MDS<-plot_ancestor_clust_MDS(plot_data)
-      saveWidget(as_widget(my_MDS), paste0(target_dir,"ancestor_plots/cluster_ancestors.html"))
-      unlink(paste0(target_dir,"ancestor_plots/cluster_ancestors_files"),recursive = TRUE)
 
-      write.csv(GO_df,paste0(target_dir,'ancestor_plots/ancestor_data.csv'),row.names=FALSE)
+      if(is.null(target_dir)==FALSE){
+        saveWidget(as_widget(my_MDS), paste0(target_dir,"ancestor_plots/cluster_ancestors.html"))
+        unlink(paste0(target_dir,"ancestor_plots/cluster_ancestors_files"),recursive = TRUE)
+
+        write.csv(GO_df,paste0(target_dir,'ancestor_plots/ancestor_data.csv'),row.names=FALSE)
+      }
     }else{
       my_MDS<-NULL
     }

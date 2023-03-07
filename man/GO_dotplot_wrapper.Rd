@@ -5,7 +5,8 @@
 \title{Create gprofiler dotplots}
 \usage{
 GO_dotplot_wrapper(
-  gpro_file_location,
+  object,
+  file_loc,
   target_ontology,
   top_n,
   custom_width = NULL,
@@ -14,7 +15,9 @@ GO_dotplot_wrapper(
 )
 }
 \arguments{
-\item{gpro_file_location}{The location where the 'gprofiler_results' folder is}
+\item{object}{A time series object}
+
+\item{file_loc}{The location where the files are to be saved}
 
 \item{target_ontology}{The targeted ontology ex: 'REAC' or 'GO:BP'}
 
@@ -58,17 +61,10 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #Set to NULL to not save results
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
-GO_clusters<-gpro_res[['GO_df']]
-TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
-                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
-                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
-                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
-                    'GO:0045058','GO:0002507')
-GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-my_dotplot<-dotplot_ancestors(GOs_ancestors_clust,enrichment_dta=FALSE,use_names=TRUE)#'
+gpro_dotplot<-GO_dotplot_wrapper(TS_object,file_loc=NULL,target_ontology='GO:BP',top_n=10,return_plot=TRUE)
+
 }

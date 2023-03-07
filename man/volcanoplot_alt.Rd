@@ -59,6 +59,5 @@ TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
 v_plot<-volcanoplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data)
-v_plot
 
 }

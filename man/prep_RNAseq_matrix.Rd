@@ -20,9 +20,11 @@ be included in the matrix. Files will be read based on the sample they represent
 the values from the different files are merged into a matrix and returned
 }
 \examples{
-write_example_data_to_dir('PBMC')
-my_path_data<-'data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'data/PBMC/sample_file.csv'
+path <- tempfile()
+bfc <- BiocFileCache(path, ask = FALSE)
+write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 graph_vect<-c("#e31a1c","#1f78b4")
 
 TS_object <- new('TimeSeries_Object',
@@ -40,4 +42,5 @@ selected_samples<-c(selected_samples_1,selected_samples_2)
 
 #Prepare the matrix according to the differential expression method (affects input)
  final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
+
 }

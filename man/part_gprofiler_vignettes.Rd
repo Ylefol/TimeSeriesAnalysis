@@ -4,18 +4,14 @@
 \alias{part_gprofiler_vignettes}
 \title{Gprofiler analysis for Vignettes}
 \usage{
-part_gprofiler_vignettes(object, gene_vect)
+part_gprofiler_vignettes(object)
 }
 \arguments{
 \item{object}{A time series object}
-
-\item{gene_vect}{The gene vector which will be submitted to gprofiler}
 }
 \value{
-Either the gprofiler result, or the object updated with the example data
+Updated object with gprofiler results
 }
 \description{
-Function which runs the gprofiler function as a try catch. In the
-event of a issue with the connection to host (unable to connect to gprofiler)
-The function will fetch example data and use that instead.
+Function which loads gprofiler results for vignettes/examples
 }

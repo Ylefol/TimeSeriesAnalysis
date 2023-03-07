@@ -34,7 +34,6 @@
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object@PART_results$part_matrix
 #'
 #' @export
 #'
@@ -82,6 +81,8 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' from the object
 #' @param return_as_object Boolean indicating if the results should be returned
 #' within the submitted object or as a list
+#' @param vignette_run Boolean indicating if this is for Vignettes, if so the function
+#' will load the appropriate example data instead of performing the computation.
 #'
 #' @return The timeseries object with the PART results added
 #'
@@ -100,7 +101,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #'
 #' @import tictoc
 #' @importFrom tibble add_column
@@ -112,7 +113,13 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 compute_PART<-function(object,part_recursion=100,part_min_clust=10,
                        dist_param="euclidean", hclust_param="average",
-                       custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE){
+                       custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE,
+                       vignette_run=FALSE){
+  if(vignette_run==TRUE){
+    object<-part_load_results_vignettes(object)
+    return(object)
+  }
+
   PART_res<-slot(object,'PART_results')
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){
@@ -236,7 +243,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE)
 #'
 #' @import gprofiler2
@@ -255,22 +262,16 @@ run_gprofiler_PART_clusters<-function(object,vignette_run=FALSE){
 
   cmap<-slot(object,'PART_results')$cluster_map
   for (clust in unique(cmap$cluster)){
-    message(paste0('Gprofiler for ',clust))
     gene_vect<-cmap[cmap==clust,]
     gene_vect<-as.vector(row.names(gene_vect))
 
     #If function is called within Vignettes, mock data is used if the URL fails
     #This should only be done within the context of Vignettes
     if(vignette_run==TRUE){
-      returned_values<-part_gprofiler_vignettes(object,gene_vect)
-      if(returned_values[[2]]==0){#Indicates that network did not connect
-        message('Could not connect to gprofiler, used save example data instead')
-        return(returned_values[[1]])#Returns object loaded with example data
-      }else{
-        gostres<-returned_values[[1]]
-      }
-    #Vignette_run == FALSE
-    }else{
+      object<-part_gprofiler_vignettes(object)
+      return(object)
+    }else{#Vignette_run == FALSE
+      message(paste0('Gprofiler for ',clust))
       gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
     }
     if (is.null(gostres)==FALSE){
@@ -284,42 +285,46 @@ run_gprofiler_PART_clusters<-function(object,vignette_run=FALSE){
 
 #' @title Gprofiler analysis for Vignettes
 #'
-#' @description Function which runs the gprofiler function as a try catch. In the
-#' event of a issue with the connection to host (unable to connect to gprofiler)
-#' The function will fetch example data and use that instead.
+#' @description Function which loads gprofiler results for vignettes/examples
 #'
 #' @param object A time series object
-#' @param gene_vect The gene vector which will be submitted to gprofiler
 #'
-#' @return Either the gprofiler result, or the object updated with the example data
+#' @return Updated object with gprofiler results
+#' @export
+part_gprofiler_vignettes<-function(object){
+  if(slot(object,'Gpro_org')=='hsapiens'){
+    object@Gprofiler_results<-PBMC_pre_loaded$gpro_res
+  }else if(slot(object,'Gpro_org')=='celegans'){
+    object@Gprofiler_results<-celegans_pre_loaded$gpro_res
+  }else if(slot(object,'Gpro_org')=='mmusculus'){
+    object@Gprofiler_results<-murine_pre_loaded$gpro_res
+  }else{
+    stop('No example data found, script terminated')
+  }
+  return(object)
+
+}
+
+
+#' @title PART analysis for Vignettes
 #'
+#' @description Function which loads PART results for Vignettes
 #'
-#' @import gprofiler2
-#' @import GOSemSim
+#' @param object A time series object
+#'
+#' @return Updated Object with PART results
+#'
 #'
 #' @export
-part_gprofiler_vignettes<-function(object,gene_vect){
-  gostres <- tryCatch({
-    gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
-  },
-  error=function(cond) {})
-  if(is.null(gostres)==TRUE){#Connectivity error occurred
-    #Load the saved example data, and return object
-    if(slot(object,'Gpro_org')=='hsapiens'){
-      if(slot(object,'PART_l2fc_thresh')==4){#Indicates that the data is for examples, not vignettes
-        object@Gprofiler_results<-AID_example_gpro_res
-      }else{
-        object@Gprofiler_results<-PBMC_gpro_res
-      }
-    }else if(slot(object,'Gpro_org')=='celegans'){
-      object@Gprofiler_results<-celegans_gpro_res
-    }else if(slot(object,'Gpro_org')=='mmusculus'){
-      object@Gprofiler_results<-murine_gpro_res
-    }else{
-      stop('No example data found, script terminated -could not connect to gprofiler, check network')
-    }
-    return(list(object,0))
+part_load_results_vignettes<-function(object){
+  if(slot(object,'Gpro_org')=='hsapiens'){
+    object@PART_results<-PBMC_pre_loaded$part_res
+  }else if(slot(object,'Gpro_org')=='celegans'){
+    object@PART_results<-celegans_pre_loaded$part_res
+  }else if(slot(object,'Gpro_org')=='mmusculus'){
+    object@PART_results<-murine_pre_loaded$part_res
   }else{
-    return(list(gostres,1))
+    stop('No example data found, script terminated')
   }
+  return(object)
 }
