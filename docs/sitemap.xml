@@ -25,16 +25,13 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/AID_TS_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/Celegans_TS_data.html</loc>
   </url>
   <url>
-    <loc>/reference/AID_example_gpro_res.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_plots_vignettes.html</loc>
   </url>
   <url>
-    <loc>/reference/Celegans_TS_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/DE_using_DESeq2.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_using_DESeq2.html</loc>
   </url>
   <url>
     <loc>/reference/DE_using_limma.html</loc>
@@ -46,10 +43,13 @@
     <loc>/reference/PART_heat_map.html</loc>
   </url>
   <url>
-    <loc>/reference/PBMC_gpro_res.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PBMC_TS_data.html</loc>
   </url>
   <url>
-    <loc>/reference/PartRec.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PBMC_pre_loaded.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PartRec.html</loc>
   </url>
   <url>
     <loc>/reference/SS_GO_clusters.html</loc>
@@ -82,7 +82,7 @@
     <loc>/reference/calculate_mean_cluster_traj.html</loc>
   </url>
   <url>
-    <loc>/reference/celegans_gpro_res.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/celegans_pre_loaded.html</loc>
   </url>
   <url>
     <loc>/reference/compute_PART.html</loc>
@@ -136,67 +136,7 @@
     <loc>/reference/dotplot_ancestors.html</loc>
   </url>
   <url>
-    <loc>/reference/example_location/ancestor_plots/cluster_ancestors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/MDS_GO_clusters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/MDS_GO_terms.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C10_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C11_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C12_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C13_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C14_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C15_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C1_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C2_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C3_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C4_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C5_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C6_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C7_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C8_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_location/gprofiler_results/figures/C9_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/exp_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/exp_sample_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/findPartition.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/exp_matrix.html</loc>
   </url>
   <url>
     <loc>/reference/findW.html</loc>
@@ -256,7 +196,7 @@
     <loc>/reference/normalize_timeSeries_with_deseq2.html</loc>
   </url>
   <url>
-    <loc>/reference/part.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/murine_pre_loaded.html</loc>
   </url>
   <url>
     <loc>/reference/part_gprofiler_vignettes.html</loc>
@@ -268,7 +208,10 @@
     <loc>/reference/plot_PCA_TS.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_ancestor_clust_MDS.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part_load_results_vignettes.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_MDS.html</loc>
   </url>
   <url>
     <loc>/reference/plot_cluster_traj.html</loc>

@@ -37,11 +37,6 @@ Set the below parameters for the downstream analysis
 name_result_folder<-'TS_results_PBMC_example/'
 obj_name<-'timeSeries_obj_PBMC_example.Rdata'
 
-#Path to count data and sample data respectively
-#Not needed if using example data
-# my_path_data<-'data/PBMC/raw_counts_TS'
-# my_path_sample_dta<-'data/PBMC/sample_file.csv'
-
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
 p_val_filter_type<-'padj' #Either padj or pvalue, used to filter for significance
@@ -64,9 +59,6 @@ library('org.Hs.eg.db')
 my_ont_gpro='GO:BP'
 my_ont_sem_sim='BP'
 
-#mmusculus
-#hsapiens
-#celegans
 my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 
 # The seed serves to create reproducible results with PART.
@@ -100,8 +92,8 @@ ancestor_ontology<-'BP'
 
 #Some extra set-up
 name_save_obj<-paste0(name_result_folder,obj_name)#The object will be saved in result folder
-#Create main directory for results
-dir.create(name_result_folder)
+#Create main directory for results, removed for vignettes
+# dir.create(name_result_folder)
 
 my_group_names<-c(name_experiment,name_control) 
 names(graphic_vector)<-c(name_experiment,name_control)
@@ -109,23 +101,15 @@ names(graphic_vector)<-c(name_experiment,name_control)
 ```
 
 ## Create TimeSeries object
-This code chunk first checks if a timeseries object has been saved, if that is the
-case, the object is loaded instead of being created again. To reset this analysis, the
-saved timeseries object should be deleted or moved from the repository.
-If no timeseries object was found, the code chunk creates the timeseries object
-using the parameters defined above. The raw matrix is also created using the second function
+Using the parameter above, generate a TimeSeries_Object and load the example data
+as well as the semantic similarity data
 ```{r create_base_TS, message=FALSE}
-if(obj_name %in% list.files(name_result_folder)==FALSE){
-  TS_object <- new('TimeSeries_Object',
-                   group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
-                   DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
-                   PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
-  TS_object <- TS_load_example_data(TS_object,'PBMC')
-  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
-}else{
-  load(name_save_obj)
-}
-
+TS_object <- new('TimeSeries_Object',
+                 group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
+                 DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
+                 PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
+TS_object <- TS_load_example_data(TS_object,'PBMC')
+TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim,vignette_run=TRUE)
 ```
 
 
@@ -148,10 +132,6 @@ if (slot(TS_object,'DE_method')=='DESeq2' & 'norm' %in% names(assays(slot(TS_obj
 TS_object<-conditional_DE_wrapper(TS_object)
 #Perform temporal differential gene expression analysis
 TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=do_all_temporal_comparisons)
-
-#save the timeseries object
-save(TS_object,file=name_save_obj)
-
 ```
 
 ## PART clustering
@@ -178,10 +158,8 @@ if (is.null(PART_seed)==FALSE){
   set.seed(as.character(PART_seed))
 }
 TS_object<-compute_PART(TS_object,part_recursion=PART_recursion,part_min_clust=PART_min_clust,
-                        custom_seed=PART_seed,dist_param="euclidean", hclust_param="average")
-#Save the TimeSeries object to the directory to prevent loss of data in the event
-#of a downstream error
-save(TS_object,file=name_save_obj)
+                        custom_seed=PART_seed,dist_param="euclidean", hclust_param="average",
+                        vignette_run=TRUE)
 ```
 
 ## Gprofiler analysis
@@ -199,11 +177,7 @@ This code chunk will overwrite the saved object if it is completed. The overwrit
 object will then contain the gprofiler analysis results and can be used to generate
 plots with the downstream code chunks.
 ```{r run_Gpro ,message=FALSE,warning=FALSE}
-# load('timeseries_obj_res.Rdata')
 TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run = TRUE) #Run the gprofiler analysis
-#Save the results in a Rdata obbject
-save(TS_object,file=name_save_obj)
-
 ```
 
 
@@ -221,7 +195,7 @@ in the top right of each respective interactive plot
 ```{r results_setup ,echo=FALSE,message=FALSE,warning=FALSE}
 #Calcualte and plot the TimeSeries PCA
 TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
-ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
+# ggsave(paste0(name_result_folder,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',plot=TS_pca)
 
 #Creating sample_data without row.names for illustration in Rmarkdown format
 sample_dta<-exp_sample_data(TS_object)
@@ -247,22 +221,29 @@ row.names(sample_dta)=NULL
 **PART computation time\:** `r slot(TS_object,'PART_results')$comp_time`
 
 **PCA of sample data\:**
-  `r knitr::include_graphics(paste0(name_result_folder,"PCA_plot.png"))`
+```{r show_PCA_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
+TS_pca
+```
 ```{r DE_results ,echo=FALSE,message=FALSE,warning=FALSE}
 
 #Create results for conditional and temporal differential gene expression results
-plot_wrapper_DE_results(object=TS_object,DE_type='conditional',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
-plot_wrapper_DE_results(object=TS_object,DE_type='temporal',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
+# plot_wrapper_DE_results(object=TS_object,DE_type='conditional',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
+# plot_wrapper_DE_results(object=TS_object,DE_type='temporal',genes_of_interest=genes_of_interest,results_folder=name_result_folder,do_SVGs=FALSE)
+
+#Function which creates plots for vignettes
+heat_list<-DE_plots_vignettes(TS_object)
 
 #Creates a table for rmarkdown illustration
 DEG_table<-create_DEG_df(TS_object)
+
+#BELOW CODE commented out for Vignettes, it will create results for genes of interest
 #Create the repository for genes_of_interest and perform the analysis
-dir.create(paste0(name_result_folder,'genes_of_interest/'))
+# dir.create(paste0(name_result_folder,'genes_of_interest/'))
 #May create warnings if there are too few timepoints, plots will be created as intended
-create_tables_genes_of_interest_DE(TS_object,genes_of_interest,save_location=paste0(name_result_folder,'genes_of_interest/'),log_tp = log_tp_traj)
+# create_tables_genes_of_interest_DE(TS_object,genes_of_interest,save_location=paste0(name_result_folder,'genes_of_interest/'),log_tp = log_tp_traj)
 
 ```
-## Differential Gene Expression results
+## Differential Gene Expression results (as per plot_wrapper functions)
 
 **DEGs found per analysis\:** `r kable(DEG_table)`
 Each experiment listed in the above table has separate results which can be viewed
@@ -290,10 +271,14 @@ is compared against. For example, TP2_vs_TP1 would have the 'experiment' be TP2 
 while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. Note that TP=time point.
 
 **The conditional heatmap**
-  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_conditional/custom_heat_conditional.png"))`
+```{r show_cond_heat_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=5, fig.width=15}
+heat_list[['conditional']]
+```
 
 **The temporal heatmap**
-  `r knitr::include_graphics(paste0(name_result_folder,"/DE_results_temporal/custom_heat_temporal.png"))`
+```{r show_temp_heat_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=5, fig.width=15}
+heat_list[['temporal']]
+```
 
 ## Genes of interest results
 
@@ -304,8 +289,9 @@ gene_matrix_interest<-count_matrix_norm[row.names(count_matrix_norm) %in% genes_
 if(nrow(gene_matrix_interest)>0){
   var_vect <- apply(gene_matrix_interest, 1, stats::var)
   selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]
-  target_file<-paste0(name_result_folder,'genes_of_interest/',selected_gene,'_trajectory.png')
-  knitr::include_graphics(target_file)
+  gene_traj_dta<-calculate_gene_traj_data(TS_object,selected_gene,log_tp_traj)
+  gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(TS_object,'group_colors'))
+  gene_traj_plot
 }else{
   selected_gene<-row.names(slot(TS_object,'PART_results')$cluster_map)[1]
   gene_traj_dta<-calculate_gene_traj_data(TS_object,selected_gene,log_tp_traj)
@@ -343,13 +329,14 @@ being very compressed and possibly indistinguishable from each other.
 
 ```{r PART_results ,message=FALSE,warning=FALSE}
 
-dir.create(paste0(name_result_folder,'PART_results')) #create the directory to store results
-PART_heat_map(TS_object,paste0(name_result_folder,'PART_results/PART_heat')) #Create a summary heatmap
+# dir.create(paste0(name_result_folder,'PART_results')) #create the directory to store results
+PART_heat<-PART_heat_map(TS_object,NULL) #Create a summary heatmap, returns plot if save location is NULL
 ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 
 #Function which determines the number of SVG files to plot all cluster trajectories
-wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=log_tp_traj,plot_name=paste0(name_result_folder,'/PART_results/Ctraj'))
+#Function commented out for vignettes
+# wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=log_tp_traj,plot_name=paste0(name_result_folder,'/PART_results/Ctraj'))
 
 #find the most variable cluster, subset necessary data and plot it on a single column
 #The function will also filter for a cluster which has gprofiler results
@@ -363,7 +350,9 @@ colnames(cluster_map_sum)=NULL
 ```
 **PART result summary\:** `r kable(cluster_map_sum)`
 
-All cluster results are found in the 'PART_results' folder, within this folder you will find the following\:
+All cluster results are found in the 'PART_results' folder, within this folder you will find the following,
+Note that this folder exists if the a save_location is given to the \code{PART_heat_map} function and that the 
+\code{wrapper_cluster_trajectory} function is used.\:
 
 **PART_heat.svg**\: A svg heatmap of the PART result – detailed below.
 **PART_heat_with_names.svg**\: The same plot as above but with sample and gene names included. These may not
@@ -388,9 +377,9 @@ represents timepoints and the y axis represents the scaled mean expression of th
 of each gene is obtained by calculating the mean between all replicates for each time point in each group.
 The values are then scaled in order to illustrate their trajectory. The overall mean of the cluster is shown as a thicker gray line.
 
-```{r test,figures-side, out.width = "49%", out.height="49%", fig.width=3, fig.height=3,echo=FALSE}
+```{r PART_results,figures-side, out.width = "49%", out.height="49%", fig.width=5, fig.height=5,echo=FALSE}
 par(mar = c(4, 4, .1, .1)) #set the parameters
-knitr::include_graphics(paste0(name_result_folder,"PART_results/PART_heat.svg")) #plot the heatmap
+PART_heat #plot the heatmap
 plt_clust #Plot the cluster
 ```
 
@@ -410,13 +399,13 @@ is then used with the semantic distance to create two versions of the MDS plot.
 
 ```{r Gpro_results ,message=FALSE,warning=FALSE}
 #Create standard gprofiler results
-gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = name_result_folder,return_specific_cluster=target_clust)
+gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = NULL,return_specific_cluster=target_clust)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 
 #Plot and save MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=paste0(name_result_folder,'gprofiler_results/'),return_plot=TRUE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE)
 ```
 
 Each cluster has it's own individual gprofiler plot, these are found in 'TS_results/gprofiler_results/figures'.
@@ -468,33 +457,14 @@ order to offer a better visualization, with most significant being in red and le
 
 ```{r Gpro_results_alt ,message=FALSE,warning=FALSE}
 target_top=10
-
-select_ontology<-'GO:BP'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
-
 select_ontology<-'REAC'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
-
-select_ontology<-'KEGG'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
-
-select_ontology<-'HP'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+gpro_REAC_dotplot<-GO_dotplot_wrapper(TS_object,file_loc=NULL,target_ontology=select_ontology,top_n=target_top,return_plot = TRUE)
 
 ```
-Illustrated below is the dotplot for the REACTOME pathway if it exists, otherwise it
-will show GO:BP or KEGG dotplots if those have been created. All dotplots created above
-can be found in the 'TS_results/gprofiler_results' folder.
-```{r show_dotplot ,echo=FALSE,message=FALSE,warning=FALSE}
+Illustrated below is the dotplot for the REACTOME pathway.
+```{r show_dotplot ,echo=FALSE,message=FALSE,warning=FALSE,out.width='100%',fig.height=8, fig.width=9}
+gpro_REAC_dotplot
 
-loc_gpro<-paste0(name_result_folder,'gprofiler_results/')
-if('REAC_dotplot.svg' %in% list.files(loc_gpro)==TRUE){
-  knitr::include_graphics(paste0(loc_gpro,"REAC_dotplot.svg"))
-}else if('GO_BP_dotplot.svg' %in% list.files(loc_gpro)==TRUE){
-  knitr::include_graphics(paste0(loc_gpro,"GO_BP_dotplot.svg"))
-}else if('KEGG_dotplot.svg' %in% list.files(loc_gpro)==TRUE){
-  knitr::include_graphics(paste0(loc_gpro,"KEGG_dotplot.svg"))
-}
 ```
 
 
@@ -529,7 +499,7 @@ if(length(target_ancestors)==0){
   GOs_ancestors_clust<-data.frame(NULL)
 }else{
   GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=name_result_folder)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL)
 }
 
 ```

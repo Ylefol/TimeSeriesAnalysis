@@ -4,7 +4,7 @@ Title: Transcriptomic TimeSeries (longitudinal) analysis
 Version: 0.99.0
 Authors@R: person("Yohan", "Lefol", email = "yohan.lefol@gmail.com",
                   role = c("aut", "cre"))
-Description: An pipeline to analyse and interpret longitudinal transcriptomic data from both RNAseq and microarray orgigins. The pipeline performs differential gene expression, clustering, and plots usefull figures to aid in interpretation of identified clusters of differentially expressed genes.
+Description: A pipeline to analyse and interpret longitudinal transcriptomic data from both RNAseq and microarray origins. The pipeline performs differential gene expression, clustering, and plots usefull figures to aid in interpretation of identified clusters of significant genes.
 License: MIT
 VignetteBuilder: knitr
 Imports:
@@ -13,6 +13,7 @@ Imports:
 	SummarizedExperiment,
 	limma,
 	BiocManager,
+	BiocFileCache,
 	org.Hs.eg.db,
 	org.Mm.eg.db,
 	org.Ce.eg.db,
@@ -43,7 +44,9 @@ Imports:
 	stats,
 	utils
 Depends: 
-	R (>= 4.2)
+	R (>= 4.2),
+	BiocFileCache,
+	SummarizedExperiment
 Suggests: knitr,
 	rmarkdown,
 URL: https://github.com/Ylefol/TimeSeriesAnalysis

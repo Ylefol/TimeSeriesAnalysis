@@ -38,8 +38,8 @@ DESeq2
 The function subsets the DESeq2_obj if necessary and adjust the condition in the
 event of a temporal differential gene expression analysis.
 
-The function then runs through the standard DESeq2 pipeline. It saves the dds
-object, the raw differential expression results, and the significant differential
+The function then runs through the standard DESeq2 pipeline. It saves the raw
+differential expression results, and the significant differential
 expression results.
 }
 \examples{

@@ -34,25 +34,3 @@ The function will split the clusters into groups of 8 to keep
 the figures clean. If multiple figures are created, they will be names
 1_of_x until it reaches x_of_x.
 }
-\examples{
-TS_object<-create_example_object_for_R()
-TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
-
-#Extract genes for PART clustering based on defined log(2)foldChange threshold
-signi_genes<-select_genes_with_l2fc(TS_object)
-
-#Use all samples, but implement a custom order. In this case it is reversed
-sample_data<-exp_sample_data(TS_object)
-samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
-
-#Create the matrix that will be used for PART clustering
-TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
-ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
-mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
-wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=FALSE,plot_name='Ctraj')
-
-}

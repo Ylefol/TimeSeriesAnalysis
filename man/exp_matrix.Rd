@@ -26,6 +26,6 @@ TS_object <- new('TimeSeries_Object',
                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
 TS_object <- TS_load_example_data(TS_object,'PBMC')
-exp_matrix(TS_object,'raw')
+stored_matrix<-exp_matrix(TS_object,'raw')
 
 }

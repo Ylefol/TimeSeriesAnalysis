@@ -4,14 +4,10 @@
 \alias{read_gprofiler_results}
 \title{Read gprofiler data from results folder}
 \usage{
-read_gprofiler_results(
-  res_location = "TS_results/",
-  ont = "REAC",
-  top_n = NULL
-)
+read_gprofiler_results(object, ont = "REAC", top_n = NULL)
 }
 \arguments{
-\item{res_location}{The location of the gprofiler_results folder}
+\item{object}{A time series object}
 
 \item{ont}{The ontology to be filtered for}
 
@@ -21,7 +17,7 @@ read_gprofiler_results(
 A dataframe with the requested information
 }
 \description{
-Function which reads the grprofiler data results from the time series analysis
+Function which reads the grprofiler data results from the time series object
 
 The function reads the information for each cluster and filters for the required
 columns, ontology, and number of GOs. It then adds a -log10 FDR
@@ -41,11 +37,10 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #Results saved to created directory
-dir.create('example_location')
-gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path='example_location')
-GO_top_cluster<-read_gprofiler_results(res_location='example_location',ont='GO:BP',top_n=10)
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+GO_top_cluster<-read_gprofiler_results(TS_object,ont='GO:BP',top_n=10)
 
 }

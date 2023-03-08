@@ -46,11 +46,3 @@ The function also creates a volcano plot and MA plot for each experiment
 The individual differential expression results are stored in folders which
 carry the name of the experiment
 }
-\examples{
-TS_object<-create_example_object_for_R()
-TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
-plot_wrapper_DE_results(TS_object,DE_type='conditional',results_folder = '',do_SVGs=FALSE)
-
-}

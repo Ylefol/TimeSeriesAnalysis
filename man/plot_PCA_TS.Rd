@@ -4,7 +4,7 @@
 \alias{plot_PCA_TS}
 \title{Plot timeseries PCA}
 \usage{
-plot_PCA_TS(time_object, exp_name = NULL, DE_type = NULL)
+plot_PCA_TS(time_object, exp_name = NULL, DE_type = NULL, show_names = TRUE)
 }
 \arguments{
 \item{time_object}{A timeseries object}
@@ -13,6 +13,8 @@ plot_PCA_TS(time_object, exp_name = NULL, DE_type = NULL)
 
 \item{DE_type}{Either conditional or temporal for the type of differential experiment
 being plotted}
+
+\item{show_names}{boolean indicating if sample names should be put on the pca or not}
 }
 \value{
 the pca_plot
@@ -34,6 +36,5 @@ TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 TS_object<-conditional_DE_wrapper(TS_object)
 TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
 TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
-TS_pca
 
 }

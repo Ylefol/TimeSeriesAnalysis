@@ -4,22 +4,25 @@
 \alias{add_semantic_similarity_data}
 \title{Calculate and add semantic similarity to object}
 \usage{
-add_semantic_similarity_data(object, ont_sem_sim)
+add_semantic_similarity_data(object, ont_sem_sim, vignette_run = FALSE)
 }
 \arguments{
 \item{object}{A timeseries object}
 
 \item{ont_sem_sim}{An ontology for the semantic similarity. EX: 'BP','MF','CC'}
+
+\item{vignette_run}{Boolean indicating if a run is for vignettes or not.}
 }
 \value{
 The updated time object
 }
 \description{
 This function calculates the semantic similarity object for an
-organism. It then stores this within the TimeSeries object and returns it
+organism. It then stores this within the TimeSeries object and returns it.
+If the function is used for Vignettes, it will use pre-loaded data for that organism.
 }
 \examples{
-TS_object<-create_example_object_for_R()
-TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+TS_object <- create_example_object_for_R()
+TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP',vignette_run=TRUE)
 
 }

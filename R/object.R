@@ -76,7 +76,7 @@ TimeSeries_Object<-setClass(
 
 #' @title Sample data set-up
 #'
-#' @description A simple function to read and subset the sample_data created by the user
+#' @description A simple function to read and subset the sample_data created by the user.
 #'
 #'
 #' @param path The path that will be read to obtain the sample data
@@ -85,10 +85,14 @@ TimeSeries_Object<-setClass(
 #' @return the subsetted sample file based on the selected groups
 #'
 #' @examples
-#'  write_example_data_to_dir('PBMC')
-#' my_path_data<-'data/PBMC/raw_counts_TS'
-#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#' path <- tempfile()
+#' bfc <- BiocFileCache(path, ask = FALSE)
+#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 #' prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
+#'
+#' @import BiocFileCache
 #'
 #' @export
 #'
@@ -183,7 +187,7 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
 #' @export
 TS_load_example_data<-function(time_object,example_dta){
   if(example_dta=='PBMC'){
-    exp_data<-AID_TS_data
+    exp_data<-PBMC_TS_data
   }else if(example_dta=='MURINE'){
     exp_data<-murine_TS_data
   }else if(example_dta=='CELEGANS'){
@@ -222,7 +226,7 @@ TS_load_example_data<-function(time_object,example_dta){
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
 #' TS_object <- TS_load_example_data(TS_object,'PBMC')
-#' exp_matrix(TS_object,'raw')
+#' stored_matrix<-exp_matrix(TS_object,'raw')
 #'
 #' @importFrom SummarizedExperiment assays
 #'
@@ -360,9 +364,11 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' @return count_matrix
 #'
 #' @examples
-#' write_example_data_to_dir('PBMC')
-#' my_path_data<-'data/PBMC/raw_counts_TS'
-#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#' path <- tempfile()
+#' bfc <- BiocFileCache(path, ask = FALSE)
+#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -372,6 +378,7 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #'
 #' TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
 #'
+#' @import BiocFileCache
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @importFrom SummarizedExperiment assays
 #'
@@ -415,9 +422,11 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #' @return final_counts The formatted count matrix
 #'
 #' @examples
-#' write_example_data_to_dir('PBMC')
-#' my_path_data<-'data/PBMC/raw_counts_TS'
-#' my_path_sample_dta<-'data/PBMC/sample_file.csv'
+#' path <- tempfile()
+#' bfc <- BiocFileCache(path, ask = FALSE)
+#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -435,6 +444,9 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #'
 #' #Prepare the matrix according to the differential expression method (affects input)
 #'  final_counts<-prep_RNAseq_matrix(my_path_data,selected_samples)
+#'
+#' @import BiocFileCache
+#'
 #' @export
 #'
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
@@ -475,22 +487,27 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #'
 #' @param example_data Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
 #' datasets available
+#' @param target_dir Where the saves should be located, if NULL, it will be saved
+#' to the main directory
 #'
 #' @return None
 #'
 #' @examples
-#' write_example_data_to_dir('PBMC')
+#' path <- tempfile()
+#' bfc <- BiocFileCache(path, ask = FALSE)
+#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
 #'
 #'
 #' @import SummarizedExperiment
+#' @import BiocFileCache
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
-write_example_data_to_dir<-function(example_data){
+write_example_data_to_dir<-function(example_data,target_dir=NULL){
   #Set object and save names based on requested example data
   if(example_data=='PBMC'){
-    full_counts<-assay(AID_TS_data)
-    sample_data<-data.frame(AID_TS_data@colData)
+    full_counts<-assay(PBMC_TS_data)
+    sample_data<-data.frame(PBMC_TS_data@colData)
     save_name<-'PBMC'
   }else if(example_data=='MURINE'){
     full_counts<-assay(murine_TS_data)
@@ -504,46 +521,65 @@ write_example_data_to_dir<-function(example_data){
     message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
     return(NULL)
   }
-
-  #Create data folder is it does not exist
-  if(!'data' %in% list.files()){
-    dir.create('data')
+  if(is.null(target_dir)==FALSE){
+    data_folder_loc<-paste0(target_dir,'/data/')
+    dir.create(data_folder_loc)
+  }else{
+    #Create data folder is it does not exist
+    data_folder_loc<-'data/'
+    if(!'data' %in% list.files()){
+      dir.create('data')
+    }
   }
+
   #Create folders to save example data
-  dir.create(paste0('data/',save_name))
-  dir.create(paste0('data/',save_name,'/raw_counts_TS'))
+  dir.create(paste0(data_folder_loc,save_name))
+  dir.create(paste0(data_folder_loc,save_name,'/raw_counts_TS'))
 
   #Iterate over data and save it
   for(dta in colnames(full_counts)){
     temp_df<-data.frame(gene_id=row.names(full_counts),samp=full_counts[,dta])
     colnames(temp_df)=c('gene_id',dta)
-    write.table(temp_df,paste0('data/',save_name,'/raw_counts_TS/',dta,'.counts'),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
+    write.table(temp_df,paste0(data_folder_loc,save_name,'/raw_counts_TS/',dta,'.counts'),quote =FALSE,row.names = FALSE,sep='\t',col.names = FALSE)
   }
-  write.csv(sample_data,paste0('data/',save_name,'/sample_file.csv'),row.names = FALSE)
+  write.csv(sample_data,paste0(data_folder_loc,save_name,'/sample_file.csv'),row.names = FALSE)
 }
 
 #' @title Calculate and add semantic similarity to object
 #'
 #' @description This function calculates the semantic similarity object for an
-#' organism. It then stores this within the TimeSeries object and returns it
+#' organism. It then stores this within the TimeSeries object and returns it.
+#' If the function is used for Vignettes, it will use pre-loaded data for that organism.
 #'
 #' @param object A timeseries object
 #' @param ont_sem_sim An ontology for the semantic similarity. EX: 'BP','MF','CC'
+#' @param vignette_run Boolean indicating if a run is for vignettes or not.
 #'
 #' @return The updated time object
 #'
 #' @examples
-#' TS_object<-create_example_object_for_R()
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
+#' TS_object <- create_example_object_for_R()
+#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP',vignette_run=TRUE)
 #'
 #' @importFrom GOSemSim godata
 #'
 #' @export
-add_semantic_similarity_data<-function(object,ont_sem_sim){
+add_semantic_similarity_data<-function(object,ont_sem_sim,vignette_run=FALSE){
   #Create semantic data
-  sem_org<-slot(object,'sem_sim_org')
-  object@sem_list <- godata(sem_org, ont=ont_sem_sim, computeIC=TRUE)
-
+  if(vignette_run==FALSE){
+    sem_org<-slot(object,'sem_sim_org')
+    object@sem_list <- godata(sem_org, ont=ont_sem_sim, computeIC=TRUE)
+  }else{#Use pre-loaded data
+    if(slot(object,'Gpro_org')=='hsapiens'){
+      object@sem_list<-PBMC_pre_loaded$sem_list
+    }else if(slot(object,'Gpro_org')=='celegans'){
+      object@sem_list<-celegans_pre_loaded$sem_list
+    }else if(slot(object,'Gpro_org')=='mmusculus'){
+      object@sem_list<-murine_pre_loaded$sem_list
+    }else{
+      stop('No example data found, script terminated')
+    }
+  }
   return(object)
 }
 
@@ -558,23 +594,15 @@ add_semantic_similarity_data<-function(object,ont_sem_sim){
 #'
 #' @import SummarizedExperiment
 #' @import org.Hs.eg.db
-#'
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#'
 #' @export
 create_example_data_for_R<-function(){
-  counts_df<-NULL
-  for(exp in colnames(assays(AID_TS_data)$counts)){
-    if(is.null(counts_df)==TRUE){
-      counts_df<-assays(AID_TS_data)$counts[,exp]
-    }else{
-      counts_df<-cbind(counts_df,assays(AID_TS_data)$counts[,exp])
-    }
-  }
-  colnames(counts_df)=colnames(assays(AID_TS_data)$counts)
-
+  counts_df<-assay(PBMC_TS_data)
+  samp_dta<-as.data.frame(colData(PBMC_TS_data))
   #Subset count dataframe
   counts_df<-counts_df[1:200,]
-  return_list<-list(counts=counts_df,sample_data=AID_TS_data$sample_dta)
+  return_list<-list(counts=counts_df,sample_data=samp_dta)
   return(return_list)
 }
 
@@ -588,16 +616,19 @@ create_example_data_for_R<-function(){
 #' TS_object<-create_example_object_for_R()
 #'
 #' @import SummarizedExperiment
+#' @import BiocFileCache
 #' @import org.Hs.eg.db
 #'
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
 create_example_object_for_R<-function(){
+  path <- tempfile()
+  bfc <- BiocFileCache(path, ask = FALSE)
+  write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+  my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+  my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 
-  write_example_data_to_dir('PBMC')
-  my_path_data<-'data/PBMC/raw_counts_TS'
-  my_path_sample_dta<-'data/PBMC/sample_file.csv'
 
   graph_vect<-c("#e31a1c","#1f78b4")
   names(graph_vect)<-c('IgM','LPS')
@@ -606,7 +637,7 @@ create_example_object_for_R<-function(){
   TS_object <- new('TimeSeries_Object',
                    group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
                    DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
-                   PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+                   PART_l2fc_thresh=1,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
   TS_object <- TS_load_example_data(TS_object,'PBMC')
   return(TS_object)
 }

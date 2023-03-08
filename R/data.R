@@ -11,7 +11,7 @@
 #' }
 #' @source <https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html>
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
-"AID_TS_data"
+"PBMC_TS_data"
 
 
 #' @title RNAseq counts for AID activation cocktail in a murine timeseries exeriment time series experiment
@@ -49,40 +49,35 @@
 "Celegans_TS_data"
 
 
-#' @title Gprofiler results for the PBMC example dataset
+#' @title Pre-computed PART and gprofiler results for the PBMC dataset
 #'
 #' @description A list containing the gprofiler results (14 clusters) for the PBMC example.
 #' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#' Also contains a list of lists with various PART results, from the inputed matrix to the
+#' computed clusters and the various parameters used for the clustering.
 #'
 #' @format A list of lists
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
-"PBMC_gpro_res"
+"PBMC_pre_loaded"
 
-#' @title Gprofiler results for the celegans example dataset
+#' @title Pre-computed PART and gprofiler results for the PBMC dataset
 #'
 #' @description A list containing the gprofiler results (14 clusters) for the celegans example.
 #' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#' Also contains a list of lists with various PART results, from the inputed matrix to the
+#' computed clusters and the various parameters used for the clustering.
 #'
 #' @format A list of lists
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
-"celegans_gpro_res"
+"celegans_pre_loaded"
 
-#' @title Gprofiler results for the murine example dataset
+#' @title Pre-computed PART and gprofiler results for the PBMC dataset
 #'
 #' @description A list containing the gprofiler results (19 clusters) for the murine example.
 #' This data exists to allow for the creation of Vignettes in the event of a network failure.
+#' Also contains a list of lists with various PART results, from the inputed matrix to the
+#' computed clusters and the various parameters used for the clustering.
 #'
 #' @format A list of lists
 #' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
-"murine_gpro_res"
-
-
-#' @title Gprofiler results for the function examples
-#'
-#' @description A list containing the gprofiler results (11 clusters) for the AID example.
-#' This data exists to allow for the creation of function examples in the event
-#' that no connection to gprofiler could be made (host connection error)
-#'
-#' @format A list of lists
-#' @source <https://www.github.com/Ylefol/TimeSeriesAnalysis>
-"AID_example_gpro_res"
+"murine_pre_loaded"

@@ -30,9 +30,11 @@ It reads the sample data and value files, filters them to contain only the neces
 groups and then creates a SummarizedExperiment to then store this into the TimeSeris_Object
 }
 \examples{
-write_example_data_to_dir('PBMC')
-my_path_data<-'data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'data/PBMC/sample_file.csv'
+path <- tempfile()
+bfc <- BiocFileCache(path, ask = FALSE)
+write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
+my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 graph_vect<-c("#e31a1c","#1f78b4")
 
 TS_object <- new('TimeSeries_Object',

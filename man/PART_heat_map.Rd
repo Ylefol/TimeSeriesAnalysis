@@ -12,7 +12,7 @@ PART_heat_map(object, heat_name = "custom_heat_map")
 \item{heat_name}{The file name given to the saved heatmap}
 }
 \value{
-none
+none or PART heatmap if heat_name is set to NULL
 }
 \description{
 The heatmap shows selected genes as rows and replicates of the time series experiment
@@ -41,8 +41,8 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #Heatmap will be saved to main directory
-PART_heat_map(TS_object,'PART_heat') #Create a summary heatmap
+PART_heat<-PART_heat_map(TS_object,NULL) #Create a summary heatmap
 
 }

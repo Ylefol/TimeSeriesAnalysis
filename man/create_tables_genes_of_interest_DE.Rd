@@ -34,12 +34,3 @@ axes, then save these results in csv format. One csv file per gene of interest.
 
 The function will also plot and save (as png) the trajectory of each gene
 }
-\examples{
-TS_object<-create_example_object_for_R()
-TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
-#Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
-#Below function will save results to main directory
-create_tables_genes_of_interest_DE(TS_object,c('AICDA'),save_location='',log_tp = FALSE)
-
-}

@@ -12,7 +12,8 @@ compute_PART(
   hclust_param = "average",
   custom_seed = NULL,
   custom_matrix = NULL,
-  return_as_object = TRUE
+  return_as_object = TRUE,
+  vignette_run = FALSE
 )
 }
 \arguments{
@@ -33,6 +34,9 @@ from the object}
 
 \item{return_as_object}{Boolean indicating if the results should be returned
 within the submitted object or as a list}
+
+\item{vignette_run}{Boolean indicating if this is for Vignettes, if so the function
+will load the appropriate example data instead of performing the computation.}
 }
 \value{
 The timeseries object with the PART results added
@@ -59,6 +63,6 @@ samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average")
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 
 }
