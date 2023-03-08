@@ -15,4 +15,5 @@ present quick examples within the documentation
 }
 \examples{
 example_dta<-create_example_data_for_R()
+
 }

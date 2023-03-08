@@ -45,7 +45,8 @@ Imports:
 	utils
 Depends: 
 	R (>= 4.2),
-	BiocFileCache
+	BiocFileCache,
+	SummarizedExperiment
 Suggests: knitr,
 	rmarkdown,
 URL: https://github.com/Ylefol/TimeSeriesAnalysis

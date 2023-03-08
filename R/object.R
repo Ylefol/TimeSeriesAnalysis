@@ -591,23 +591,18 @@ add_semantic_similarity_data<-function(object,ont_sem_sim,vignette_run=FALSE){
 #' @return The smaller count matrix and sample data as a list
 #' @examples
 #' example_dta<-create_example_data_for_R()
+#'
+#' @import SummarizedExperiment
+#' @import org.Hs.eg.db
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#'
 #' @export
 create_example_data_for_R<-function(){
-  counts_df<-NULL
-  for(exp in names(PBMC_TS_data$counts)){
-    if(is.null(counts_df)==TRUE){
-      counts_df<-PBMC_TS_data$counts[[exp]]
-    }else{
-      counts_df<-cbind(counts_df,PBMC_TS_data$counts[[exp]][,2])
-    }
-  }
-  row.names(counts_df)=counts_df[,1]
-  counts_df<-counts_df[2:ncol(counts_df)]
-  colnames(counts_df)=names(PBMC_TS_data$counts)
-
+  counts_df<-assay(PBMC_TS_data)
+  samp_dta<-as.data.frame(colData(PBMC_TS_data))
   #Subset count dataframe
   counts_df<-counts_df[1:200,]
-  return_list<-list(counts=counts_df,sample_data=PBMC_TS_data$sample_dta)
+  return_list<-list(counts=counts_df,sample_data=samp_dta)
   return(return_list)
 }
 

@@ -19,10 +19,6 @@ algorithm based on recursive thresholding (PART) clustering to identify
 small genomic clusters of relevance, followed by running the clusters
 through gprofiler to reveal the biological relevance of each cluster.
 
-## Version DOI
-
-10.5281/zenodo.7616032
-
 ## TS performs:
 
 - data normalization and processing
@@ -38,6 +34,8 @@ through gprofiler to reveal the biological relevance of each cluster.
 - GO ancestor queries
 
 ## Installation
+
+**A Bioconductor release is in progress**
 
 You can install the development version of TimeSeriesAnalysis like so:
 
@@ -57,7 +55,9 @@ method.
 ``` r
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap')
+bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
+'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db',
+BiocFileCache)
 BiocManager::install(bio_pkgs)
 ```
 
@@ -164,9 +164,10 @@ Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS
 
 ## Publication
 
-An manuscript detailing the TimeSeriesAnalysis pipeline has been
-submitted for publication. Both the ReadMe and the website will be
-updated when the manuscript is publicly available.
+A manuscript detailing the TimeSeriesAnalysis pipeline has been acepted
+for publication with NAR genomics and bioinformatics. The version/DOI of
+this pipeline used within the manuscript is 10.5281/zenodo.7616032. A
+link to the manuscript will be provided upon publication.
 
 ## Additional information
 

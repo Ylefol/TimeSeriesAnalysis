@@ -92,11 +92,6 @@
 <p>TimeSeriesAnalysis (TiSA) is an analysis and visualization package for RNAseq and microarray data. TS extracts significant genes from time course transcriptomic data by performing differential gene expression on both the conditional and temporal axes. It then employs partitioning algorithm based on recursive thresholding (PART) clustering to identify small genomic clusters of relevance, followed by running the clusters through gprofiler to reveal the biological relevance of each cluster.</p>
 </div>
 <div class="section level2">
-<h2 id="version-doi">Version DOI<a class="anchor" aria-label="anchor" href="#version-doi"></a>
-</h2>
-<p>10.5281/zenodo.7616032</p>
-</div>
-<div class="section level2">
 <h2 id="ts-performs">TS performs:<a class="anchor" aria-label="anchor" href="#ts-performs"></a>
 </h2>
 <ul>
@@ -115,6 +110,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p><strong>A Bioconductor release is in progress</strong></p>
 <p>You can install the development version of TimeSeriesAnalysis like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
@@ -124,7 +120,9 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="va">bio_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'DESeq2'</span>,<span class="st">'GOSemSim'</span>,<span class="st">'GO.db'</span>,<span class="st">'limma'</span>,<span class="st">'ComplexHeatmap'</span><span class="op">)</span></span>
+<span><span class="va">bio_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'DESeq2'</span>,<span class="st">'GOSemSim'</span>,<span class="st">'GO.db'</span>,<span class="st">'limma'</span>,<span class="st">'ComplexHeatmap'</span>,</span>
+<span><span class="st">'SummarizedExperiment'</span>,<span class="st">'org.Hs.eg.db'</span>,<span class="st">'org.Mm.eg.db'</span>,<span class="st">'org.Ce.eg.db'</span>,</span>
+<span><span class="va">BiocFileCache</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">bio_pkgs</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -175,7 +173,7 @@
 <div class="section level2">
 <h2 id="publication">Publication<a class="anchor" aria-label="anchor" href="#publication"></a>
 </h2>
-<p>An manuscript detailing the TimeSeriesAnalysis pipeline has been submitted for publication. Both the ReadMe and the website will be updated when the manuscript is publicly available.</p>
+<p>A manuscript detailing the TimeSeriesAnalysis pipeline has been acepted for publication with NAR genomics and bioinformatics. The version/DOI of this pipeline used within the manuscript is 10.5281/zenodo.7616032. A link to the manuscript will be provided upon publication.</p>
 </div>
 <div class="section level2">
 <h2 id="additional-information">Additional information<a class="anchor" aria-label="anchor" href="#additional-information"></a>
