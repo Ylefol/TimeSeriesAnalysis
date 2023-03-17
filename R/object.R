@@ -87,9 +87,10 @@ TimeSeries_Object<-setClass(
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
 #'
 #' @import BiocFileCache
@@ -366,9 +367,10 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -424,9 +426,10 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -495,7 +498,8 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
 #'
 #'
 #' @import SummarizedExperiment

@@ -23,3 +23,33 @@ Function which creates a dotplot for the provided gprofiler results
 The function creates the ggplot2 object for a dotplot which illustrates the GOs
 of the give clusters.
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+sample_data<-exp_sample_data(TS_object)
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#Set to NULL to not save results
+
+target_ontology<-'GO:BP'
+gpro_res<-gprofiler_cluster_analysis(TS_object,target_ontology,save_path=NULL)
+GO_top_cluster<-read_gprofiler_results(TS_object,target_ontology,10)
+GO_top_cluster <- GO_top_cluster[order(GO_top_cluster[,'term_id'],-GO_top_cluster[,'-log10(padj)']),]
+GO_top_cluster <- GO_top_cluster[!duplicated(GO_top_cluster$term_id),]
+plt<-custom_gpro_dotplot(GO_top_cluster,target_ontology,10)
+
+
+
+}

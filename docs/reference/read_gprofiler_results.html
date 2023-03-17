@@ -19,7 +19,7 @@ columns, ontology, and number of GOs. It then adds a -log10 FDR"><!-- mathjax --
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
       </span>
     </div>
 
@@ -32,12 +32,6 @@ columns, ontology, and number of GOs. It then adds a -log10 FDR"><!-- mathjax --
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/TS_analysis_PBMC.html">PBMC analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_murine.html">Murine analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_celegans.html">Celegans analysis</a>
     </li>
   </ul></li>
 <li>
@@ -124,8 +118,9 @@ columns, ontology, and number of GOs. It then adds a -log10 FDR</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Use all samples, but implement a custom order. In this case it is reversed</span></span></span>
 <span class="r-in"><span><span class="va">sample_data</span><span class="op">&lt;-</span><span class="fu"><a href="exp_sample_data.html">exp_sample_data</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">samps_2</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_object</span><span class="op">@</span><span class="va">group_names</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">samps_1</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_object</span><span class="op">@</span><span class="va">group_names</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">TS_groups</span><span class="op">&lt;-</span><span class="fu">slot</span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'group_names'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">samps_2</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_groups</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">samps_1</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_groups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Create the matrix that will be used for PART clustering</span></span></span>
 <span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="prep_counts_for_PART.html">prep_counts_for_PART</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">TS_object</span>,target_genes<span class="op">=</span><span class="va">signi_genes</span>,scale<span class="op">=</span><span class="cn">TRUE</span>,target_samples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">samps_2</span>,<span class="va">samps_1</span><span class="op">)</span><span class="op">)</span></span></span>

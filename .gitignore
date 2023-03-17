@@ -46,6 +46,7 @@ vignettes/TS_results_celegans_example
 .Ruserdata
 .Rbuildignore
 
-
+#Ignore archive
+archive
 
 inst/doc

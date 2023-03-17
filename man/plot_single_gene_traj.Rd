@@ -26,6 +26,7 @@ TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
 aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
-aicda_plot<-plot_single_gene_traj(aicda_traj_dta,TS_object@group_colors)
+group_cols<-slot(TS_object,'group_colors')
+aicda_plot<-plot_single_gene_traj(aicda_traj_dta,group_cols)
 
 }

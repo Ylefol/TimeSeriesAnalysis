@@ -21,7 +21,7 @@ for wich it was found."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
       </span>
     </div>
 
@@ -34,12 +34,6 @@ for wich it was found."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/TS_analysis_PBMC.html">PBMC analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_murine.html">Murine analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_celegans.html">Celegans analysis</a>
     </li>
   </ul></li>
 <li>
@@ -98,6 +92,60 @@ for wich it was found.</p>
 <p>The ggplot2 object for the created dotplot</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="create_example_object_for_R.html">create_example_object_for_R</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="normalize_timeSeries_with_deseq2.html">normalize_timeSeries_with_deseq2</a></span><span class="op">(</span>time_object<span class="op">=</span><span class="va">TS_object</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> converting counts to integer mode</span>
+<span class="r-in"><span><span class="co">#Perform conditional differential gene expression analysis</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> using pre-existing size factors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> estimating dispersions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gene-wise dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> using pre-existing size factors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> estimating dispersions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gene-wise dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> using pre-existing size factors</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> estimating dispersions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> gene-wise dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
+<span class="r-in"><span><span class="co">#Extract genes for PART clustering based on defined log(2)foldChange threshold</span></span></span>
+<span class="r-in"><span><span class="va">signi_genes</span><span class="op">&lt;-</span><span class="fu"><a href="select_genes_with_l2fc.html">select_genes_with_l2fc</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Use all samples, but implement a custom order. In this case it is reversed</span></span></span>
+<span class="r-in"><span><span class="va">sample_data</span><span class="op">&lt;-</span><span class="fu"><a href="exp_sample_data.html">exp_sample_data</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">TS_groups</span><span class="op">&lt;-</span><span class="fu">slot</span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'group_names'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">samps_2</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_groups</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">samps_1</span><span class="op">&lt;-</span><span class="va">sample_data</span><span class="op">$</span><span class="va">sample</span><span class="op">[</span><span class="va">sample_data</span><span class="op">$</span><span class="va">group</span><span class="op">==</span><span class="va">TS_groups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Create the matrix that will be used for PART clustering</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="prep_counts_for_PART.html">prep_counts_for_PART</a></span><span class="op">(</span>object<span class="op">=</span><span class="va">TS_object</span>,target_genes<span class="op">=</span><span class="va">signi_genes</span>,scale<span class="op">=</span><span class="cn">TRUE</span>,target_samples<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">samps_2</span>,<span class="va">samps_1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="compute_PART.html">compute_PART</a></span><span class="op">(</span><span class="va">TS_object</span>,part_recursion<span class="op">=</span><span class="fl">10</span>,part_min_clust<span class="op">=</span><span class="fl">10</span>,dist_param<span class="op">=</span><span class="st">"euclidean"</span>, hclust_param<span class="op">=</span><span class="st">"average"</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="run_gprofiler_PART_clusters.html">run_gprofiler_PART_clusters</a></span><span class="op">(</span><span class="va">TS_object</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">#Run the gprofiler analysis</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> running Gprofiler on PART clusters</span>
+<span class="r-in"><span><span class="co">#Save path set to NULL to not save results</span></span></span>
+<span class="r-in"><span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'GO:BP'</span>,save_path<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="co">#Immune related ancestors</span></span></span>
+<span class="r-in"><span><span class="va">target_ancestors</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'GO:0002253'</span>,<span class="st">'GO:0019882'</span>,<span class="st">'GO:0002404'</span>,<span class="st">'GO:0002339'</span>,<span class="st">'GO:0042386'</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">'GO:0035172'</span>,<span class="st">'GO:0002252'</span>,<span class="st">'GO:0006955'</span>,<span class="st">'GO:0002520'</span>,<span class="st">'GO:0090713'</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">'GO:0045321'</span>,<span class="st">'GO:0001776'</span>,<span class="st">'GO:0050900'</span>,<span class="st">'GO:0031294'</span>,<span class="st">'GO:0002262'</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">'GO:0002683'</span>,<span class="st">'GO:0002684'</span>,<span class="st">'GO:0002440'</span>,<span class="st">'GO:0002682'</span>,<span class="st">'GO:0002200'</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">'GO:0045058'</span>,<span class="st">'GO:0002507'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ancestor_ontology</span><span class="op">&lt;-</span><span class="st">'BP'</span></span></span>
+<span class="r-in"><span><span class="va">GOs_ancestors_clust</span><span class="op">&lt;-</span><span class="fu"><a href="find_relation_to_ancestors.html">find_relation_to_ancestors</a></span><span class="op">(</span><span class="va">target_ancestors</span>,<span class="va">GO_clusters</span>,ontology <span class="op">=</span> <span class="va">ancestor_ontology</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_dotplot</span><span class="op">&lt;-</span><span class="fu">dotplot_ancestors</span><span class="op">(</span><span class="va">GOs_ancestors_clust</span>,use_names<span class="op">=</span><span class="cn">TRUE</span>,enrichment_dta<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

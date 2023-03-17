@@ -35,3 +35,36 @@ specified ontology.
 
 The function will plot and save a dotplot as well as an interactive MDS plot
 }
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+sample_data<-exp_sample_data(TS_object)
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#Save path set to NULL to not save results
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+GO_clusters<-gpro_res[['GO_df']]
+#Immune related ancestors
+target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+                    'GO:0045058','GO:0002507')
+ancestor_ontology<-'BP'
+sem_dta<-slot(TS_object,'sem_list')
+GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
+ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL)
+
+}

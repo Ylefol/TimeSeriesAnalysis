@@ -26,7 +26,7 @@ dpi=300 width=21 height=19 units='cm'"><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
       </span>
     </div>
 
@@ -39,12 +39,6 @@ dpi=300 width=21 height=19 units='cm'"><!-- mathjax --><script src="https://cdnj
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/TS_analysis_PBMC.html">PBMC analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_murine.html">Murine analysis</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_celegans.html">Celegans analysis</a>
     </li>
   </ul></li>
 <li>
@@ -166,7 +160,8 @@ interest should be shown.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
-<span class="r-in"><span><span class="va">v_plot</span><span class="op">&lt;-</span><span class="fu">volcanoplot_alt</span><span class="op">(</span>DE_res <span class="op">=</span> <span class="va">TS_object</span><span class="op">@</span><span class="va">DE_results</span><span class="op">$</span><span class="va">conditional</span><span class="op">$</span><span class="va">IgM_vs_LPS_TP_1</span><span class="op">$</span><span class="va">DE_raw_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">DE_res</span><span class="op">&lt;-</span><span class="fu">slot</span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'DE_results'</span><span class="op">)</span><span class="op">$</span><span class="va">conditional</span><span class="op">$</span><span class="va">IgM_vs_LPS_TP_1</span><span class="op">$</span><span class="va">DE_raw_data</span></span></span>
+<span class="r-in"><span><span class="va">v_plot</span><span class="op">&lt;-</span><span class="fu">volcanoplot_alt</span><span class="op">(</span>DE_res <span class="op">=</span> <span class="va">DE_res</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

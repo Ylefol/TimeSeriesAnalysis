@@ -48,6 +48,7 @@ TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
 TS_object<-conditional_DE_wrapper(TS_object)
-ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
+DE_res<-slot(TS_object,'DE_results')$conditional$IgM_vs_LPS_TP_1$DE_raw_data
+ma_plot<-maplot_alt(DE_res = DE_res,filter_choice = 'padj')
 
 }

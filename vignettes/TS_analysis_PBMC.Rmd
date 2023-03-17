@@ -48,11 +48,6 @@ graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare organism and load library
 org_sem_sim='org.Hs.eg.db'
-if(system.file(package=org_sem_sim) ==''){#Package not installed
-  if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-  BiocManager::install(org_sem_sim)
-}
 library('org.Hs.eg.db')
 
 #Define specimen and ontology parameters
@@ -146,8 +141,9 @@ signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
 samp_dta<-exp_sample_data(TS_object)
-samps_2<-samp_dta$sample[samp_dta$group==TS_object@group_names[2]]
-samps_1<-samp_dta$sample[samp_dta$group==TS_object@group_names[1]]
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-samp_dta$sample[samp_dta$group==TS_groups[2]]
+samps_1<-samp_dta$sample[samp_dta$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,
@@ -402,10 +398,8 @@ is then used with the semantic distance to create two versions of the MDS plot.
 gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = NULL,return_specific_cluster=target_clust)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
-found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
-
 #Plot and save MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE,term_type_gg=FALSE)
 ```
 
 Each cluster has it's own individual gprofiler plot, these are found in 'TS_results/gprofiler_results/figures'.
@@ -425,11 +419,13 @@ defined as the 'closeness' between terms. Semantic similarity takes into account
 of the terms (genes which belong to it), it's associations to other terms, the similarity or lack there-of in function etc...
 In an MDS plot, the dimensions will be adjusted to fill the space with all the terms, therefor there is no set metric to measure
 the similarity. The purpose of the MDS plot is moreso to help visualize different groupings (or clusters) of relevant terms.
-Hovering the cursor over the dots will provide specific information for that dot (term)
-```{r show_MDS_term ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
+This plot was set as a static plot due to it's large number of hits. An interactive version can also be obtained, similar to the
+clustered version of the plot below.
+```{r show_MDS_term ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=8, fig.width=9}
 MDS_plots[['MDS_term']]
 ```
-A second version of the MDS plot provides a nearest ancestor clustering approach.
+Due to the large number of possible hits in a standard term based MDS, an alternate version was created.
+The second version of the MDS plot provides a nearest ancestor clustering approach.
 All terms found are brought up to their nearest common ancestor. Since these databases,
 GO ontology in particular, have a tree-like hierarchy, we are able to find common ancestors
 for each term which may provide a broader view if too many individual terms exist.
@@ -516,7 +512,8 @@ information is made available on the x axis while the y axis represents the term
 
 ```{r show_ancestor_MDS ,message=FALSE,warning=FALSE,echo=FALSE}
 if(is.null(ancestor_plots[['MDS']])==FALSE){
-  ancestor_plots[['MDS']]
+  # ancestor_plots[['MDS']]
+  print('bloop')
 }
 ```
 

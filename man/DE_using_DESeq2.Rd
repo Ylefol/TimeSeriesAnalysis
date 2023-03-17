@@ -47,7 +47,7 @@ TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 
 #DE for a single timepoint
-group_names<-TS_object@group_names
+group_names<-slot(TS_object,'group_names')
 tp<-'1'
 exp_name<-paste0(group_names[1],'_vs_',group_names[2],'_TP_',tp)
 sample_data<-exp_sample_data(TS_object)

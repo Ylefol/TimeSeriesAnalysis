@@ -32,7 +32,7 @@ through gprofiler to reveal the biological relevance of each cluster.
 
 ## TS performs: 
 
-* data normalization and processing 
+* Data normalization and processing 
 * PCA plots 
 * Differential gene expression (conditional and temporal) 
 * PART clustering 
@@ -90,29 +90,29 @@ Both the rmarkdown and script methods are found in the ‘supp_to_bioconductor�
 
 ## Data
 
-Three different datasets have been used as example datasets for this pipeline,
-all while this pipeline serves as a platform to publish and share these datasets.
+Three different datasets have been used to test this pipeline, one of which has been
+preserved as an example datasets for the vignettes of this pipeline. More information
+on the other datasets can be viewed through the publications listed below.
 
 The PBMC dataset is a time series experiment with three time points that explores 
 and compares three AICDA/AID (Activation Induced Cytidine DeAminase) activation cocktails.
 The experiment seeked to identify which activation cocktail properly activated AID
 through both the expression of the AID gene and the activation of class switch recombination.
 
-The MURINE dataset is another AID related time series experiment, where mice were generated and
-one was given an AID activation cocktail. The experiment contains one replicate per condition and
-10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints
-were combined to create an intermediary timepoint with two replicates in each condition.
+<!-- The MURINE dataset is another AID related time series experiment, where mice were generated and -->
+<!-- one was given an AID activation cocktail. The experiment contains one replicate per condition and -->
+<!-- 10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints -->
+<!-- were combined to create an intermediary timepoint with two replicates in each condition. -->
 
-The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2.
-The first being a parkinsons model and the second being a wild type. Each model was split into
-two groups, one that would be fed krill oil and the other not (control). Each experiment
-has three timepoints: Days 1, 3, and 6.
+<!-- The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2. -->
+<!-- The first being a parkinsons model and the second being a wild type. Each model was split into -->
+<!-- two groups, one that would be fed krill oil and the other not (control). Each experiment -->
+<!-- has three timepoints: Days 1, 3, and 6. -->
 
 ## Tutorial
 
 A tutorial can be found within the [pipelines website](https://ylefol.github.io/TimeSeriesAnalysis/). 
-Tutorials using all three data sets can be found in the examples tab of the website. Additionally the 
-documentation can be found in the references tab.
+Additionally the documentation can be found in the references tab.
 
 ## Microarray based data
 
@@ -157,9 +157,12 @@ Rscript -e "rmarkdown::render('rmarkdown_method/TS_analysis.Rmd',output_file='TS
 
 ## Publication
 
-A manuscript detailing the TimeSeriesAnalysis pipeline has been acepted for publication with NAR genomics and bioinformatics. 
+A manuscript detailing the TimeSeriesAnalysis pipeline published with NAR genomics and bioinformatics.
+[TiSA: TimeSeriesAnalysis—a pipeline for the analysis of longitudinal transcriptomics data](https://academic.oup.com/nargab/article/5/1/lqad020/7069286)
 The version/DOI of this pipeline used within the manuscript is 10.5281/zenodo.7616032.
-A link to the manuscript will be provided upon publication.
+
+A ageing related study was performed in part through the use of TiSA.
+[Krill oil protects dopaminergic neurons from age-related degeneration through temporal transcriptome rewiring and suppression of several hallmarks of aging](https://www.aging-us.com/article/204375/text)
 
 
 ## Additional information

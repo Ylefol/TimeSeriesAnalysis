@@ -27,8 +27,9 @@ signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
 sample_data<-exp_sample_data(TS_object)
-samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -38,12 +39,13 @@ TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gpr
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]
 TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
+sem_dta<-slot(TS_object,'sem_list')
+plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 plot_data<-merge_duplicate_modules(plot_data)
 
-found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 # calculate semantic similarites between clusters of GO terms
-calculated_SS<-SS_GO_clusters(TS_object@sem_list,found_clusters,'BP',distance="BMA",measure='Wang')
+calculated_SS<-SS_GO_clusters(sem_dta,found_clusters,'BP',distance="BMA",measure='Wang')
 clustered_module_df<-create_clustered_module_dataframe(found_clusters)
 
 clust_plot<-plot_clustered_mds(calculated_SS,clustered_module_df)

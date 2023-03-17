@@ -27,7 +27,8 @@ and see the formatting expected by TimeSeriesAnalysis
 \examples{
 path <- tempfile()
 bfc <- BiocFileCache(path, ask = FALSE)
-write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+bfc_cache<-slot(bfc,'cache')
+write_example_data_to_dir('PBMC',target_dir=bfc_cache)
 
 
 }

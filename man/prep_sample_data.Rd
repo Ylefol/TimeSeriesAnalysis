@@ -20,9 +20,10 @@ A simple function to read and subset the sample_data created by the user.
 \examples{
 path <- tempfile()
 bfc <- BiocFileCache(path, ask = FALSE)
-write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+bfc_cache<-slot(bfc,'cache')
+write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
 
 }

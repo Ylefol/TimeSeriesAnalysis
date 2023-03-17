@@ -39,8 +39,9 @@
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -143,8 +144,9 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -154,7 +156,8 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #'
 #' @importFrom GOSemSim mgoSim
 #' @importFrom stats as.dist cmdscale
@@ -211,8 +214,9 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -222,7 +226,8 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
 #'
 #' @export
@@ -314,8 +319,9 @@ find_merged_color<-function(group){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -325,7 +331,8 @@ find_merged_color<-function(group){
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #'
 #' @importFrom GOSemSim mgoSim
 #' @importFrom stats as.dist cmdscale hclust order.dendrogram
@@ -406,8 +413,9 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -417,8 +425,9 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
-#' calculated_SS<-SS_GO_clusters(TS_object@sem_list,found_clusters,'BP',distance="BMA",measure='Wang')
+#' sem_dta<-slot(TS_object,'sem_list')
+#' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
+#' calculated_SS<-SS_GO_clusters(sem_dta,found_clusters,'BP',distance="BMA",measure='Wang')
 #'
 #' @import data.table AnnotationDbi
 #' @import stats
@@ -555,8 +564,9 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -566,7 +576,8 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #' clustered_module_df<-create_clustered_module_dataframe(found_clusters)
 #'
 #' @export
@@ -640,8 +651,9 @@ create_clustered_module_dataframe<-function(cluster_df){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -749,8 +761,9 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -827,8 +840,9 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -844,7 +858,8 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #'                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
 #'                     'GO:0045058','GO:0002507')
 #' GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-#' plot_data<-calculate_and_format_MDS(GOs_ancestors_clust,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' plot_data<-calculate_and_format_MDS(GOs_ancestors_clust,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
 #' for_merger<-GOs_ancestors_clust[,c('term_id','ancestor_name','-log10(padj)')]
 #' colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')
@@ -912,8 +927,9 @@ plot_ancestor_clust_MDS<-function(the_data){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -923,12 +939,13 @@ plot_ancestor_clust_MDS<-function(the_data){
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
 #'
-#' found_clusters<-find_clusters_from_termdist(GO_clusters,TS_object@sem_list)
+#' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #' # calculate semantic similarites between clusters of GO terms
-#' calculated_SS<-SS_GO_clusters(TS_object@sem_list,found_clusters,'BP',distance="BMA",measure='Wang')
+#' calculated_SS<-SS_GO_clusters(sem_dta,found_clusters,'BP',distance="BMA",measure='Wang')
 #' clustered_module_df<-create_clustered_module_dataframe(found_clusters)
 #'
 #' clust_plot<-plot_clustered_mds(calculated_SS,clustered_module_df)
@@ -1038,6 +1055,37 @@ plot_clustered_mds<-function(main_matrix,cluster_info){
 #'
 #' @return The ggplot2 object for the created dotplot
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' sample_data<-exp_sample_data(TS_object)
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#' #Save path set to NULL to not save results
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+#' GO_clusters<-gpro_res[['GO_df']]
+#' #Immune related ancestors
+#' target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+#'                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+#'                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+#'                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+#'                     'GO:0045058','GO:0002507')
+#' ancestor_ontology<-'BP'
+#' GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
+#' my_dotplot<-dotplot_ancestors(GOs_ancestors_clust,use_names=TRUE,enrichment_dta=FALSE)
+#'
 #' @import ggplot2
 #' @importFrom stringr str_wrap str_replace_all
 #'
@@ -1105,6 +1153,35 @@ dotplot_ancestors<-function(ancestor_df,use_names=FALSE,enrichment_dta=TRUE){
 #'
 #' @return Returns the ggplot2 object for the plot
 #'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' sample_data<-exp_sample_data(TS_object)
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#' #Set to NULL to not save results
+#'
+#' target_ontology<-'GO:BP'
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,target_ontology,save_path=NULL)
+#' GO_top_cluster<-read_gprofiler_results(TS_object,target_ontology,10)
+#' GO_top_cluster <- GO_top_cluster[order(GO_top_cluster[,'term_id'],-GO_top_cluster[,'-log10(padj)']),]
+#' GO_top_cluster <- GO_top_cluster[!duplicated(GO_top_cluster$term_id),]
+#' plt<-custom_gpro_dotplot(GO_top_cluster,target_ontology,10)
+#'
+#'
+#'
 #' @import ggplot2
 #' @importFrom stringr str_wrap str_replace_all
 #'
@@ -1132,9 +1209,13 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #' @title Create MDS plot
 #'
 #' @description The function will plot the GOs for each module while preserving their module name
-#' as their color.
+#' as their color. The function will plot either an interactive MDS using plotly or a
+#' static MDS/scatter plot using ggplot depending on the boolean given to the 'ggplot_version'
+#' parameter.
 #'
 #' @param the_data The dataframe as created by \code{calculate_and_format_MDS}
+#' @param ggplot_version Boolean indicating if a ggplot (static) version of the plot
+#' should be created instead of a plotly version. By default is FALSE.
 #'
 #' @return p The plotly plot to enable either visualization or saving of the plot
 #'
@@ -1148,8 +1229,9 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1159,38 +1241,47 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
 #' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
-#' plot_data<-calculate_and_format_MDS(GO_clusters,TS_object@sem_list)
+#' sem_dta<-slot(TS_object,'sem_list')
+#' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
 #' my_plot<-plot_MDS(plot_data)
 #'
 #' @importFrom plotly plot_ly add_markers
 #'
 #' @export
-plot_MDS<-function(the_data){
-  p<-plot_ly()
+plot_MDS<-function(the_data,ggplot_version=FALSE){
+
   color_ordered<-c()
   for (clust in sort(as.vector(unique(the_data$group_name)))){
     found_color<- as.vector(unique(the_data$group_color[the_data$group_name==clust]))
     color_ordered<-c(color_ordered,found_color)
   }
-  # create trace
-  p<-add_markers(
-    p,
-    data=the_data,
-    x=~Dim.1,
-    y=~Dim.2,
-    color=~group_name,
-    text = ~paste("modules/clusters:",group_name,"<br>GO.ID:",GO.ID,"<br>GO.name:",term),
-    showlegend=TRUE,
-    mode='markers',
-    colors=color_ordered,
-    marker =list(
-      # color=~colors,
-      size =20,
-      opacity = 0.4,
-      showlegend=TRUE
+
+  if(ggplot_version==TRUE){
+    p<-ggplot(the_data, aes(x=Dim.1, y=Dim.2, color=group_name)) +
+      geom_point(size =2)+
+      scale_color_manual(breaks=sort(as.vector(unique(the_data$group_name))), values=color_ordered)
+  }else{
+    p<-plot_ly()
+    # create trace
+    p<-add_markers(
+      p,
+      data=the_data,
+      x=~Dim.1,
+      y=~Dim.2,
+      color=~group_name,
+      text = ~paste("modules/clusters:",group_name,"<br>GO.ID:",GO.ID,"<br>GO.name:",term),
+      showlegend=TRUE,
+      mode='markers',
+      colors=color_ordered,
+      marker =list(
+        # color=~colors,
+        size =20,
+        opacity = 0.4,
+        showlegend=TRUE
+      )
     )
-  )
+  }
   # p
   return (p)
 }
@@ -1232,8 +1323,9 @@ plot_MDS<-function(the_data){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1293,18 +1385,45 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=
 #' and that will be plotted
 #' @param target_dir string indicating the location where the results will be saved
 #' @param return_plot boolean indicating if the plots should be returned
+#' @param term_type_gg Boolean indicating if the MDS for the terms should be a ggplot static
+#' figure or a interactive plotly figure. by default is FALSE - will use the plotly version
 #'
 #' @return if specified, will return a list containing the two plotly objects for
 #' both the GO term MDS and clustered GO term MDS.
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' sample_data<-exp_sample_data(TS_object)
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#' #Results saved to created directory
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+#' GO_clusters<-gpro_res[['GO_df']]
+#' sem_dta<-slot(TS_object,'sem_list')
+#' #Plot MDS and clustered MDS
+#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE)
 #'
 #' @importFrom plotly plot_ly add_markers as_widget
 #' @import htmlwidgets
 #'
 #' @export
-wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_dir='TS_results/gprofiler_results/',return_plot=FALSE){
+wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_dir='TS_results/gprofiler_results/',return_plot=FALSE,term_type_gg=FALSE){
   plot_data<-calculate_and_format_MDS(GO_clusters,sem_data)
   plot_data<-merge_duplicate_modules(plot_data)
-  my_plot<-plot_MDS(plot_data)
+  my_plot<-plot_MDS(plot_data,term_type_gg)
 
   found_clusters<-find_clusters_from_termdist(GO_clusters,sem_data)
   # calculate semantic similarites between clusters of GO terms
@@ -1342,6 +1461,38 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #'
 #' @return if specified, will return a list containing the ggplot2 object for the dotplot
 #' and the plotly object for the MDS plot.
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object)
+#' #Extract genes for PART clustering based on defined log(2)foldChange threshold
+#' signi_genes<-select_genes_with_l2fc(TS_object)
+#'
+#' #Use all samples, but implement a custom order. In this case it is reversed
+#' sample_data<-exp_sample_data(TS_object)
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+#'
+#' #Create the matrix that will be used for PART clustering
+#' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#' #Save path set to NULL to not save results
+#' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+#' GO_clusters<-gpro_res[['GO_df']]
+#' #Immune related ancestors
+#' target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+#'                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+#'                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+#'                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+#'                     'GO:0045058','GO:0002507')
+#' ancestor_ontology<-'BP'
+#' sem_dta<-slot(TS_object,'sem_list')
+#' GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
+#' ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL)
 #'
 #' @import ggplot2
 #' @importFrom plotly plot_ly add_markers as_widget
