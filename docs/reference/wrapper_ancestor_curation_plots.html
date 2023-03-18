@@ -71,7 +71,8 @@ specified ontology.</p>
 <span>  <span class="va">sem_data</span>,</span>
 <span>  use_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  target_dir <span class="op">=</span> <span class="st">"TS_results/"</span>,</span>
-<span>  return_plot <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  return_plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  term_type_gg <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,6 +96,11 @@ specified ontology.</p>
 
 <dt>return_plot</dt>
 <dd><p>boolean indicating if the plot should be returned</p></dd>
+
+
+<dt>term_type_gg</dt>
+<dd><p>Boolean indicating if the MDS for the terms should be a ggplot static
+figure or a interactive plotly figure. by default is FALSE - will use the plotly version</p></dd>
 
 </dl></div>
     <div id="value">

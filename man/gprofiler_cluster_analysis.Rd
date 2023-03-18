@@ -8,7 +8,8 @@ gprofiler_cluster_analysis(
   object,
   ontology,
   save_path = NULL,
-  return_specific_cluster = NULL
+  return_specific_cluster = NULL,
+  return_interactive = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,9 @@ gprofiler_cluster_analysis(
 \item{save_path}{The folder path to save results if gprofiler results are to be saved}
 
 \item{return_specific_cluster}{String to return the gost plot of a specific cluster}
+
+\item{return_interactive}{Boolean indicating if the returned plot (if needed) is to be
+interactive or static.}
 }
 \value{
 GO_df A dataframe containing all the GOs (ID) found, their cluster, and the term name

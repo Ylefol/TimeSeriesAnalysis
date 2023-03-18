@@ -395,11 +395,11 @@ is then used with the semantic distance to create two versions of the MDS plot.
 
 ```{r Gpro_results ,message=FALSE,warning=FALSE}
 #Create standard gprofiler results
-gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = NULL,return_specific_cluster=target_clust)
+gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = NULL,return_specific_cluster=target_clust,return_interactive=FALSE)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 #Plot and save MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE,term_type_gg=FALSE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE,term_type_gg=TRUE)
 ```
 
 Each cluster has it's own individual gprofiler plot, these are found in 'TS_results/gprofiler_results/figures'.
@@ -407,9 +407,13 @@ The gost plot for the most variable cluster (`r target_clust`) is shown below.
 These interactive plots show the results of various databases when queried with a list of genes.
 More information concerning these plots and their various datasources can be found at the following link\:
 https://biit.cs.ut.ee/gprofiler/gost
+Below is a non-interactive version of the plot, interactive versions can be obtained by setting the 'return_interactive'
+parameter to the above wrapper function to `TRUE'. In the interactive version you can hover over each dot to obtain the relevan information
+of that specific dot.
 
-
-`r gpro_res[['gost_clust']]`
+```{r show_gpro_clust,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
+gpro_res[['gost_clust']]
+```
 
 In addition to the standard gprofiler plot, the TimeSeries pipeline creates Multi-Dimensional Scaling (MDS)
 plots. These plots illustrate a custom selected ontology defined by the 'my_ont_gpro' parameter. The first MDS plots shows all
@@ -419,8 +423,8 @@ defined as the 'closeness' between terms. Semantic similarity takes into account
 of the terms (genes which belong to it), it's associations to other terms, the similarity or lack there-of in function etc...
 In an MDS plot, the dimensions will be adjusted to fill the space with all the terms, therefor there is no set metric to measure
 the similarity. The purpose of the MDS plot is moreso to help visualize different groupings (or clusters) of relevant terms.
-This plot was set as a static plot due to it's large number of hits. An interactive version can also be obtained, similar to the
-clustered version of the plot below.
+This plot was set as a static plot due to it's large number of hits. An interactive version can also be obtained by setting the 'term_type_gg'
+parameter to FALSE
 ```{r show_MDS_term ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=8, fig.width=9}
 MDS_plots[['MDS_term']]
 ```
@@ -434,7 +438,7 @@ terms from different clusters may be paired together.
 The size of each dot in this approach is relative to the number of terms sorted in that common ancestor (dot)
 while the color is representative of the dominant cluster in that common ancestor. For example, if an ancestor
 has 4 terms within it, and 3 of those terms are found in cluster 1 (C1), the dot will carry the color associated to C1.
-Hovering the cursor over the dots will provide more information on those specific common ancestors.
+An interactive version can also be obtained by setting the 'term_type_gg' parameter to FALSE
 ```{r show_MDS_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'}
 MDS_plots[['MDS_clust']]
 ```
@@ -495,7 +499,7 @@ if(length(target_ancestors)==0){
   GOs_ancestors_clust<-data.frame(NULL)
 }else{
   GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL,term_type_gg=TRUE)
 }
 
 ```
@@ -509,11 +513,12 @@ each term represents the ancestor to which they have been associated and the siz
 proportional to the -log transformed adjusted p-value. In the MDS plot, the PART clusters in
 which these terms are found can be seen by hovering over each dot, in the dotplot version, this
 information is made available on the x axis while the y axis represents the terms.
+For the MDS plot, an interactive version can also be obtained by setting the `term_type_gg'
+parameter to FALSE.
 
-```{r show_ancestor_MDS ,message=FALSE,warning=FALSE,echo=FALSE}
+```{r show_ancestor_MDS ,message=FALSE,warning=FALSE,echo=FALSE,out.width='100%'}
 if(is.null(ancestor_plots[['MDS']])==FALSE){
-  # ancestor_plots[['MDS']]
-  print('bloop')
+  ancestor_plots[['MDS']]
 }
 ```
 

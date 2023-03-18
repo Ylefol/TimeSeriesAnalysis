@@ -63,6 +63,6 @@ gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 #Plot MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim='BP',target_dir=NULL,return_plot=TRUE)
 
 }

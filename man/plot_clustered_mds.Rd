@@ -4,12 +4,15 @@
 \alias{plot_clustered_mds}
 \title{plot clustered MDS}
 \usage{
-plot_clustered_mds(main_matrix, cluster_info)
+plot_clustered_mds(main_matrix, cluster_info, ggplot_version = FALSE)
 }
 \arguments{
 \item{main_matrix}{Matrix containing the data to be plotted as created by  \code{SS_GO_clusters}}
 
 \item{cluster_info}{A dataframe with cluster names and the number of GOs in each cluster}
+
+\item{ggplot_version}{Boolean indicating if a ggplot (static) version of the plot
+should be created instead of a plotly version. By default is FALSE.}
 }
 \value{
 the plotly object for the MDS plot

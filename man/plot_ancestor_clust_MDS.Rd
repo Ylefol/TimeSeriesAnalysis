@@ -4,10 +4,13 @@
 \alias{plot_ancestor_clust_MDS}
 \title{Plot nearest ancestor MDS (clustered GOs)}
 \usage{
-plot_ancestor_clust_MDS(the_data)
+plot_ancestor_clust_MDS(the_data, ggplot_version = FALSE)
 }
 \arguments{
 \item{the_data}{The dataframe as created by \code{calculate_and_format_MDS}}
+
+\item{ggplot_version}{Boolean indicating if a ggplot (static) version of the plot
+should be created instead of a plotly version. By default is FALSE.}
 }
 \value{
 p The plotly plot to enable either visualization or saving of the plot

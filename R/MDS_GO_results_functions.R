@@ -26,6 +26,8 @@
 #' @param ontology the ontology that will be returned in the dataframe (ex: GO:BP)
 #' @param save_path The folder path to save results if gprofiler results are to be saved
 #' @param return_specific_cluster String to return the gost plot of a specific cluster
+#' @param return_interactive Boolean indicating if the returned plot (if needed) is to be
+#' interactive or static.
 #'
 #' @return GO_df A dataframe containing all the GOs (ID) found, their cluster, and the term name
 #'
@@ -55,7 +57,7 @@
 #'
 #' @export
 #'
-gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_specific_cluster=NULL){
+gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_specific_cluster=NULL,return_interactive=TRUE){
   object_gpro_res<-slot(object,'Gprofiler_results')
   return_clust<-NULL
   #If a save_path was given, create folders to save the data
@@ -104,7 +106,12 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
     }
     if(is.null(return_specific_cluster)==FALSE){
       if(cluster_name==return_specific_cluster){
-        return_clust<-p
+        if(return_interactive==FALSE){
+          p <- gostplot(gostres, capped = TRUE, interactive = FALSE)
+          return_clust<-p
+        }else{
+          return_clust<-p
+        }
       }
     }
   }
@@ -827,6 +834,8 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #' dataframe
 #'
 #' @param the_data The dataframe as created by \code{calculate_and_format_MDS}
+#' @param ggplot_version Boolean indicating if a ggplot (static) version of the plot
+#' should be created instead of a plotly version. By default is FALSE.
 #'
 #' @return p The plotly plot to enable either visualization or saving of the plot
 #'
@@ -871,7 +880,7 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #'
 #' @export
 #'
-plot_ancestor_clust_MDS<-function(the_data){
+plot_ancestor_clust_MDS<-function(the_data,ggplot_version=FALSE){
 
   p<-plot_ly()
   color_ordered<-c()
@@ -879,28 +888,36 @@ plot_ancestor_clust_MDS<-function(the_data){
     found_color<- as.vector(unique(the_data$group_color[the_data$Ancestor==clust]))
     color_ordered<-c(color_ordered,found_color)
   }
-  # create trace
-  p<-add_markers(
-    p,
-    data=the_data,
-    x=~Dim.1,
-    y=~Dim.2,
-    color=~Ancestor,
-    text = ~paste("Ancestor:",Ancestor,"<br>cluster(s):",group_name,"<br>GO.ID:",GO.ID,"<br>GO.name:",term,"<br>-log10(padj):",`-log10(padj)`),
-    showlegend=TRUE,
-    mode='markers',
-    colors=color_ordered,
-    sizes=c(20,50),
-    size=~`-log10(padj)`,
-    fill = ~'',#Doing this prevents a warning relating to line.width...somehow
-    marker =list(
-      sizemode = 'diameter',
-      # color=~colors,
-      # size =20,
-      opacity = 0.4,
-      showlegend=TRUE
+
+  if(ggplot_version==TRUE){
+    p<-ggplot(the_data, aes(x=Dim.1, y=Dim.2, color=Ancestor,size=`-log10(padj)`)) +
+      geom_point(alpha=0.4)+
+      scale_color_manual(values=color_ordered)+
+      scale_size_continuous(range=c(5,15),guide=FALSE)
+  }else{
+    # create trace
+    p<-add_markers(
+      p,
+      data=the_data,
+      x=~Dim.1,
+      y=~Dim.2,
+      color=~Ancestor,
+      text = ~paste("Ancestor:",Ancestor,"<br>cluster(s):",group_name,"<br>GO.ID:",GO.ID,"<br>GO.name:",term,"<br>-log10(padj):",`-log10(padj)`),
+      showlegend=TRUE,
+      mode='markers',
+      colors=color_ordered,
+      sizes=c(20,50),
+      size=~`-log10(padj)`,
+      fill = ~'',#Doing this prevents a warning relating to line.width...somehow
+      marker =list(
+        sizemode = 'diameter',
+        # color=~colors,
+        # size =20,
+        opacity = 0.4,
+        showlegend=TRUE
+      )
     )
-  )
+  }
   # p
   return (p)
 }
@@ -914,7 +931,8 @@ plot_ancestor_clust_MDS<-function(the_data){
 #'
 #' @param main_matrix Matrix containing the data to be plotted as created by  \code{SS_GO_clusters}
 #' @param cluster_info A dataframe with cluster names and the number of GOs in each cluster
-#'
+#' @param ggplot_version Boolean indicating if a ggplot (static) version of the plot
+#' should be created instead of a plotly version. By default is FALSE.
 #' @return the plotly object for the MDS plot
 #'
 #' @examples
@@ -955,7 +973,7 @@ plot_ancestor_clust_MDS<-function(the_data){
 #' @importFrom plotly plot_ly add_markers
 #'
 #' @export
-plot_clustered_mds<-function(main_matrix,cluster_info){
+plot_clustered_mds<-function(main_matrix,cluster_info,ggplot_version=FALSE){
   # run MDS
   res.mds <-cmdscale(as.dist(main_matrix), eig = TRUE, k = 2)
 
@@ -992,8 +1010,7 @@ plot_clustered_mds<-function(main_matrix,cluster_info){
   # mds coordinates
   values=unlist(res.mds$Dim.1,res.mds$Dim.2)
 
-  # init graph
-  p<-plot_ly()
+
   # add count to res.mds
   res.mds=merge(
     res.mds,
@@ -1013,26 +1030,33 @@ plot_clustered_mds<-function(main_matrix,cluster_info){
     colors<-c(colors,gsub(x=mod_string,pattern = ':.*',''))
   }
 
-  # create trace
-  p<-add_markers(
-    p,
-    data=res.mds,
-    x=~Dim.1,
-    y=~Dim.2,
-    text=~text,
-    showlegend=FALSE,
-    sizes=c(20,50),
-    size=~nb,
-    fill = ~'',#Doing this prevents a warning relating to line.width...somehow
-    marker =list(
-      sizemode = 'diameter',
-      opacity = 0.4,
-      line=list(color=colors),
-      color=colors
-    ),
-    visible=TRUE
-  )
-
+  if(ggplot_version==TRUE){
+    p<-ggplot(res.mds, aes(x=Dim.1, y=Dim.2, color=GO.cluster,size=nb)) +
+      geom_point(size =res.mds$nb,alpha=0.4)+
+      scale_color_manual(breaks=res.mds$GO.cluster,values=colors,guide='none')
+  }else{
+    # init graph
+    p<-plot_ly()
+    # create trace
+    p<-add_markers(
+      p,
+      data=res.mds,
+      x=~Dim.1,
+      y=~Dim.2,
+      text=~text,
+      showlegend=FALSE,
+      sizes=c(20,50),
+      size=~nb,
+      fill = ~'',#Doing this prevents a warning relating to line.width...somehow
+      marker =list(
+        sizemode = 'diameter',
+        opacity = 0.4,
+        line=list(color=colors),
+        color=colors
+      ),
+      visible=TRUE
+    )
+  }
   # return the plot
   return(p)
 
@@ -1414,7 +1438,7 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=
 #' GO_clusters<-gpro_res[['GO_df']]
 #' sem_dta<-slot(TS_object,'sem_list')
 #' #Plot MDS and clustered MDS
-#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE)
+#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim='BP',target_dir=NULL,return_plot=TRUE)
 #'
 #' @importFrom plotly plot_ly add_markers as_widget
 #' @import htmlwidgets
@@ -1430,7 +1454,7 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
   calculated_SS<-SS_GO_clusters(sem_data,found_clusters,sem_ontology,distance="BMA",measure='Wang')
   clustered_module_df<-create_clustered_module_dataframe(found_clusters)
 
-  clust_plot<-plot_clustered_mds(calculated_SS,clustered_module_df)
+  clust_plot<-plot_clustered_mds(calculated_SS,clustered_module_df,term_type_gg)
   if(is.null(target_dir)==FALSE){
     saveWidget(as_widget(my_plot), paste0(target_dir,"MDS_GO_terms.html"))
     unlink(paste0(target_dir,"MDS_GO_terms_files"),recursive = TRUE)
@@ -1458,6 +1482,9 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' @param use_names boolean indicating if names or IDs should be used
 #' @param target_dir string indicating the save location of the plots
 #' @param return_plot boolean indicating if the plot should be returned
+#' @param term_type_gg Boolean indicating if the MDS for the terms should be a ggplot static
+#' figure or a interactive plotly figure. by default is FALSE - will use the plotly version
+#'
 #'
 #' @return if specified, will return a list containing the ggplot2 object for the dotplot
 #' and the plotly object for the MDS plot.
@@ -1499,7 +1526,7 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' @importFrom htmlwidgets saveWidget
 #'
 #' @export
-wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_dir='TS_results/',return_plot=FALSE){
+wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_dir='TS_results/',return_plot=FALSE,term_type_gg=FALSE){
 
   if(is.null(GO_df)==TRUE){
     return(NULL)
@@ -1539,7 +1566,7 @@ wrapper_ancestor_curation_plots<-function(GO_df,sem_data,use_names=TRUE,target_d
       colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')
       plot_data<-merge(plot_data,for_merger,by='GO.ID')
 
-      my_MDS<-plot_ancestor_clust_MDS(plot_data)
+      my_MDS<-plot_ancestor_clust_MDS(plot_data,term_type_gg)
 
       if(is.null(target_dir)==FALSE){
         saveWidget(as_widget(my_MDS), paste0(target_dir,"ancestor_plots/cluster_ancestors.html"))

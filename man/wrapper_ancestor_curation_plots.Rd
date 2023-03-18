@@ -9,7 +9,8 @@ wrapper_ancestor_curation_plots(
   sem_data,
   use_names = TRUE,
   target_dir = "TS_results/",
-  return_plot = FALSE
+  return_plot = FALSE,
+  term_type_gg = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ wrapper_ancestor_curation_plots(
 \item{target_dir}{string indicating the save location of the plots}
 
 \item{return_plot}{boolean indicating if the plot should be returned}
+
+\item{term_type_gg}{Boolean indicating if the MDS for the terms should be a ggplot static
+figure or a interactive plotly figure. by default is FALSE - will use the plotly version}
 }
 \value{
 if specified, will return a list containing the ggplot2 object for the dotplot
