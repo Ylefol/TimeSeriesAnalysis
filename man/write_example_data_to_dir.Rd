@@ -4,7 +4,7 @@
 \alias{write_example_data_to_dir}
 \title{Prep example data in directory}
 \usage{
-write_example_data_to_dir(example_data, target_dir = NULL)
+write_example_data_to_dir(target_dir = NULL)
 }
 \arguments{
 \item{target_dir}{Where the saves should be located, if NULL, it will be saved

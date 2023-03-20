@@ -88,7 +88,7 @@ TimeSeries_Object<-setClass(
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
 #' bfc_cache<-slot(bfc,'cache')
-#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' write_example_data_to_dir(target_dir=bfc_cache)
 #' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
 #' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
@@ -219,7 +219,7 @@ TS_load_example_data<-function(time_object){
 #'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' TS_object <- TS_load_example_data(TS_object)
 #' stored_matrix<-exp_matrix(TS_object,'raw')
 #'
 #' @importFrom SummarizedExperiment assays
@@ -247,7 +247,7 @@ exp_matrix<-function(time_object,matrix_name){
 #'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' TS_object <- TS_load_example_data(TS_object)
 #' exp_sample_data(TS_object)
 #'
 #' @importFrom SummarizedExperiment assays
@@ -361,7 +361,7 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
 #' bfc_cache<-slot(bfc,'cache')
-#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' write_example_data_to_dir(target_dir=bfc_cache)
 #' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
 #' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
@@ -420,7 +420,7 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
 #' bfc_cache<-slot(bfc,'cache')
-#' write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+#' write_example_data_to_dir(target_dir=bfc_cache)
 #' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
 #' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
@@ -498,7 +498,7 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
-write_example_data_to_dir<-function(example_data,target_dir=NULL){
+write_example_data_to_dir<-function(target_dir=NULL){
   full_counts<-assay(PBMC_TS_data)
   sample_data<-data.frame(PBMC_TS_data@colData)
   save_name<-'PBMC'
@@ -600,7 +600,7 @@ create_example_data_for_R<-function(){
 create_example_object_for_R<-function(){
   path <- tempfile()
   bfc <- BiocFileCache(path, ask = FALSE)
-  write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+  write_example_data_to_dir(target_dir=bfc@cache)
   my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
   my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 
@@ -613,7 +613,7 @@ create_example_object_for_R<-function(){
                    group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
                    DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                    PART_l2fc_thresh=1,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-  TS_object <- TS_load_example_data(TS_object,'PBMC')
+  TS_object <- TS_load_example_data(TS_object)
   return(TS_object)
 }
 

@@ -25,7 +25,7 @@ TS_object <- new('TimeSeries_Object',
                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-TS_object <- TS_load_example_data(TS_object,'PBMC')
+TS_object <- TS_load_example_data(TS_object)
 stored_matrix<-exp_matrix(TS_object,'raw')
 
 }

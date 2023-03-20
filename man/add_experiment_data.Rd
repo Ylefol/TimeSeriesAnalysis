@@ -33,7 +33,7 @@ groups and then creates a SummarizedExperiment to then store this into the TimeS
 path <- tempfile()
 bfc <- BiocFileCache(path, ask = FALSE)
 bfc_cache<-slot(bfc,'cache')
-write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+write_example_data_to_dir(target_dir=bfc_cache)
 my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
 my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 graph_vect<-c("#e31a1c","#1f78b4")
