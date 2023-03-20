@@ -4,10 +4,13 @@
 \alias{plot_ancestor_clust_MDS}
 \title{Plot nearest ancestor MDS (clustered GOs)}
 \usage{
-plot_ancestor_clust_MDS(the_data)
+plot_ancestor_clust_MDS(the_data, ggplot_version = FALSE)
 }
 \arguments{
 \item{the_data}{The dataframe as created by \code{calculate_and_format_MDS}}
+
+\item{ggplot_version}{Boolean indicating if a ggplot (static) version of the plot
+should be created instead of a plotly version. By default is FALSE.}
 }
 \value{
 p The plotly plot to enable either visualization or saving of the plot
@@ -26,8 +29,9 @@ signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
 sample_data<-exp_sample_data(TS_object)
-samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -43,7 +47,8 @@ target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042
                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
                     'GO:0045058','GO:0002507')
 GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-plot_data<-calculate_and_format_MDS(GOs_ancestors_clust,TS_object@sem_list)
+sem_dta<-slot(TS_object,'sem_list')
+plot_data<-calculate_and_format_MDS(GOs_ancestors_clust,sem_dta)
 plot_data<-merge_duplicate_modules(plot_data)
 for_merger<-GOs_ancestors_clust[,c('term_id','ancestor_name','-log10(padj)')]
 colnames(for_merger)=c('GO.ID','Ancestor','-log10(padj)')

@@ -8,7 +8,8 @@ gprofiler_cluster_analysis(
   object,
   ontology,
   save_path = NULL,
-  return_specific_cluster = NULL
+  return_specific_cluster = NULL,
+  return_interactive = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,9 @@ gprofiler_cluster_analysis(
 \item{save_path}{The folder path to save results if gprofiler results are to be saved}
 
 \item{return_specific_cluster}{String to return the gost plot of a specific cluster}
+
+\item{return_interactive}{Boolean indicating if the returned plot (if needed) is to be
+interactive or static.}
 }
 \value{
 GO_df A dataframe containing all the GOs (ID) found, their cluster, and the term name
@@ -40,8 +44,9 @@ signi_genes<-select_genes_with_l2fc(TS_object)
 
 #Use all samples, but implement a custom order. In this case it is reversed
 sample_data<-exp_sample_data(TS_object)
-samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))

@@ -29,8 +29,9 @@
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -96,8 +97,9 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -238,8 +240,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -292,15 +295,7 @@ run_gprofiler_PART_clusters<-function(object,vignette_run=FALSE){
 #' @return Updated object with gprofiler results
 #' @export
 part_gprofiler_vignettes<-function(object){
-  if(slot(object,'Gpro_org')=='hsapiens'){
-    object@Gprofiler_results<-PBMC_pre_loaded$gpro_res
-  }else if(slot(object,'Gpro_org')=='celegans'){
-    object@Gprofiler_results<-celegans_pre_loaded$gpro_res
-  }else if(slot(object,'Gpro_org')=='mmusculus'){
-    object@Gprofiler_results<-murine_pre_loaded$gpro_res
-  }else{
-    stop('No example data found, script terminated')
-  }
+  object@Gprofiler_results<-PBMC_pre_loaded$gpro_res
   return(object)
 
 }
@@ -317,14 +312,6 @@ part_gprofiler_vignettes<-function(object){
 #'
 #' @export
 part_load_results_vignettes<-function(object){
-  if(slot(object,'Gpro_org')=='hsapiens'){
-    object@PART_results<-PBMC_pre_loaded$part_res
-  }else if(slot(object,'Gpro_org')=='celegans'){
-    object@PART_results<-celegans_pre_loaded$part_res
-  }else if(slot(object,'Gpro_org')=='mmusculus'){
-    object@PART_results<-murine_pre_loaded$part_res
-  }else{
-    stop('No example data found, script terminated')
-  }
+  object@PART_results<-PBMC_pre_loaded$part_res
   return(object)
 }

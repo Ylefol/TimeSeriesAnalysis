@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
       </span>
     </div>
 
@@ -33,12 +33,6 @@
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/TS_analysis_PBMC.html">TimeSeries Analysis – PBMC example run</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_celegans.html">TimeSeries Analysis – C.elegans example run</a>
-    </li>
-    <li>
-      <a href="../articles/TS_analysis_murine.html">TimeSeries Analysis – Murine example run</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -90,9 +84,10 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bfc</span> <span class="op">&lt;-</span> <span class="fu">BiocFileCache</span><span class="op">(</span><span class="va">path</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="write_example_data_to_dir.html">write_example_data_to_dir</a></span><span class="op">(</span><span class="st">'PBMC'</span>,target_dir<span class="op">=</span><span class="va">bfc</span><span class="op">@</span><span class="va">cache</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">bfc</span><span class="op">@</span><span class="va">cache</span>,<span class="st">'/data/PBMC/raw_counts_TS'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">bfc</span><span class="op">@</span><span class="va">cache</span>,<span class="st">'/data/PBMC/sample_file.csv'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bfc_cache</span><span class="op">&lt;-</span><span class="fu">slot</span><span class="op">(</span><span class="va">bfc</span>,<span class="st">'cache'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="write_example_data_to_dir.html">write_example_data_to_dir</a></span><span class="op">(</span><span class="st">'PBMC'</span>,target_dir<span class="op">=</span><span class="va">bfc_cache</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_path_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">bfc_cache</span>,<span class="st">'/data/PBMC/raw_counts_TS'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_path_sample_dta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">bfc_cache</span>,<span class="st">'/data/PBMC/sample_file.csv'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prep_sample_data</span><span class="op">(</span><span class="va">my_path_sample_dta</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'IgM'</span>,<span class="st">'LPS'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sample group replicate timepoint</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    s-42   LPS     LPS_1         1</span>

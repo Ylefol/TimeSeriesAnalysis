@@ -9,7 +9,8 @@ wrapper_MDS_and_MDS_clusters(
   sem_data,
   sem_ontology,
   target_dir = "TS_results/gprofiler_results/",
-  return_plot = FALSE
+  return_plot = FALSE,
+  term_type_gg = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ and that will be plotted}
 \item{target_dir}{string indicating the location where the results will be saved}
 
 \item{return_plot}{boolean indicating if the plots should be returned}
+
+\item{term_type_gg}{Boolean indicating if the MDS for the terms should be a ggplot static
+figure or a interactive plotly figure. by default is FALSE - will use the plotly version}
 }
 \value{
 if specified, will return a list containing the two plotly objects for
@@ -35,4 +39,30 @@ The function calculates and plots a nearest ancestor version of the MDS using th
 BMA and WANG approach. Each term is brought up to it's nearest ancestor.
 
 Each plot is saved as an interactive plot in TS_results
+}
+\examples{
+TS_object<-create_example_object_for_R()
+TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#Perform conditional differential gene expression analysis
+TS_object<-conditional_DE_wrapper(TS_object)
+#Extract genes for PART clustering based on defined log(2)foldChange threshold
+signi_genes<-select_genes_with_l2fc(TS_object)
+
+#Use all samples, but implement a custom order. In this case it is reversed
+sample_data<-exp_sample_data(TS_object)
+TS_groups<-slot(TS_object,'group_names')
+samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
+
+#Create the matrix that will be used for PART clustering
+TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
+TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
+#Results saved to created directory
+gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
+GO_clusters<-gpro_res[['GO_df']]
+sem_dta<-slot(TS_object,'sem_list')
+#Plot MDS and clustered MDS
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,sem_ontology='BP',target_dir=NULL,return_plot=TRUE)
+
 }

@@ -250,7 +250,8 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
-#' v_plot<-volcanoplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data)
+#' DE_res<-slot(TS_object,'DE_results')$conditional$IgM_vs_LPS_TP_1$DE_raw_data
+#' v_plot<-volcanoplot_alt(DE_res = DE_res)
 #'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
@@ -361,7 +362,8 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
-#' ma_plot<-maplot_alt(DE_res = TS_object@DE_results$conditional$IgM_vs_LPS_TP_1$DE_raw_data,filter_choice = 'padj')
+#' DE_res<-slot(TS_object,'DE_results')$conditional$IgM_vs_LPS_TP_1$DE_raw_data
+#' ma_plot<-maplot_alt(DE_res = DE_res,filter_choice = 'padj')
 #'
 #' @import ggplot2
 #' @importFrom  ggrepel geom_label_repel
@@ -1158,8 +1160,9 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1253,8 +1256,9 @@ prepare_top_annotation_PART_heat<-function(object){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1387,8 +1391,9 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1493,8 +1498,9 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1562,8 +1568,9 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' #Use all samples, but implement a custom order. In this case it is reversed
 #' sample_data<-exp_sample_data(TS_object)
-#' samps_2<-sample_data$sample[sample_data$group==TS_object@group_names[2]]
-#' samps_1<-sample_data$sample[sample_data$group==TS_object@group_names[1]]
+#' TS_groups<-slot(TS_object,'group_names')
+#' samps_2<-sample_data$sample[sample_data$group==TS_groups[2]]
+#' samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
@@ -1688,7 +1695,8 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
 #' #Perform conditional differential gene expression analysis
 #' TS_object<-conditional_DE_wrapper(TS_object)
 #' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
-#' aicda_plot<-plot_single_gene_traj(aicda_traj_dta,TS_object@group_colors)
+#' group_cols<-slot(TS_object,'group_colors')
+#' aicda_plot<-plot_single_gene_traj(aicda_traj_dta,group_cols)
 #'
 #' @import ggplot2
 #'

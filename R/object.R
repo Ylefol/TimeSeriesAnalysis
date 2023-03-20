@@ -87,9 +87,10 @@ TimeSeries_Object<-setClass(
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir(target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' prep_sample_data(my_path_sample_dta,c('IgM','LPS'))
 #'
 #' @import BiocFileCache
@@ -162,8 +163,6 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
 #'
 #'
 #' @param time_object A timeseries object
-#' @param example_dta Character of either 'PBMC', 'MURINE', or 'CELEGANS'
-#' Elist was given
 #'
 #' @return The timeseries object with the raw count matrix added to it as well as the sample data
 #'
@@ -174,7 +173,7 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
 #'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' TS_object <- TS_load_example_data(TS_object)
 #'
 #' @import SummarizedExperiment
 #' @import BiocManager
@@ -185,16 +184,9 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
-TS_load_example_data<-function(time_object,example_dta){
-  if(example_dta=='PBMC'){
-    exp_data<-PBMC_TS_data
-  }else if(example_dta=='MURINE'){
-    exp_data<-murine_TS_data
-  }else if(example_dta=='CELEGANS'){
-    exp_data<-Celegans_TS_data
-  }else{
-    stop("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
-  }
+TS_load_example_data<-function(time_object){
+  exp_data<-PBMC_TS_data
+
   groups<-slot(time_object,'group_names')
   samp_dta<-data.frame(colData(exp_data))
   count_matrix<-assays(exp_data)$counts
@@ -204,6 +196,8 @@ TS_load_example_data<-function(time_object,example_dta){
   names(assays(exp_data))=c('raw')
   time_object@exp_data<-exp_data
 
+
+  time_object@sem_list@ont<-'BP'
   return(time_object)
 }
 
@@ -225,7 +219,7 @@ TS_load_example_data<-function(time_object,example_dta){
 #'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' TS_object <- TS_load_example_data(TS_object)
 #' stored_matrix<-exp_matrix(TS_object,'raw')
 #'
 #' @importFrom SummarizedExperiment assays
@@ -253,7 +247,7 @@ exp_matrix<-function(time_object,matrix_name){
 #'                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
 #'                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
 #'                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-#' TS_object <- TS_load_example_data(TS_object,'PBMC')
+#' TS_object <- TS_load_example_data(TS_object)
 #' exp_sample_data(TS_object)
 #'
 #' @importFrom SummarizedExperiment assays
@@ -366,9 +360,10 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir(target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -424,9 +419,10 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
-#' my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
-#' my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir(target_dir=bfc_cache)
+#' my_path_data<-paste0(bfc_cache,'/data/PBMC/raw_counts_TS')
+#' my_path_sample_dta<-paste0(bfc_cache,'/data/PBMC/sample_file.csv')
 #' graph_vect<-c("#e31a1c","#1f78b4")
 #'
 #' TS_object <- new('TimeSeries_Object',
@@ -485,8 +481,6 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' Having these files written as tab delimited and csv allows users to open them
 #' and see the formatting expected by TimeSeriesAnalysis
 #'
-#' @param example_data Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
-#' datasets available
 #' @param target_dir Where the saves should be located, if NULL, it will be saved
 #' to the main directory
 #'
@@ -495,7 +489,8 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @examples
 #' path <- tempfile()
 #' bfc <- BiocFileCache(path, ask = FALSE)
-#' write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+#' bfc_cache<-slot(bfc,'cache')
+#' write_example_data_to_dir(target_dir=bfc_cache)
 #'
 #'
 #' @import SummarizedExperiment
@@ -503,24 +498,11 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
-write_example_data_to_dir<-function(example_data,target_dir=NULL){
-  #Set object and save names based on requested example data
-  if(example_data=='PBMC'){
-    full_counts<-assay(PBMC_TS_data)
-    sample_data<-data.frame(PBMC_TS_data@colData)
-    save_name<-'PBMC'
-  }else if(example_data=='MURINE'){
-    full_counts<-assay(murine_TS_data)
-    sample_data<-data.frame(murine_TS_data@colData)
-    save_name='murine'
-  }else if(example_data=='CELEGANS'){
-    full_counts<-assay(Celegans_TS_data)
-    sample_data<-data.frame(Celegans_TS_data@colData)
-    save_name='celegans'
-  }else{
-    message("Please use 'PBMC','CELEGANS', or 'MURINE' as a parameter to this function.")
-    return(NULL)
-  }
+write_example_data_to_dir<-function(target_dir=NULL){
+  full_counts<-assay(PBMC_TS_data)
+  sample_data<-data.frame(PBMC_TS_data@colData)
+  save_name<-'PBMC'
+
   if(is.null(target_dir)==FALSE){
     data_folder_loc<-paste0(target_dir,'/data/')
     dir.create(data_folder_loc)
@@ -569,16 +551,9 @@ add_semantic_similarity_data<-function(object,ont_sem_sim,vignette_run=FALSE){
   if(vignette_run==FALSE){
     sem_org<-slot(object,'sem_sim_org')
     object@sem_list <- godata(sem_org, ont=ont_sem_sim, computeIC=TRUE)
+    object@sem_list@ont<-'BP'
   }else{#Use pre-loaded data
-    if(slot(object,'Gpro_org')=='hsapiens'){
-      object@sem_list<-PBMC_pre_loaded$sem_list
-    }else if(slot(object,'Gpro_org')=='celegans'){
-      object@sem_list<-celegans_pre_loaded$sem_list
-    }else if(slot(object,'Gpro_org')=='mmusculus'){
-      object@sem_list<-murine_pre_loaded$sem_list
-    }else{
-      stop('No example data found, script terminated')
-    }
+    object@sem_list<-PBMC_pre_loaded$sem_list
   }
   return(object)
 }
@@ -625,7 +600,7 @@ create_example_data_for_R<-function(){
 create_example_object_for_R<-function(){
   path <- tempfile()
   bfc <- BiocFileCache(path, ask = FALSE)
-  write_example_data_to_dir('PBMC',target_dir=bfc@cache)
+  write_example_data_to_dir(target_dir=bfc@cache)
   my_path_data<-paste0(bfc@cache,'/data/PBMC/raw_counts_TS')
   my_path_sample_dta<-paste0(bfc@cache,'/data/PBMC/sample_file.csv')
 
@@ -638,7 +613,7 @@ create_example_object_for_R<-function(){
                    group_names=c('IgM','LPS'),group_colors=graph_vect,DE_method='DESeq2',
                    DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                    PART_l2fc_thresh=1,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-  TS_object <- TS_load_example_data(TS_object,'PBMC')
+  TS_object <- TS_load_example_data(TS_object)
   return(TS_object)
 }
 
