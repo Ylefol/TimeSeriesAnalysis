@@ -295,15 +295,7 @@ run_gprofiler_PART_clusters<-function(object,vignette_run=FALSE){
 #' @return Updated object with gprofiler results
 #' @export
 part_gprofiler_vignettes<-function(object){
-  if(slot(object,'Gpro_org')=='hsapiens'){
-    object@Gprofiler_results<-PBMC_pre_loaded$gpro_res
-  }else if(slot(object,'Gpro_org')=='celegans'){
-    object@Gprofiler_results<-celegans_pre_loaded$gpro_res
-  }else if(slot(object,'Gpro_org')=='mmusculus'){
-    object@Gprofiler_results<-murine_pre_loaded$gpro_res
-  }else{
-    stop('No example data found, script terminated')
-  }
+  object@Gprofiler_results<-PBMC_pre_loaded$gpro_res
   return(object)
 
 }
@@ -320,14 +312,6 @@ part_gprofiler_vignettes<-function(object){
 #'
 #' @export
 part_load_results_vignettes<-function(object){
-  if(slot(object,'Gpro_org')=='hsapiens'){
-    object@PART_results<-PBMC_pre_loaded$part_res
-  }else if(slot(object,'Gpro_org')=='celegans'){
-    object@PART_results<-celegans_pre_loaded$part_res
-  }else if(slot(object,'Gpro_org')=='mmusculus'){
-    object@PART_results<-murine_pre_loaded$part_res
-  }else{
-    stop('No example data found, script terminated')
-  }
+  object@PART_results<-PBMC_pre_loaded$part_res
   return(object)
 }

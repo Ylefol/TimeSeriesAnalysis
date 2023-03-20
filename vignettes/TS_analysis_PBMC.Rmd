@@ -103,7 +103,7 @@ TS_object <- new('TimeSeries_Object',
                  group_names=my_group_names,group_colors=graphic_vector,DE_method=diff_exp_type,
                  DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
                  PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
-TS_object <- TS_load_example_data(TS_object,'PBMC')
+TS_object <- TS_load_example_data(TS_object)
 TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim,vignette_run=TRUE)
 ```
 
@@ -260,7 +260,7 @@ These heatmaps illustrate each experiment as different columns (distinguished by
 while the rows distinguish the groups. Plotted in the heatmaps is the log transformed counts,
 while the log transformed log(2)fold change is seen in a histogram at the bottom of the heatmap.
 The number of genes in each experiment (colored columns) is indicated in the legend at the bottom
-of the heatmap.
+of the heatmap. This heatmap is shown below.
 In the case of the temporal heatmap, the rows are labelled 'experiment' and 'control'. The 'experiment'
 represents the time points being compared while the control represents the timepoint which the 'experiment'
 is compared against. For example, TP2_vs_TP1 would have the 'experiment' be TP2 and the control be TP1,
@@ -270,12 +270,6 @@ while TP3_vs_TP2 would have TP3 as the 'experiment' and TP2 as the 'control'. No
 ```{r show_cond_heat_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=5, fig.width=15}
 heat_list[['conditional']]
 ```
-
-**The temporal heatmap**
-```{r show_temp_heat_clust ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=5, fig.width=15}
-heat_list[['temporal']]
-```
-
 ## Genes of interest results
 
 ```{r genes_interest, echo=FALSE, message=FALSE, warning=FALSE, out.width= "65%", out.extra='style="float:right; padding:10px"'}
@@ -407,7 +401,7 @@ The gost plot for the most variable cluster (`r target_clust`) is shown below.
 These interactive plots show the results of various databases when queried with a list of genes.
 More information concerning these plots and their various datasources can be found at the following link\:
 https://biit.cs.ut.ee/gprofiler/gost
-Below is a non-interactive version of the plot, interactive versions can be obtained by setting the 'return_interactive'
+Below is a non-interactive version of the plot, interactive versions can be obtained by setting the return_interactive'
 parameter to the above wrapper function to `TRUE'. In the interactive version you can hover over each dot to obtain the relevan information
 of that specific dot.
 
@@ -423,11 +417,10 @@ defined as the 'closeness' between terms. Semantic similarity takes into account
 of the terms (genes which belong to it), it's associations to other terms, the similarity or lack there-of in function etc...
 In an MDS plot, the dimensions will be adjusted to fill the space with all the terms, therefor there is no set metric to measure
 the similarity. The purpose of the MDS plot is moreso to help visualize different groupings (or clusters) of relevant terms.
-This plot was set as a static plot due to it's large number of hits. An interactive version can also be obtained by setting the 'term_type_gg'
-parameter to FALSE
-```{r show_MDS_term ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%',fig.height=8, fig.width=9}
-MDS_plots[['MDS_term']]
-```
+This plot can be seen by entering \code{MDS_plots[['MDS_terms']]}.
+<!-- # ```{r show_MDS_terms ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'} -->
+<!-- # MDS_plots[['MDS_terms']] -->
+<!-- # ``` -->
 Due to the large number of possible hits in a standard term based MDS, an alternate version was created.
 The second version of the MDS plot provides a nearest ancestor clustering approach.
 All terms found are brought up to their nearest common ancestor. Since these databases,
@@ -443,6 +436,8 @@ An interactive version can also be obtained by setting the 'term_type_gg' parame
 MDS_plots[['MDS_clust']]
 ```
 
+
+
 ## Gprofiler results – custom
 
 Dotplots were designed to illustrate the top n term results for any single ontology.
@@ -456,15 +451,14 @@ order to offer a better visualization, with most significant being in red and le
 (but still statistically significant) in blue.
 
 ```{r Gpro_results_alt ,message=FALSE,warning=FALSE}
-target_top=10
+target_top=5
 select_ontology<-'REAC'
 gpro_REAC_dotplot<-GO_dotplot_wrapper(TS_object,file_loc=NULL,target_ontology=select_ontology,top_n=target_top,return_plot = TRUE)
 
 ```
 Illustrated below is the dotplot for the REACTOME pathway.
-```{r show_dotplot ,echo=FALSE,message=FALSE,warning=FALSE,out.width='100%',fig.height=8, fig.width=9}
+```{r show_dotplot ,echo=FALSE,message=FALSE,warning=FALSE,out.width='100%',fig.height=4, fig.width=9}
 gpro_REAC_dotplot
-
 ```
 
 

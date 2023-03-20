@@ -167,7 +167,7 @@ example data as well as the semantic similarity data</p>
 <span>                 group_names<span class="op">=</span><span class="va">my_group_names</span>,group_colors<span class="op">=</span><span class="va">graphic_vector</span>,DE_method<span class="op">=</span><span class="va">diff_exp_type</span>,</span>
 <span>                 DE_p_filter<span class="op">=</span><span class="va">p_val_filter_type</span>,DE_p_thresh<span class="op">=</span><span class="va">p_thresh</span>,DE_l2fc_thresh<span class="op">=</span><span class="va">l2fc_thresh</span>,</span>
 <span>                 PART_l2fc_thresh<span class="op">=</span><span class="va">PART_l2fc</span>,sem_sim_org<span class="op">=</span><span class="va">org_sem_sim</span>,Gpro_org<span class="op">=</span><span class="va">my_org_gpro</span><span class="op">)</span></span>
-<span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TS_load_example_data.html">TS_load_example_data</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'PBMC'</span><span class="op">)</span></span>
+<span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TS_load_example_data.html">TS_load_example_data</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span>
 <span><span class="va">TS_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_semantic_similarity_data.html">add_semantic_similarity_data</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_ont_sem_sim</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -329,21 +329,16 @@ while the rows distinguish the groups. Plotted in the heatmaps is the
 log transformed counts, while the log transformed log(2)fold change is
 seen in a histogram at the bottom of the heatmap. The number of genes in
 each experiment (colored columns) is indicated in the legend at the
-bottom of the heatmap. In the case of the temporal heatmap, the rows are
-labelled ‘experiment’ and ‘control’. The ‘experiment’ represents the
-time points being compared while the control represents the timepoint
-which the ‘experiment’ is compared against. For example, TP2_vs_TP1
-would have the ‘experiment’ be TP2 and the control be TP1, while
-TP3_vs_TP2 would have TP3 as the ‘experiment’ and TP2 as the ‘control’.
-Note that TP=time point.</p>
+bottom of the heatmap. This heatmap is shown below. In the case of the
+temporal heatmap, the rows are labelled ‘experiment’ and ‘control’. The
+‘experiment’ represents the time points being compared while the control
+represents the timepoint which the ‘experiment’ is compared against. For
+example, TP2_vs_TP1 would have the ‘experiment’ be TP2 and the control
+be TP1, while TP3_vs_TP2 would have TP3 as the ‘experiment’ and TP2 as
+the ‘control’. Note that TP=time point.</p>
 <p><strong>The conditional heatmap</strong>
-<img src="TS_analysis_PBMC_files/figure-html/show_cond_heat_clust%20-1.png" width="100%"></p>
-<p><strong>The temporal heatmap</strong>
-<img src="TS_analysis_PBMC_files/figure-html/show_temp_heat_clust%20-1.png" width="100%"></p>
-</div>
-<div class="section level3">
-<h3 id="genes-of-interest-results">Genes of interest results<a class="anchor" aria-label="anchor" href="#genes-of-interest-results"></a>
-</h3>
+<img src="TS_analysis_PBMC_files/figure-html/show_cond_heat_clust%20-1.png" width="100%">
+## Genes of interest results</p>
 <p><img src="TS_analysis_PBMC_files/figure-html/genes_interest-1.png" width="65%" style="float:right; padding:10px">
 If genes of interest have been specified, the pipeline will extract the
 differential gene expression results, both conditional and temporal, for
@@ -519,7 +514,7 @@ results of various databases when queried with a list of genes. More
 information concerning these plots and their various datasources can be
 found at the following link: <a href="https://biit.cs.ut.ee/gprofiler/gost" class="external-link uri">https://biit.cs.ut.ee/gprofiler/gost</a> Below is a
 non-interactive version of the plot, interactive versions can be
-obtained by setting the ‘return_interactive’ parameter to the above
+obtained by setting the return_interactive’ parameter to the above
 wrapper function to `TRUE’. In the interactive version you can hover
 over each dot to obtain the relevan information of that specific
 dot.</p>
@@ -538,17 +533,16 @@ other terms, the similarity or lack there-of in function etc… In an MDS
 plot, the dimensions will be adjusted to fill the space with all the
 terms, therefor there is no set metric to measure the similarity. The
 purpose of the MDS plot is moreso to help visualize different groupings
-(or clusters) of relevant terms. This plot was set as a static plot due
-to it’s large number of hits. An interactive version can also be
-obtained by setting the ‘term_type_gg’ parameter to FALSE
-<img src="TS_analysis_PBMC_files/figure-html/show_MDS_term%20-1.png" width="100%">
-Due to the large number of possible hits in a standard term based MDS,
-an alternate version was created. The second version of the MDS plot
-provides a nearest ancestor clustering approach. All terms found are
-brought up to their nearest common ancestor. Since these databases, GO
-ontology in particular, have a tree-like hierarchy, we are able to find
-common ancestors for each term which may provide a broader view if too
-many individual terms exist. This approach does not distinguish based on
+(or clusters) of relevant terms. This plot can be seen by entering .
+<!-- # ```{r show_MDS_terms ,message=FALSE,warnings=FALSE,echo=FALSE,out.width='100%'} -->
+<!-- # MDS_plots[['MDS_terms']] --> <!-- # ``` --> Due to the large
+number of possible hits in a standard term based MDS, an alternate
+version was created. The second version of the MDS plot provides a
+nearest ancestor clustering approach. All terms found are brought up to
+their nearest common ancestor. Since these databases, GO ontology in
+particular, have a tree-like hierarchy, we are able to find common
+ancestors for each term which may provide a broader view if too many
+individual terms exist. This approach does not distinguish based on
 clusters in which terms were found, meaning that terms from different
 clusters may be paired together. The size of each dot in this approach
 is relative to the number of terms sorted in that common ancestor (dot)
@@ -573,7 +567,7 @@ value is negatively log transformed in order to offer a better
 visualization, with most significant being in red and less significant
 (but still statistically significant) in blue.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">target_top</span><span class="op">=</span><span class="fl">10</span></span>
+<code class="sourceCode R"><span><span class="va">target_top</span><span class="op">=</span><span class="fl">5</span></span>
 <span><span class="va">select_ontology</span><span class="op">&lt;-</span><span class="st">'REAC'</span></span>
 <span><span class="va">gpro_REAC_dotplot</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/GO_dotplot_wrapper.html">GO_dotplot_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,file_loc<span class="op">=</span><span class="cn">NULL</span>,target_ontology<span class="op">=</span><span class="va">select_ontology</span>,top_n<span class="op">=</span><span class="va">target_top</span>,return_plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Illustrated below is the dotplot for the REACTOME pathway.

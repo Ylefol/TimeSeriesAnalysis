@@ -7,9 +7,6 @@
 write_example_data_to_dir(example_data, target_dir = NULL)
 }
 \arguments{
-\item{example_data}{Either 'PBMC','MURINE', or 'CELEGANS' to select one of the three example
-datasets available}
-
 \item{target_dir}{Where the saves should be located, if NULL, it will be saved
 to the main directory}
 }
@@ -28,7 +25,7 @@ and see the formatting expected by TimeSeriesAnalysis
 path <- tempfile()
 bfc <- BiocFileCache(path, ask = FALSE)
 bfc_cache<-slot(bfc,'cache')
-write_example_data_to_dir('PBMC',target_dir=bfc_cache)
+write_example_data_to_dir(target_dir=bfc_cache)
 
 
 }

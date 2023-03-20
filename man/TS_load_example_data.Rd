@@ -4,13 +4,10 @@
 \alias{TS_load_example_data}
 \title{Add counts and sample data of examples to a TimeSeriesObject}
 \usage{
-TS_load_example_data(time_object, example_dta)
+TS_load_example_data(time_object)
 }
 \arguments{
 \item{time_object}{A timeseries object}
-
-\item{example_dta}{Character of either 'PBMC', 'MURINE', or 'CELEGANS'
-Elist was given}
 }
 \value{
 The timeseries object with the raw count matrix added to it as well as the sample data
@@ -26,6 +23,6 @@ TS_object <- new('TimeSeries_Object',
                  group_names=c('IgM','LPS'),group_colors=c("#e31a1c","#1f78b4"),DE_method='DESeq2',
                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                  PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
-TS_object <- TS_load_example_data(TS_object,'PBMC')
+TS_object <- TS_load_example_data(TS_object)
 
 }

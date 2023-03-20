@@ -1284,7 +1284,7 @@ plot_MDS<-function(the_data,ggplot_version=FALSE){
   if(ggplot_version==TRUE){
     p<-ggplot(the_data, aes(x=Dim.1, y=Dim.2, color=group_name)) +
       geom_point(size =2)+
-      scale_color_manual(breaks=sort(as.vector(unique(the_data$group_name))), values=color_ordered)
+      scale_color_manual(breaks=sort(as.vector(unique(the_data$group_name))), values=color_ordered,guide=FALSE)
   }else{
     p<-plot_ly()
     # create trace
@@ -1438,7 +1438,7 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=
 #' GO_clusters<-gpro_res[['GO_df']]
 #' sem_dta<-slot(TS_object,'sem_list')
 #' #Plot MDS and clustered MDS
-#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim='BP',target_dir=NULL,return_plot=TRUE)
+#' MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,sem_ontology='BP',target_dir=NULL,return_plot=TRUE)
 #'
 #' @importFrom plotly plot_ly add_markers as_widget
 #' @import htmlwidgets
