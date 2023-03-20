@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/articles/TS_analysis_PBMC.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/TS_analysis_PBMC.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/articles/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/index.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_plots_vignettes.html</loc>
@@ -25,13 +25,13 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_using_DESeq2.html</loc>
   </url>
   <url>
-    <loc>/reference/DE_using_limma.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_using_limma.html</loc>
   </url>
   <url>
-    <loc>/reference/GO_dotplot_wrapper.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/GO_dotplot_wrapper.html</loc>
   </url>
   <url>
-    <loc>/reference/PART_heat_map.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PART_heat_map.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PBMC_TS_data.html</loc>
@@ -43,151 +43,151 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/PartRec.html</loc>
   </url>
   <url>
-    <loc>/reference/SS_GO_clusters.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/SS_GO_clusters.html</loc>
   </url>
   <url>
-    <loc>/reference/TS_load_example_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/TS_load_example_data.html</loc>
   </url>
   <url>
-    <loc>/reference/TimeSeries_Object-class.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/TimeSeries_Object-class.html</loc>
   </url>
   <url>
-    <loc>/reference/add_experiment_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_experiment_data.html</loc>
   </url>
   <url>
-    <loc>/reference/add_semantic_similarity_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_semantic_similarity_data.html</loc>
   </url>
   <url>
-    <loc>/reference/calculate_EB.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_EB.html</loc>
   </url>
   <url>
-    <loc>/reference/calculate_and_format_MDS.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_and_format_MDS.html</loc>
   </url>
   <url>
-    <loc>/reference/calculate_cluster_traj_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_cluster_traj_data.html</loc>
   </url>
   <url>
-    <loc>/reference/calculate_gene_traj_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_gene_traj_data.html</loc>
   </url>
   <url>
-    <loc>/reference/calculate_mean_cluster_traj.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_mean_cluster_traj.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/compute_PART.html</loc>
   </url>
   <url>
-    <loc>/reference/conditional_DE_wrapper.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/conditional_DE_wrapper.html</loc>
   </url>
   <url>
-    <loc>/reference/convert_eb_res_to_DE_results.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/convert_eb_res_to_DE_results.html</loc>
   </url>
   <url>
-    <loc>/reference/create_DEG_df.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_DEG_df.html</loc>
   </url>
   <url>
-    <loc>/reference/create_DE_data_results.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_DE_data_results.html</loc>
   </url>
   <url>
-    <loc>/reference/create_clustered_module_dataframe.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_clustered_module_dataframe.html</loc>
   </url>
   <url>
-    <loc>/reference/create_conditional_heatmap_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_conditional_heatmap_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/create_example_data_for_R.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_example_data_for_R.html</loc>
   </url>
   <url>
-    <loc>/reference/create_example_object_for_R.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_example_object_for_R.html</loc>
   </url>
   <url>
-    <loc>/reference/create_raw_count_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_raw_count_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/create_tables_genes_of_interest_DE.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_tables_genes_of_interest_DE.html</loc>
   </url>
   <url>
-    <loc>/reference/create_temporal_heatmap_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/create_temporal_heatmap_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/custom_gpro_dotplot.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/custom_gpro_dotplot.html</loc>
   </url>
   <url>
-    <loc>/reference/custom_heatmap_wrapper.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/custom_heatmap_wrapper.html</loc>
   </url>
   <url>
-    <loc>/reference/doHclust.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/doHclust.html</loc>
   </url>
   <url>
-    <loc>/reference/doKmeans.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/doKmeans.html</loc>
   </url>
   <url>
-    <loc>/reference/dotplot_ancestors.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/dotplot_ancestors.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/exp_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/findW.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/exp_sample_data.html</loc>
   </url>
   <url>
-    <loc>/reference/find_clusters_from_termdist.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findPartition.html</loc>
   </url>
   <url>
-    <loc>/reference/find_merged_color.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/findW.html</loc>
   </url>
   <url>
-    <loc>/reference/find_most_variable_cluster.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_clusters_from_termdist.html</loc>
   </url>
   <url>
-    <loc>/reference/find_relation_to_ancestors.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_merged_color.html</loc>
   </url>
   <url>
-    <loc>/reference/gap.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_most_variable_cluster.html</loc>
   </url>
   <url>
-    <loc>/reference/get.threshold.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/find_relation_to_ancestors.html</loc>
   </url>
   <url>
-    <loc>/reference/getDist.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/gap.html</loc>
   </url>
   <url>
-    <loc>/reference/getPARTlabels.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/get.threshold.html</loc>
   </url>
   <url>
-    <loc>/reference/getReferenceW.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getDist.html</loc>
   </url>
   <url>
-    <loc>/reference/gprofiler_cluster_analysis.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getPARTlabels.html</loc>
   </url>
   <url>
-    <loc>/reference/identify_problematic_combs.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/getReferenceW.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/gprofiler_cluster_analysis.html</loc>
   </url>
   <url>
-    <loc>/reference/log_transform_l2fc_vect.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/identify_problematic_combs.html</loc>
   </url>
   <url>
-    <loc>/reference/maplot_alt.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/merge_duplicate_modules.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/log_transform_l2fc_vect.html</loc>
   </url>
   <url>
-    <loc>/reference/murine_TS_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/maplot_alt.html</loc>
   </url>
   <url>
-    <loc>/reference/murine_gpro_res.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/merge_duplicate_modules.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/normalize_timeSeries_with_deseq2.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_MDS.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_PCA_TS.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part_gprofiler_vignettes.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/part_load_results_vignettes.html</loc>
@@ -196,72 +196,78 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_MDS.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_cluster_traj.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_PCA_TS.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_clustered_mds.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_ancestor_clust_MDS.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_custom_DE_heatmap.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_cluster_traj.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_single_gene_traj.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_clustered_mds.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_wrapper_DE_results.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_custom_DE_heatmap.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_RNAseq_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_single_gene_traj.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_counts_for_PART.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_wrapper_DE_results.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_limma_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prep_RNAseq_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_sample_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prep_counts_for_PART.html</loc>
   </url>
   <url>
-    <loc>/reference/prep_tp_matrix.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prep_limma_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/prepare_heat_data.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prep_sample_data.html</loc>
   </url>
   <url>
-    <loc>/reference/prepare_top_annotation_PART_heat.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prep_tp_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/process_microarr_dta_limma.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prepare_heat_data.html</loc>
   </url>
   <url>
-    <loc>/reference/read_gprofiler_results.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/prepare_top_annotation_PART_heat.html</loc>
   </url>
   <url>
-    <loc>/reference/run_gprofiler_PART_clusters.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/process_microarr_dta_limma.html</loc>
   </url>
   <url>
-    <loc>/reference/select_genes_with_l2fc.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/read_gprofiler_results.html</loc>
   </url>
   <url>
-    <loc>/reference/sim.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/run_gprofiler_PART_clusters.html</loc>
   </url>
   <url>
-    <loc>/reference/temporal_DE_wrapper.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/select_genes_with_l2fc.html</loc>
   </url>
   <url>
-    <loc>/reference/volcanoplot_alt.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/sim.html</loc>
   </url>
   <url>
-    <loc>/reference/wrapper_MDS_and_MDS_clusters.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/temporal_DE_wrapper.html</loc>
   </url>
   <url>
-    <loc>/reference/wrapper_ancestor_curation_plots.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/volcanoplot_alt.html</loc>
   </url>
   <url>
-    <loc>/reference/wrapper_cluster_trajectory.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/wrapper_MDS_and_MDS_clusters.html</loc>
   </url>
   <url>
-    <loc>/reference/write_example_data_to_dir.html</loc>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/wrapper_ancestor_curation_plots.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/wrapper_cluster_trajectory.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/write_example_data_to_dir.html</loc>
   </url>
 </urlset>
