@@ -39,7 +39,4 @@ vignettes/TS_results_celegans_example
 .Rbuildignore
 .gitattributes
 
-#Ignore archive
-archive
-
 inst/doc
