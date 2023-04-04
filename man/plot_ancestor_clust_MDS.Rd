@@ -40,7 +40,6 @@ TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gpr
 #Set to NULL to not save results
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]
-TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',

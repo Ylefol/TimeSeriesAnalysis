@@ -162,7 +162,6 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #'
@@ -232,7 +231,6 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
@@ -337,7 +335,6 @@ find_merged_color<-function(group){
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #'
@@ -431,7 +428,6 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #' calculated_SS<-SS_GO_clusters(sem_dta,found_clusters,'BP',distance="BMA",measure='Wang')
@@ -582,7 +578,6 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 #' clustered_module_df<-create_clustered_module_dataframe(found_clusters)
@@ -860,7 +855,6 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #' #Set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
 #'                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
 #'                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
@@ -956,7 +950,6 @@ plot_ancestor_clust_MDS<-function(the_data,ggplot_version=FALSE){
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)
@@ -1264,7 +1257,6 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 #' GO_clusters<-gpro_res[['GO_df']]
-#' TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 #' sem_dta<-slot(TS_object,'sem_list')
 #' plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 #' plot_data<-merge_duplicate_modules(plot_data)

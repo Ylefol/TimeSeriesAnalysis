@@ -40,7 +40,6 @@ TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gpr
 #Results saved to created directory
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]
-TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 sem_dta<-slot(TS_object,'sem_list')
 found_clusters<-find_clusters_from_termdist(GO_clusters,sem_dta)
 clustered_module_df<-create_clustered_module_dataframe(found_clusters)
