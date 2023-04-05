@@ -15,7 +15,8 @@
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -77,8 +78,8 @@ find_most_variable_cluster<-function(time_object,mean_ts_data){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE,vignette_run=TRUE)
 #' DEG_df<-create_DEG_df(TS_object)
 #'
 #' @export

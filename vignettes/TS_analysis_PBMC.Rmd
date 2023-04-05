@@ -124,9 +124,9 @@ if (slot(TS_object,'DE_method')=='DESeq2' & 'norm' %in% names(assays(slot(TS_obj
 }
 
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #Perform temporal differential gene expression analysis
-TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=do_all_temporal_comparisons)
+TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=do_all_temporal_comparisons,vignette_run=TRUE)
 ```
 
 ## PART clustering
@@ -389,7 +389,9 @@ is then used with the semantic distance to create two versions of the MDS plot.
 
 ```{r Gpro_results ,message=FALSE,warning=FALSE}
 #Create standard gprofiler results
-gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path = NULL,return_specific_cluster=target_clust,return_interactive=FALSE)
+gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path=NULL,
+                                     return_specific_cluster=target_clust,
+                                     return_interactive=FALSE)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 #Plot and save MDS and clustered MDS

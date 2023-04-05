@@ -35,7 +35,8 @@
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -145,7 +146,8 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -214,7 +216,8 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -318,7 +321,8 @@ find_merged_color<-function(group){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -411,7 +415,8 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -561,7 +566,8 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -647,7 +653,8 @@ create_clustered_module_dataframe<-function(cluster_df){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -757,7 +764,8 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -838,7 +846,8 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -933,7 +942,8 @@ plot_ancestor_clust_MDS<-function(the_data,ggplot_version=FALSE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1076,7 +1086,8 @@ plot_clustered_mds<-function(main_matrix,cluster_info,ggplot_version=FALSE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1174,7 +1185,8 @@ dotplot_ancestors<-function(ancestor_df,use_names=FALSE,enrichment_dta=TRUE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1240,7 +1252,8 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1333,7 +1346,8 @@ plot_MDS<-function(the_data,ggplot_version=FALSE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1411,7 +1425,8 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'
@@ -1485,7 +1500,8 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
 #'

@@ -29,7 +29,7 @@ within a timeseries object
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #Below function will save results to main directory
 my_res<-create_DE_data_results(TS_object,DE_type='conditional',exp_name='IgM_vs_LPS_TP_1',save_location=NULL)
 

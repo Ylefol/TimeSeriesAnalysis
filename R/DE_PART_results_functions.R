@@ -117,8 +117,8 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' TS_object<-temporal_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,vignette_run=TRUE)
 #' plot_list<-DE_plots_vignettes(TS_object)
 #' @export
 DE_plots_vignettes<-function(object){
@@ -249,7 +249,7 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' DE_res<-slot(TS_object,'DE_results')$conditional$IgM_vs_LPS_TP_1$DE_raw_data
 #' v_plot<-volcanoplot_alt(DE_res = DE_res)
 #'
@@ -361,7 +361,7 @@ volcanoplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice='padj',l2
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' DE_res<-slot(TS_object,'DE_results')$conditional$IgM_vs_LPS_TP_1$DE_raw_data
 #' ma_plot<-maplot_alt(DE_res = DE_res,filter_choice = 'padj')
 #'
@@ -449,8 +449,8 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
-#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=FALSE,vignette_run=TRUE)
 #' TS_pca<-plot_PCA_TS(TS_object,DE_type='all')
 #'
 #' @import ggplot2
@@ -574,7 +574,7 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_plot<-custom_heatmap_wrapper(TS_object,DE_type='conditional',log_transform=TRUE,
 #'                                   plot_file_name = NULL,
 #'                                   adjust_missing_temp_samples=TRUE,do_SVGs=FALSE)
@@ -652,7 +652,7 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_conditional_heatmap_matrix(TS_object)
 #'
 #' @export
@@ -783,7 +783,7 @@ create_conditional_heatmap_matrix<-function(time_object){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-temporal_DE_wrapper(TS_object)
+#' TS_object<-temporal_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_temporal_heatmap_matrix(TS_object)
 #'
 #'
@@ -903,7 +903,7 @@ create_temporal_heatmap_matrix<-function(time_object,adjust_for_missing_samples=
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_conditional_heatmap_matrix(TS_object)
 #' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 #'
@@ -951,7 +951,7 @@ prepare_heat_data <- function(matrix_list,log_transform){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_conditional_heatmap_matrix(TS_object)
 #' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 #'
@@ -1015,7 +1015,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_conditional_heatmap_matrix(TS_object)
 #' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 #'
@@ -1153,7 +1153,8 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
@@ -1249,7 +1250,8 @@ prepare_top_annotation_PART_heat<-function(object){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
@@ -1384,7 +1386,8 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
@@ -1491,7 +1494,8 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
@@ -1561,7 +1565,8 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' #Extract genes for PART clustering based on defined log(2)foldChange threshold
 #' signi_genes<-select_genes_with_l2fc(TS_object)
@@ -1637,7 +1642,7 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axi
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
 #'
 #' @importFrom reshape2 melt
@@ -1693,7 +1698,7 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
 #' group_cols<-slot(TS_object,'group_colors')
 #' aicda_plot<-plot_single_gene_traj(aicda_traj_dta,group_cols)
@@ -1750,7 +1755,7 @@ plot_single_gene_traj<-function(mean_data,color_vector=NULL){
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' #Below function will save results to main directory
 #' my_res<-create_DE_data_results(TS_object,DE_type='conditional',exp_name='IgM_vs_LPS_TP_1',save_location=NULL)
 #'
@@ -1876,7 +1881,7 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
 #' TS_object<-create_example_object_for_R()
 #' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #' #Perform conditional differential gene expression analysis
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #' heat_dta<-create_conditional_heatmap_matrix(TS_object)
 #' heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 #' problematic_combs<-identify_problematic_combs(heat_dta[['heat_matrix']])

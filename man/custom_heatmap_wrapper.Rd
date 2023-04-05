@@ -40,7 +40,7 @@ illustrating the significant DEGs of a given differential expression type (DE_ty
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 heat_plot<-custom_heatmap_wrapper(TS_object,DE_type='conditional',log_transform=TRUE,
                                   plot_file_name = NULL,
                                   adjust_missing_temp_samples=TRUE,do_SVGs=FALSE)

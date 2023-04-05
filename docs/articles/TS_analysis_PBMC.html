@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">00.99.01</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">00.99.02</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Yohan
 Lefol</h4>
             
-            <h4 data-toc-skip class="date">04. April 2023</h4>
+            <h4 data-toc-skip class="date">05. April 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Ylefol/TimeSeriesAnalysis/blob/HEAD/vignettes/TS_analysis_PBMC.Rmd" class="external-link"><code>vignettes/TS_analysis_PBMC.Rmd</code></a></small>
       <div class="hidden name"><code>TS_analysis_PBMC.Rmd</code></div>
@@ -189,9 +189,9 @@ Series object.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co">#Perform conditional differential gene expression analysis</span></span>
-<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span>
+<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#Perform temporal differential gene expression analysis</span></span>
-<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/temporal_DE_wrapper.html">temporal_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,do_all_combinations<span class="op">=</span><span class="va">do_all_temporal_comparisons</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/temporal_DE_wrapper.html">temporal_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,do_all_combinations<span class="op">=</span><span class="va">do_all_temporal_comparisons</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="part-clustering">PART clustering<a class="anchor" aria-label="anchor" href="#part-clustering"></a>
@@ -477,7 +477,9 @@ ontology into the GO_clusters dataframe. This dataframe is then used
 with the semantic distance to create two versions of the MDS plot.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Create standard gprofiler results</span></span>
-<span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_ont_gpro</span>,save_path <span class="op">=</span> <span class="cn">NULL</span>,return_specific_cluster<span class="op">=</span><span class="va">target_clust</span>,return_interactive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_ont_gpro</span>,save_path<span class="op">=</span><span class="cn">NULL</span>,</span>
+<span>                                     return_specific_cluster<span class="op">=</span><span class="va">target_clust</span>,</span>
+<span>                                     return_interactive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">sem_dta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/methods/slot.html" class="external-link">slot</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'sem_list'</span><span class="op">)</span></span>
 <span><span class="co">#Plot and save MDS and clustered MDS</span></span>
@@ -1047,7 +1049,7 @@ of immune receptors built from immunoglobulin superfamily domains</td>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] org.Hs.eg.db_3.16.0         AnnotationDbi_1.60.2       </span></span>
-<span><span class="co">##  [3] ggplot2_3.4.1               TimeSeriesAnalysis_00.99.01</span></span>
+<span><span class="co">##  [3] ggplot2_3.4.1               TimeSeriesAnalysis_00.99.02</span></span>
 <span><span class="co">##  [5] BiocFileCache_2.6.1         dbplyr_2.3.1               </span></span>
 <span><span class="co">##  [7] SummarizedExperiment_1.28.0 Biobase_2.58.0             </span></span>
 <span><span class="co">##  [9] GenomicRanges_1.50.2        GenomeInfoDb_1.34.9        </span></span>

@@ -24,7 +24,7 @@ over the time points within the time object
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
 
 }
