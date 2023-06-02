@@ -4,10 +4,18 @@
 \alias{run_gprofiler_PART_clusters}
 \title{Gprofiler analysis}
 \usage{
-run_gprofiler_PART_clusters(object, vignette_run = FALSE)
+run_gprofiler_PART_clusters(
+  object,
+  ENSG_transcript_adjust = FALSE,
+  vignette_run = FALSE
+)
 }
 \arguments{
 \item{object}{A time series object}
+
+\item{ENSG_transcript_adjust}{Boolean indicating if ENSG transcript IDs have been submitted.
+If this is the case, the decimal and following number must be removed for the gprofiler analysis
+as gprofiler recognizes genes, not transcripts.}
 
 \item{vignette_run}{Boolean indicating if this function is being run within
 vignettes, if so it will bypass a network connection error and load mock data

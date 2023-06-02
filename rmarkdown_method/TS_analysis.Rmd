@@ -22,7 +22,7 @@ library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
 
 #COMMENT OUT IF NOT USING EXAMPLES
-write_example_data_to_dir('PBMC')
+# write_example_data_to_dir('PBMC')
 
 ```
 
@@ -39,15 +39,15 @@ obj_name<-'timeSeries_obj_PBMC_example.Rdata'
 
 #Path to count data and sample data respectively
 #Not needed if using example data
-my_path_data<-'data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'data/PBMC/sample_file.csv'
+my_path_data<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/PBMC/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
 p_val_filter_type<-'padj' #Either padj or pvalue, used to filter for significance
 p_thresh<-0.05 #pvalue or padj value threshold for significance
 l2fc_thresh<-1 #log(2)foldChange threshold for significance
-name_control<-'LPS' #Name of experiment as seen in the sample file
+name_control<-'control' #Name of experiment as seen in the sample file
 name_experiment<-'IgM' #Name of control as seen in the sample file
 graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
@@ -75,7 +75,7 @@ my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 # this link: https://www.r-bloggers.com/2018/07/%F0%9F%8C%B1-setting-a-seed-in-r-when-using-parallel-simulation/
 PART_seed=123456
 
-PART_l2fc<-1 #log(2)foldChange threshold for PART clustering
+PART_l2fc<-5 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
 PART_recursion<-100 #Number of recursions, default is 100, using 10 for example
 
@@ -472,16 +472,16 @@ order to offer a better visualization, with most significant being in red and le
 target_top=10
 
 select_ontology<-'GO:BP'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+GO_dotplot_wrapper(TS_object,file_loc=name_result_folder,target_ontology=select_ontology,top_n=target_top,custom_width=10)
 
 select_ontology<-'REAC'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+GO_dotplot_wrapper(TS_object,file_loc=name_result_folder,target_ontology=select_ontology,top_n=target_top,custom_width=10)
 
 select_ontology<-'KEGG'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+GO_dotplot_wrapper(TS_object,file_loc=name_result_folder,target_ontology=select_ontology,top_n=target_top,custom_width=10)
 
 select_ontology<-'HP'
-GO_dotplot_wrapper(gpro_file_location=name_result_folder,target_ontology=select_ontology,top_n=target_top)
+GO_dotplot_wrapper(TS_object,file_loc=name_result_folder,target_ontology=select_ontology,top_n=target_top,custom_width=10)
 
 ```
 Illustrated below is the dotplot for the REACTOME pathway if it exists, otherwise it 

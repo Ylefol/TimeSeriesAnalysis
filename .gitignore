@@ -1,8 +1,8 @@
 #This is the .gitignore file
 
 #Ignore results from example
-rmarkdown_method/TS_results_murine_example
-rmarkdown_method/TS_results_PBMC_example
+rmarkdown_method/ATAXIA
+
 
 rmarkdown_method/data
 
@@ -26,10 +26,11 @@ data/mouse_brain_data
 data/Diana_data
 data/PBMC
 data/murine
+data/FOUNDIN-PD
 
 
 #Hide raw data
-data_raw/
+data/ATAXIA
 
 #Ignore vignettes
 vignettes/TS_results_murine_example
@@ -37,7 +38,11 @@ vignettes/data
 vignettes/TS_results_PBMC_example
 vignettes/TS_results_celegans_example
 
+#Ignore part of extra scripts
+extra_scripts/TS_results_single_TP_test
 
+#Ignore extra stuff
+Karola_results
 
 #Ignore standard stuff
 .Rproj.user
