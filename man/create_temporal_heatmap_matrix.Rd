@@ -36,7 +36,7 @@ in order to enable them to have different values if necessary.
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-temporal_DE_wrapper(TS_object)
+TS_object<-temporal_DE_wrapper(TS_object,vignette_run=TRUE)
 heat_dta<-create_temporal_heatmap_matrix(TS_object)
 
 

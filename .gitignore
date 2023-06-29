@@ -6,15 +6,6 @@ rmarkdown_method/FOUNDIN-PD
 
 rmarkdown_method/data
 
-#Ignore EBSC folder
-EBSC_folder
-
-#Ignore Fran's folder
-Fran_folder
-
-#Ignore non-example results
-result_not_example
-
 #Ignore project file
 TimeSeriesAnalysis.Rproj
 
@@ -33,6 +24,7 @@ data/FOUNDIN-PD
 data/ATAXIA
 
 #Ignore vignettes
+vignettes/.Rhistory
 vignettes/TS_results_murine_example
 vignettes/data
 vignettes/TS_results_PBMC_example
@@ -50,8 +42,6 @@ Karola_results
 .RData
 .Ruserdata
 .Rbuildignore
-
-#Ignore archive
-archive
+.gitattributes
 
 inst/doc

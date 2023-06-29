@@ -621,6 +621,7 @@ create_example_object_for_R<-function(){
                    DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
                    PART_l2fc_thresh=1,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
   TS_object <- TS_load_example_data(TS_object)
+  TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim,vignette_run=TRUE)
   return(TS_object)
 }
 

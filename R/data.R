@@ -2,7 +2,9 @@
 #'
 #' @description A data set with RNAseq results for various AID activation cocktails on a PBMC cell line.
 #' Four groups exist: Control (no cocktail), LPS, IgM activation, and TGFb activation. Every group
-#' has two replicates per timepoint. Timepoints are days 1, 3, and 9.
+#' has two replicates per timepoint. Timepoints are days 1, 3, and 9. The data was subsetted to only contain
+#' the genes found to be differentially expressed in the PBMC analysis. Subsetting was performed
+#' in order to alleviate the vignettes and examples.
 #'
 #' @format A SummarizedExperiment containing the count matrix as the assay and the sample data as the colData
 #' \describe{

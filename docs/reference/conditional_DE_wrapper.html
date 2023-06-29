@@ -22,7 +22,7 @@ analysis based on the type needed (DESeq2 for RNAseq or limma for microarray)"><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">00.99.02</span>
       </span>
     </div>
 
@@ -70,13 +70,17 @@ analysis based on the type needed (DESeq2 for RNAseq or limma for microarray)</p
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">conditional_DE_wrapper</span><span class="op">(</span><span class="va">time_object</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">conditional_DE_wrapper</span><span class="op">(</span><span class="va">time_object</span>, vignette_run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>time_object</dt>
 <dd><p>A timeseries object containing a DESeq2_obj</p></dd>
+
+
+<dt>vignette_run</dt>
+<dd><p>Boolean indicating if a run is for vignettes or not.</p></dd>
 
 </dl></div>
     <div id="value">

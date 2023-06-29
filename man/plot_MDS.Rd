@@ -25,7 +25,8 @@ parameter.
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #Extract genes for PART clustering based on defined log(2)foldChange threshold
 signi_genes<-select_genes_with_l2fc(TS_object)
 
@@ -42,7 +43,6 @@ TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gpr
 #Results saved to created directory
 gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
 GO_clusters<-gpro_res[['GO_df']]
-TS_object <- add_semantic_similarity_data(TS_object,ont_sem_sim='BP')
 sem_dta<-slot(TS_object,'sem_list')
 plot_data<-calculate_and_format_MDS(GO_clusters,sem_dta)
 plot_data<-merge_duplicate_modules(plot_data)

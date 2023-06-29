@@ -18,6 +18,7 @@
 #'
 #'
 #' @param time_object A timeseries object containing a DESeq2_obj
+#' @param vignette_run Boolean indicating if a run is for vignettes or not.
 #'
 #' @return The timeseries object with the conitional differential expression results
 #' added to the DE_results slot of the object.
@@ -25,10 +26,16 @@
 #' @examples
 #' TS_object<-create_example_object_for_R()
 #' TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' TS_object<-conditional_DE_wrapper(TS_object)
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 #'
 #' @export
-conditional_DE_wrapper<-function(time_object){
+conditional_DE_wrapper<-function(time_object,vignette_run=FALSE){
+
+  if(vignette_run==TRUE){
+    time_object@DE_results$conditional<-PBMC_pre_loaded$DE_results$conditional
+    return(time_object)
+  }
+
   group_names<-slot(time_object,'group_names')
   DE_res<-slot(time_object,'DE_results')
   DE_meth<-slot(time_object,'DE_method')
@@ -74,6 +81,7 @@ conditional_DE_wrapper<-function(time_object){
 #' @param do_all_combinations Allows for all temporal combinations to be done instead
 #' of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
 #' only the first two comparison of the example would be run.
+#' @param vignette_run Boolean indicating if a run is for vignettes or not.
 #'
 #' @return The timeseries object with the temporal differential expression results
 #' added to the DE_results slot of the object.
@@ -81,11 +89,16 @@ conditional_DE_wrapper<-function(time_object){
 #' @examples
 #' TS_object<-create_example_object_for_R()
 #' TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
-#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE)
+#' TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 #'
 #' @export
 #'
-temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE){
+temporal_DE_wrapper<-function(time_object,do_all_combinations=FALSE,vignette_run=FALSE){
+
+  if(vignette_run==TRUE){
+    time_object@DE_results$temporal<-PBMC_pre_loaded$DE_results$temporal
+    return(time_object)
+  }
 
   DE_res<-slot(time_object,'DE_results')
   samp_dta_full<-exp_sample_data(time_object)

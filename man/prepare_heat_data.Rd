@@ -27,7 +27,7 @@ This function is intended to be used within the \code{cusom_heatmap_wrapper}
 TS_object<-create_example_object_for_R()
 TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
 #Perform conditional differential gene expression analysis
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 heat_dta<-create_conditional_heatmap_matrix(TS_object)
 heat_dta<-prepare_heat_data(heat_dta,log_transform=TRUE)
 

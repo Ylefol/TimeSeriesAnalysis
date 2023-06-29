@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">00.99.02</span>
       </span>
     </div>
 
@@ -191,9 +191,9 @@ Series object.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co">#Perform conditional differential gene expression analysis</span></span>
-<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span><span class="op">)</span></span>
+<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/conditional_DE_wrapper.html">conditional_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#Perform temporal differential gene expression analysis</span></span>
-<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/temporal_DE_wrapper.html">temporal_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,do_all_combinations<span class="op">=</span><span class="va">do_all_temporal_comparisons</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">TS_object</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/temporal_DE_wrapper.html">temporal_DE_wrapper</a></span><span class="op">(</span><span class="va">TS_object</span>,do_all_combinations<span class="op">=</span><span class="va">do_all_temporal_comparisons</span>,vignette_run<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="part-clustering">PART clustering<a class="anchor" aria-label="anchor" href="#part-clustering"></a>
@@ -258,7 +258,7 @@ icon in the top right of each respective interactive plot</p>
 <h3 id="timeseries-summary-of-experiment">TimeSeries summary of experiment<a class="anchor" aria-label="anchor" href="#timeseries-summary-of-experiment"></a>
 </h3>
 <p><strong>Name of groups beings compared:</strong> IgM vs LPS
-<strong>Number of genes analyzed:</strong> 26485</p>
+<strong>Number of genes analyzed:</strong> 1691</p>
 <p><strong>Differential expression parameters used:</strong>
 <strong>Method:</strong> DESeq2 <strong>P statistic filter
 used:</strong> padj with a 0.05 threshold <strong>Log(2)FoldChange
@@ -268,7 +268,7 @@ significance threshold:</strong> 2 <strong>number of
 recursions:</strong> 100 <strong>minimum cluster size:</strong> 50
 <strong>distance parameter:</strong> euclidean <strong>hclust
 parameter:</strong> average <strong>custom seed used:</strong> 123456
-<strong>PART computation time:</strong> 686.819 sec elapsed</p>
+<strong>PART computation time:</strong> 270.209 sec elapsed</p>
 <p><strong>PCA of sample data:</strong>
 <img src="TS_analysis_PBMC_files/figure-html/show_PCA_clust%20-1.png" width="100%"></p>
 </div>
@@ -285,27 +285,27 @@ functions)<a class="anchor" aria-label="anchor" href="#differential-gene-express
 <tbody>
 <tr class="odd">
 <td align="left">IgM_vs_LPS_TP_1 (conditional)</td>
-<td align="left">1763</td>
+<td align="left">464</td>
 </tr>
 <tr class="even">
 <td align="left">IgM_vs_LPS_TP_3 (conditional)</td>
-<td align="left">1369</td>
+<td align="left">758</td>
 </tr>
 <tr class="odd">
 <td align="left">IgM_vs_LPS_TP_9 (conditional)</td>
-<td align="left">1568</td>
+<td align="left">807</td>
 </tr>
 <tr class="even">
 <td align="left">TP_3_vs_TP_1 (temporal)</td>
-<td align="left">957</td>
+<td align="left">300</td>
 </tr>
 <tr class="odd">
 <td align="left">TP_9_vs_TP_3 (temporal)</td>
-<td align="left">86</td>
+<td align="left">4</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>total unique genes</strong></td>
-<td align="left"><strong>3884</strong></td>
+<td align="left"><strong>1308</strong></td>
 </tr>
 </tbody>
 </table>
@@ -393,33 +393,12 @@ and possibly indistinguishable from each other.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">cluster_map_sum</span><span class="op">)</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Cluster name'</span>,<span class="st">'Number of genes'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">cluster_map_sum</span><span class="op">)</span><span class="op">=</span><span class="cn">NULL</span></span></code></pre></div>
 <p><strong>PART result summary:</strong></p>
-<table class="table">
-<colgroup>
-<col width="23%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="5%">
-<col width="4%">
-<col width="5%">
-<col width="5%">
-<col width="4%">
-<col width="5%">
-<col width="4%">
-</colgroup>
-<tbody>
+<table class="table"><tbody>
 <tr class="odd">
 <td align="left">Cluster name</td>
 <td align="left">C1</td>
 <td align="left">C10</td>
 <td align="left">C11</td>
-<td align="left">C12</td>
-<td align="left">C13</td>
-<td align="left">C14</td>
 <td align="left">C2</td>
 <td align="left">C3</td>
 <td align="left">C4</td>
@@ -431,23 +410,19 @@ and possibly indistinguishable from each other.</p>
 </tr>
 <tr class="even">
 <td align="left">Number of genes</td>
+<td align="left">120</td>
+<td align="left">53</td>
+<td align="left">66</td>
+<td align="left">154</td>
+<td align="left">69</td>
+<td align="left">134</td>
 <td align="left">165</td>
-<td align="left">56</td>
-<td align="left">101</td>
-<td align="left">50</td>
-<td align="left">126</td>
-<td align="left">178</td>
-<td align="left">263</td>
-<td align="left">162</td>
-<td align="left">80</td>
-<td align="left">150</td>
-<td align="left">115</td>
-<td align="left">67</td>
-<td align="left">119</td>
-<td align="left">59</td>
+<td align="left">87</td>
+<td align="left">84</td>
+<td align="left">113</td>
+<td align="left">91</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>All cluster results are found in the ‘PART_results’ folder, within
 this folder you will find the following, Note that this folder exists if
 the a save_location is given to the function and that the function is
@@ -475,7 +450,7 @@ measures the variability. Clusters are shown as the colored bar on the
 left hand side of the plot while groups and timepoints are shown as the
 colored bars on the top of the heatmap. PART heatmaps were created with
 ComplexHeatmaps<span class="citation">(Gu, Eils, and Schlesner
-2016)</span>. The cluster trajectory of the most variable cluster (C13)
+2016)</span>. The cluster trajectory of the most variable cluster (C5)
 is illustrated, with the trajectory of the experiment group at the top
 and the control group at the bottom. The x axis represents timepoints
 and the y axis represents the scaled mean expression of the genes. The
@@ -504,14 +479,16 @@ ontology into the GO_clusters dataframe. This dataframe is then used
 with the semantic distance to create two versions of the MDS plot.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Create standard gprofiler results</span></span>
-<span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_ont_gpro</span>,save_path <span class="op">=</span> <span class="cn">NULL</span>,return_specific_cluster<span class="op">=</span><span class="va">target_clust</span>,return_interactive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">gpro_res</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/gprofiler_cluster_analysis.html">gprofiler_cluster_analysis</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="va">my_ont_gpro</span>,save_path<span class="op">=</span><span class="cn">NULL</span>,</span>
+<span>                                     return_specific_cluster<span class="op">=</span><span class="va">target_clust</span>,</span>
+<span>                                     return_interactive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">GO_clusters</span><span class="op">&lt;-</span><span class="va">gpro_res</span><span class="op">[[</span><span class="st">'GO_df'</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">sem_dta</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/methods/slot.html" class="external-link">slot</a></span><span class="op">(</span><span class="va">TS_object</span>,<span class="st">'sem_list'</span><span class="op">)</span></span>
 <span><span class="co">#Plot and save MDS and clustered MDS</span></span>
 <span><span class="va">MDS_plots</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/wrapper_MDS_and_MDS_clusters.html">wrapper_MDS_and_MDS_clusters</a></span><span class="op">(</span><span class="va">GO_clusters</span>,<span class="va">sem_dta</span>,<span class="va">my_ont_sem_sim</span>,target_dir<span class="op">=</span><span class="cn">NULL</span>,return_plot<span class="op">=</span><span class="cn">TRUE</span>,term_type_gg<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Each cluster has it’s own individual gprofiler plot, these are found
 in ‘TS_results/gprofiler_results/figures’. The gost plot for the most
-variable cluster (C13) is shown below. These interactive plots show the
+variable cluster (C5) is shown below. These interactive plots show the
 results of various databases when queried with a list of genes. More
 information concerning these plots and their various datasources can be
 found at the following link: <a href="https://biit.cs.ut.ee/gprofiler/gost" class="external-link uri">https://biit.cs.ut.ee/gprofiler/gost</a> Below is a
@@ -650,102 +627,139 @@ ancestors. The csv version of this data can be found in
 <tr class="odd">
 <td align="left">GO:0001909</td>
 <td align="left">leukocyte mediated cytotoxicity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0001910</td>
 <td align="left">regulation of leukocyte mediated cytotoxicity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:0002228</td>
-<td align="left">natural killer cell mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">GO:0001912</td>
+<td align="left">positive regulation of leukocyte mediated
+cytotoxicity</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
-<td align="left">GO:0002252</td>
-<td align="left">immune effector process</td>
-<td align="left">C14</td>
+<td align="left">GO:0002228</td>
+<td align="left">natural killer cell mediated immunity</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
+<td align="left">GO:0002252</td>
+<td align="left">immune effector process</td>
+<td align="left">C5</td>
+</tr>
+<tr class="even">
 <td align="left">GO:0002263</td>
 <td align="left">cell activation involved in immune response</td>
-<td align="left">C13</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
+<td align="left">GO:0002275</td>
+<td align="left">myeloid cell activation involved in immune
+response</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002366</td>
 <td align="left">leukocyte activation involved in immune response</td>
-<td align="left">C13</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0002443</td>
 <td align="left">leukocyte mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">C2</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0002443</td>
+<td align="left">leukocyte mediated immunity</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
+<td align="left">GO:0002449</td>
+<td align="left">lymphocyte mediated immunity</td>
+<td align="left">C2</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002449</td>
 <td align="left">lymphocyte mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
+<td align="left">GO:0002456</td>
+<td align="left">T cell mediated immunity</td>
+<td align="left">C2</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0002697</td>
+<td align="left">regulation of immune effector process</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0002697</td>
 <td align="left">regulation of immune effector process</td>
-<td align="left">C14</td>
+<td align="left">C2</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002699</td>
 <td align="left">positive regulation of immune effector process</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0002703</td>
 <td align="left">regulation of leukocyte mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
-<td align="left">GO:0002705</td>
-<td align="left">positive regulation of leukocyte mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">GO:0002703</td>
+<td align="left">regulation of leukocyte mediated immunity</td>
+<td align="left">C2</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:0002706</td>
-<td align="left">regulation of lymphocyte mediated immunity</td>
-<td align="left">C14</td>
+<td align="left">GO:0002705</td>
+<td align="left">positive regulation of leukocyte mediated immunity</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
+<td align="left">GO:0002706</td>
+<td align="left">regulation of lymphocyte mediated immunity</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
 <td align="left">GO:0002708</td>
 <td align="left">positive regulation of lymphocyte mediated
 immunity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">GO:0002715</td>
 <td align="left">regulation of natural killer cell mediated
 immunity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">GO:0002717</td>
 <td align="left">positive regulation of natural killer cell mediated
 immunity</td>
-<td align="left">C14</td>
-</tr>
-<tr class="odd">
-<td align="left">GO:0042267</td>
-<td align="left">natural killer cell mediated cytotoxicity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
+<td align="left">GO:0042267</td>
+<td align="left">natural killer cell mediated cytotoxicity</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
 <td align="left">GO:0042269</td>
 <td align="left">regulation of natural killer cell mediated
 cytotoxicity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">GO:0045954</td>
 <td align="left">positive regulation of natural killer cell mediated
 cytotoxicity</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 </tbody>
 </table>
@@ -767,27 +781,16 @@ cytotoxicity</td>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">GO:0002218</td>
-<td align="left">activation of innate immune response</td>
-<td align="left">C14</td>
-</tr>
-<tr class="even">
 <td align="left">GO:0002220</td>
 <td align="left">innate immune response activating cell surface receptor
 signaling pathway</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">GO:0002223</td>
 <td align="left">stimulatory C-type lectin receptor signaling
 pathway</td>
-<td align="left">C14</td>
-</tr>
-<tr class="even">
-<td align="left">GO:0002758</td>
-<td align="left">innate immune response-activating signal
-transduction</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 </tbody>
 </table>
@@ -809,82 +812,81 @@ transduction</td>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">GO:0002253</td>
-<td align="left">activation of immune response</td>
-<td align="left">C14</td>
+<td align="left">GO:0002682</td>
+<td align="left">regulation of immune system process</td>
+<td align="left">C11</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002682</td>
 <td align="left">regulation of immune system process</td>
-<td align="left">C1</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:0002682</td>
-<td align="left">regulation of immune system process</td>
-<td align="left">C14</td>
-</tr>
-<tr class="even">
 <td align="left">GO:0002683</td>
 <td align="left">negative regulation of immune system process</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0002684</td>
+<td align="left">positive regulation of immune system process</td>
+<td align="left">C11</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0002684</td>
 <td align="left">positive regulation of immune system process</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
-<td align="left">GO:0002694</td>
-<td align="left">regulation of leukocyte activation</td>
-<td align="left">C14</td>
+<td align="left">GO:0002685</td>
+<td align="left">regulation of leukocyte migration</td>
+<td align="left">C11</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:0002768</td>
-<td align="left">immune response-regulating cell surface receptor
-signaling pathway</td>
-<td align="left">C14</td>
+<td align="left">GO:0002694</td>
+<td align="left">regulation of leukocyte activation</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002819</td>
 <td align="left">regulation of adaptive immune response</td>
-<td align="left">C8</td>
+<td align="left">C2</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0002822</td>
 <td align="left">regulation of adaptive immune response based on somatic
 recombination of immune receptors built from immunoglobulin superfamily
 domains</td>
-<td align="left">C8</td>
+<td align="left">C2</td>
 </tr>
 <tr class="even">
-<td align="left">GO:0032814</td>
-<td align="left">regulation of natural killer cell activation</td>
-<td align="left">C14</td>
-</tr>
-<tr class="odd">
 <td align="left">GO:0045088</td>
 <td align="left">regulation of innate immune response</td>
-<td align="left">C14</td>
-</tr>
-<tr class="even">
-<td align="left">GO:0045089</td>
-<td align="left">positive regulation of innate immune response</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:0050776</td>
-<td align="left">regulation of immune response</td>
-<td align="left">C14</td>
+<td align="left">GO:0045089</td>
+<td align="left">positive regulation of innate immune response</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
+<td align="left">GO:0050776</td>
+<td align="left">regulation of immune response</td>
+<td align="left">C5</td>
+</tr>
+<tr class="odd">
 <td align="left">GO:0050778</td>
 <td align="left">positive regulation of immune response</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0050863</td>
+<td align="left">regulation of T cell activation</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0051249</td>
 <td align="left">regulation of lymphocyte activation</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 </tbody>
 </table>
@@ -908,28 +910,43 @@ domains</td>
 <tr class="odd">
 <td align="left">GO:0002250</td>
 <td align="left">adaptive immune response</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0002460</td>
 <td align="left">adaptive immune response based on somatic recombination
 of immune receptors built from immunoglobulin superfamily domains</td>
-<td align="left">C14</td>
+<td align="left">C2</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0006955</td>
 <td align="left">immune response</td>
-<td align="left">C14</td>
+<td align="left">C11</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0006955</td>
 <td align="left">immune response</td>
-<td align="left">C13</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
+<td align="left">GO:0006955</td>
+<td align="left">immune response</td>
+<td align="left">C2</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0006955</td>
+<td align="left">immune response</td>
+<td align="left">C3</td>
+</tr>
+<tr class="odd">
+<td align="left">GO:0042092</td>
+<td align="left">type 2 immune response</td>
+<td align="left">C2</td>
+</tr>
+<tr class="even">
 <td align="left">GO:0045087</td>
 <td align="left">innate immune response</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 </tbody>
 </table>
@@ -946,29 +963,29 @@ of immune receptors built from immunoglobulin superfamily domains</td>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">GO:0030101</td>
-<td align="left">natural killer cell activation</td>
-<td align="left">C14</td>
+<td align="left">GO:0002274</td>
+<td align="left">myeloid leukocyte activation</td>
+<td align="left">C5</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0042110</td>
 <td align="left">T cell activation</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0045321</td>
 <td align="left">leukocyte activation</td>
-<td align="left">C1</td>
+<td align="left">C2</td>
 </tr>
 <tr class="even">
 <td align="left">GO:0045321</td>
 <td align="left">leukocyte activation</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 <tr class="odd">
 <td align="left">GO:0046649</td>
 <td align="left">lymphocyte activation</td>
-<td align="left">C14</td>
+<td align="left">C5</td>
 </tr>
 </tbody>
 </table>
@@ -985,19 +1002,29 @@ of immune receptors built from immunoglobulin superfamily domains</td>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">GO:0030593</td>
-<td align="left">neutrophil chemotaxis</td>
-<td align="left">C2</td>
-</tr>
-<tr class="even">
 <td align="left">GO:0050900</td>
 <td align="left">leukocyte migration</td>
-<td align="left">C2</td>
+<td align="left">C11</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0071674</td>
+<td align="left">mononuclear cell migration</td>
+<td align="left">C1</td>
 </tr>
 <tr class="odd">
-<td align="left">GO:1990266</td>
-<td align="left">neutrophil migration</td>
-<td align="left">C2</td>
+<td align="left">GO:0072676</td>
+<td align="left">lymphocyte migration</td>
+<td align="left">C1</td>
+</tr>
+<tr class="even">
+<td align="left">GO:0097529</td>
+<td align="left">myeloid leukocyte migration</td>
+<td align="left">C11</td>
+</tr>
+<tr class="odd">
+<td align="left">GO:1905517</td>
+<td align="left">macrophage migration</td>
+<td align="left">C11</td>
 </tr>
 </tbody>
 </table>

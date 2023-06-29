@@ -4,7 +4,11 @@
 \alias{temporal_DE_wrapper}
 \title{Create temporal DE results}
 \usage{
-temporal_DE_wrapper(time_object, do_all_combinations = FALSE)
+temporal_DE_wrapper(
+  time_object,
+  do_all_combinations = FALSE,
+  vignette_run = FALSE
+)
 }
 \arguments{
 \item{time_object}{A timeseries object containing a DESeq2_obj}
@@ -12,6 +16,8 @@ temporal_DE_wrapper(time_object, do_all_combinations = FALSE)
 \item{do_all_combinations}{Allows for all temporal combinations to be done instead
 of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
 only the first two comparison of the example would be run.}
+
+\item{vignette_run}{Boolean indicating if a run is for vignettes or not.}
 }
 \value{
 The timeseries object with the temporal differential expression results
@@ -31,6 +37,6 @@ the condition of the object to reflect the comparison being done
 \examples{
 TS_object<-create_example_object_for_R()
 TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
-TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE)
+TS_object<-temporal_DE_wrapper(TS_object,do_all_combinations=TRUE,vignette_run=TRUE)
 
 }

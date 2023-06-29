@@ -23,7 +23,7 @@ the condition of the object to reflect the comparison being done"><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TimeSeriesAnalysis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">01.01.01</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">00.99.02</span>
       </span>
     </div>
 
@@ -72,7 +72,11 @@ the condition of the object to reflect the comparison being done</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">temporal_DE_wrapper</span><span class="op">(</span><span class="va">time_object</span>, do_all_combinations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">temporal_DE_wrapper</span><span class="op">(</span></span>
+<span>  <span class="va">time_object</span>,</span>
+<span>  do_all_combinations <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  vignette_run <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,6 +89,10 @@ the condition of the object to reflect the comparison being done</p>
 <dd><p>Allows for all temporal combinations to be done instead
 of just sequential comparison. ex: do TP2vsTP1, TP3vsTP2, AND TP3vsTP1. In a normal instance
 only the first two comparison of the example would be run.</p></dd>
+
+
+<dt>vignette_run</dt>
+<dd><p>Boolean indicating if a run is for vignettes or not.</p></dd>
 
 </dl></div>
     <div id="value">

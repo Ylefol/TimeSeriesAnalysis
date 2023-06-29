@@ -4,10 +4,12 @@
 \alias{conditional_DE_wrapper}
 \title{Create conditional DE results}
 \usage{
-conditional_DE_wrapper(time_object)
+conditional_DE_wrapper(time_object, vignette_run = FALSE)
 }
 \arguments{
 \item{time_object}{A timeseries object containing a DESeq2_obj}
+
+\item{vignette_run}{Boolean indicating if a run is for vignettes or not.}
 }
 \value{
 The timeseries object with the conitional differential expression results
@@ -26,6 +28,6 @@ analysis based on the type needed (DESeq2 for RNAseq or limma for microarray)
 \examples{
 TS_object<-create_example_object_for_R()
 TS_object<-normalize_timeSeries_with_deseq2(time_object=TS_object)
-TS_object<-conditional_DE_wrapper(TS_object)
+TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
 
 }
