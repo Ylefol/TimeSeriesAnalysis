@@ -36,19 +36,18 @@ Imports:
 	stringi,
 	rstudioapi,
 	AnnotationDbi,
-	BiocGenerics,
-	GenomicRanges,
 	RColorBrewer,
 	grDevices,
 	htmlwidgets,
 	stats,
+	matrixStats,
 	utils
 Depends: 
-	R (>= 4.2),
+	R (>= 4.3),
 	BiocFileCache,
 	SummarizedExperiment
 Suggests: knitr,
-	rmarkdown,
+	rmarkdown
 URL: https://github.com/Ylefol/TimeSeriesAnalysis
 LazyData: true
 biocViews: Sequencing, RNASeq, Microarray, GeneExpression, Transcription,

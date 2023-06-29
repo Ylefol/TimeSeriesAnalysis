@@ -395,7 +395,7 @@ gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path=NULL,
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 #Plot and save MDS and clustered MDS
-MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE,term_type_gg=TRUE)
+MDS_plots<-wrapper_MDS_and_MDS_clusters(GO_clusters,sem_dta,my_ont_sem_sim,target_dir=NULL,return_plot=TRUE,term_type_gg=FALSE)
 ```
 
 Each cluster has it's own individual gprofiler plot, these are found in 'TS_results/gprofiler_results/figures'.

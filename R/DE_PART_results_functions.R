@@ -91,10 +91,11 @@ plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_f
            plot=ma_plot)
 
 
-    #Plot and save the PCA plot
-    pca_plot<-plot_PCA_TS(time_object=object,exp_name=DE_name,DE_type=DE_type)
-    ggsave(paste0(save_path,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',
-           plot=pca_plot)
+    #REMOVED TEMPORARLY
+    # #Plot and save the PCA plot
+    # pca_plot<-plot_PCA_TS(time_object=object,exp_name=DE_name,DE_type=DE_type)
+    # ggsave(paste0(save_path,"PCA_plot.png"),dpi=300,width=21, height=19, units='cm',
+    #        plot=pca_plot)
   }
 }
 
@@ -582,6 +583,14 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE){
 #' @export
 #'
 custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_file_name='custom_DEG_heatmap',adjust_missing_temp_samples=TRUE,do_SVGs=TRUE){
+
+  #Check if sig data exists
+  for(name in names(time_object@DE_results[[DE_type]])){
+    if(nrow(time_object@DE_results[[DE_type]][[name]][['DE_sig_data']])==0){
+      message('Not all comparisons have significant genes, heatmap cannot be produced')
+      return(NULL)
+    }
+  }
 
   #Create the matrix
   if (DE_type=='conditional'){

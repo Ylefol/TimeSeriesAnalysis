@@ -19,6 +19,9 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/index.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/Celegans_TS_data.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/DE_plots_vignettes.html</loc>
   </url>
   <url>
@@ -71,6 +74,9 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/calculate_mean_cluster_traj.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/celegans_pre_loaded.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/compute_PART.html</loc>
@@ -179,6 +185,12 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/merge_duplicate_modules.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/murine_TS_data.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/murine_pre_loaded.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/normalize_timeSeries_with_deseq2.html</loc>

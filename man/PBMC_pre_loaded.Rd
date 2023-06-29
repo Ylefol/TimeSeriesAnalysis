@@ -14,9 +14,6 @@ A list of lists
 PBMC_pre_loaded
 }
 \description{
-A list containing the gprofiler results for the PBMC example.
-This data exists to allow for the creation of Vignettes in the event of a network failure.
-Also contains a list of lists with various PART results, from the inputed matrix to the
-computed clusters and the various parameters used for the clustering.
+A list containing the gprofiler results (14 clusters) for the PBMC example.
 }
 \keyword{datasets}

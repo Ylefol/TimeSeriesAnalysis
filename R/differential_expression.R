@@ -283,11 +283,9 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
   samp_dta_full<-exp_sample_data(time_object)
   count_matrix<-exp_matrix(time_object,'raw')
 
-  condition<-factor(samp_dta_full$group)
+  #Set levels to the inverse of the submitted group names, therefore control is the reference
+  condition<-factor(samp_dta_full$group,levels=rev(time_object@group_names))
 
-  #Assign Condition to all of the columns/samples/patients
-  # condition <- factor(c(rep(groups[1], nrow(samp_dta_full[samp_dta_full$group==groups[1],])),
-  #                       rep(groups[2], nrow(samp_dta_full[samp_dta_full$group==groups[2],]))))
   my_matrix<-as.matrix(round(count_matrix))
 
   #Create a coldata frame and instantiate the DESeqDataSet
