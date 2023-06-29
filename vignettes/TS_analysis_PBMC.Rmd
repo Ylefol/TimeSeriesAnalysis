@@ -391,7 +391,7 @@ is then used with the semantic distance to create two versions of the MDS plot.
 #Create standard gprofiler results
 gpro_res<-gprofiler_cluster_analysis(TS_object,my_ont_gpro,save_path=NULL,
                                      return_specific_cluster=target_clust,
-                                     return_interactive=FALSE)
+                                     return_interactive=TRUE)
 GO_clusters<-gpro_res[['GO_df']]
 sem_dta<-slot(TS_object,'sem_list')
 #Plot and save MDS and clustered MDS
@@ -495,7 +495,7 @@ if(length(target_ancestors)==0){
   GOs_ancestors_clust<-data.frame(NULL)
 }else{
   GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = ancestor_ontology)
-  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL,term_type_gg=TRUE)
+  ancestor_plots<-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_dta,return_plot=TRUE,target_dir=NULL,term_type_gg=FALSE)
 }
 
 ```
@@ -552,7 +552,7 @@ if(exists('list_ancestors')==TRUE){
 }
 
 ```
-
+# Session information
 ```{r sess_info}
 sessionInfo()
 ```

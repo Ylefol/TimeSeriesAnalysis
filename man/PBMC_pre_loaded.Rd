@@ -3,7 +3,7 @@
 \docType{data}
 \name{PBMC_pre_loaded}
 \alias{PBMC_pre_loaded}
-\title{Pre-computed PART, gprofiler,semantic data, and differential expression results for the PBMC dataset}
+\title{Pre-computed PART and gprofiler results for the PBMC dataset}
 \format{
 A list of lists
 }

@@ -1,7 +1,7 @@
 Package: TimeSeriesAnalysis
 Type: Package
 Title: Transcriptomic TimeSeries (longitudinal) analysis
-Version: 00.99.02
+Version: 01.01.01
 Authors@R: person("Yohan", "Lefol", email = "yohan.lefol@gmail.com",
                   role = c("aut", "cre"))
 Description: A pipeline to analyse and interpret longitudinal transcriptomic data from both RNAseq and microarray origins. The pipeline performs differential gene expression, clustering, and plots usefull figures to aid in interpretation of identified clusters of significant genes.
