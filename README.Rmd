@@ -46,15 +46,14 @@ through gprofiler to reveal the biological relevance of each cluster.
 
 ## Installation
 
-**A Bioconductor release is in progress**
-
-You can install the development version of TimeSeriesAnalysis like so:
-
+You can install the stable version of TimeSeriesAnalysis like so:
 ``` r
 install.packages("devtools")
-devtools::install_github("Ylefol/TimeSeriesAnalysis")
+devtools::install_github("Ylefol/TimeSeriesAnalysis@master")
 ```
-To instal Devtools, visit the 
+The development version can be installed by replacing 'master' with 'dev'.
+
+Devtools is required for the installation of this package. To install Devtools, visit the 
 [Devtools main page](https://www.r-project.org/nosvn/pandoc/devtools.html)
 
 Certain bioconductor packages will have to be installed before
@@ -65,8 +64,9 @@ some of the packages that should be installed via this method.
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
-'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db',
-BiocFileCache)
+'AnnotationDbi','GenomeInfoDb','GenomicRanges','Biobase','S4Vectors',
+'BioCGenerics','MatrixGenerics','IRanges','BiocFileCache'
+'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db')
 BiocManager::install(bio_pkgs)
 ```
 
@@ -86,8 +86,6 @@ prefer a script approach, the equivalent of the rmarkdown report is
 provided in two scripts, one for the computation tasks and a second for
 the analyses. These two scripts are found in the ‘script_method’ folder.
 
-Both the rmarkdown and script methods are found in the ‘supp_to_bioconductor’ branch.
-
 ## Data
 
 Three different datasets have been used to test this pipeline, one of which has been
@@ -99,20 +97,48 @@ and compares three AICDA/AID (Activation Induced Cytidine DeAminase) activation 
 The experiment seeked to identify which activation cocktail properly activated AID
 through both the expression of the AID gene and the activation of class switch recombination.
 
-<!-- The MURINE dataset is another AID related time series experiment, where mice were generated and -->
-<!-- one was given an AID activation cocktail. The experiment contains one replicate per condition and -->
-<!-- 10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints -->
-<!-- were combined to create an intermediary timepoint with two replicates in each condition. -->
+The MURINE dataset is another AID related time series experiment, where mice were generated and
+one was given an AID activation cocktail. The experiment contains one replicate per condition and
+10 timepoints. Due to only having one replicate per condition per timepoint, subsequent timepoints
+were combined to create an intermediary timepoint with two replicates in each condition.
 
-<!-- The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2. -->
-<!-- The first being a parkinsons model and the second being a wild type. Each model was split into -->
-<!-- two groups, one that would be fed krill oil and the other not (control). Each experiment -->
-<!-- has three timepoints: Days 1, 3, and 6. -->
+The Celegans dataset is an ageing related experiment. Two celegans models were used: BY372 and N2.
+The first being a parkinsons model and the second being a wild type. Each model was split into
+two groups, one that would be fed krill oil and the other not (control). Each experiment
+has three timepoints: Days 1, 3, and 6.
 
 ## Tutorial
 
-A tutorial can be found within the [pipelines website](https://ylefol.github.io/TimeSeriesAnalysis/). 
+A tutorial using the PBMC data can be found within the [pipelines website](https://ylefol.github.io/TimeSeriesAnalysis/). 
 Additionally the documentation can be found in the references tab.
+
+### Set-up of a sample file
+In order for the pipeline to run properly, a sample file must be provided. Certain requirements  ust be met.
+Column names should be as indicated below, all spaces should be avoided, timepoints should be numerical. It is also
+important that the sample column contains the same names as the count files provided. Lastly, replicates
+should always be followed by a '_#' as this numbering will be utilized for the organization of the replicates within 
+certain visualizations. Note that in the below example the three files have the same name (ex: C_1). That is to represent
+the 'C_1' sample at its three different time points.
+
+sample file <- tibble::tribble(
+  ~sample,    ~group, ~replicate, ~timepoint,
+   "s-37", "control",      "C_1",          1,
+   "s-38", "control",      "C_1",          3,
+   "s-39", "control",      "C_1",          9,
+   "s-52",     "IgM",    "IgM_1",          1,
+   "s-53",     "IgM",    "IgM_1",          3,
+   "s-54",     "IgM",    "IgM_1",          9,
+   "s-77", "control",      "C_2",          1,
+   "s-78", "control",      "C_2",          3,
+   "s-79", "control",      "C_2",          9,
+   "s-92",     "IgM",    "IgM_2",          1,
+   "s-93",     "IgM",    "IgM_2",          3,
+   "s-94",     "IgM",    "IgM_2",          9
+  )
+
+require(knitr)
+kable(sample file, digits = 3, row.names = FALSE, align = "c",
+              caption = NULL)
 
 ## Microarray based data
 
@@ -164,6 +190,8 @@ The version/DOI of this pipeline used within the manuscript is 10.5281/zenodo.76
 A ageing related study was performed in part through the use of TiSA.
 [Krill oil protects dopaminergic neurons from age-related degeneration through temporal transcriptome rewiring and suppression of several hallmarks of aging](https://www.aging-us.com/article/204375/text)
 
+A longitudinal COVID-19 study was performed using TiSA.
+[Longitudinal whole blood transcriptomic analysis characterizes neutrophil activation and interferon signaling in moderate and severe COVID-19](https://www.nature.com/articles/s41598-023-37606-y)
 
 ## Additional information
 The 'clusterGenomics' package was no longer maintained on CRAN and therefore the necessary

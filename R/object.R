@@ -99,6 +99,11 @@ TimeSeries_Object<-setClass(
 #'
 prep_sample_data<-function(path, group_names){
   sample_file<-read.csv(path)
+  if(!group_names %in% sample_file$group){
+    message('inputted group names were not found in the provided sample sheet')
+    message("Group names must be found in the 'group' column, must have the same spelling.")
+    return()
+  }
   sample_file<-sample_file[sample_file$group %in% group_names,]
 
   return(sample_file)
@@ -381,7 +386,9 @@ prep_limma_matrix<-function(Elist_obj,replace_rows_with=NULL){
 add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_ID_replace='GeneName'){
   groups<-slot(time_object,'group_names')
   sample_data<-prep_sample_data(sample_dta_path,groups)
-  sample_data<-sample_data[sample_data$group %in% groups,]
+
+
+
   returned_list<-create_raw_count_matrix(time_object = time_object,path_to_data = count_dta_path,limma_id_replace = limma_ID_replace, samp_data=sample_data)
 
   time_object<-returned_list[[1]]
@@ -616,6 +623,8 @@ create_example_object_for_R<-function(){
   TS_object <- TS_load_example_data(TS_object)
   return(TS_object)
 }
+
+
 
 
 
