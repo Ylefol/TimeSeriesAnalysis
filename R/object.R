@@ -98,7 +98,7 @@ TimeSeries_Object<-setClass(
 #' @export
 #'
 prep_sample_data<-function(path, group_names){
-  sample_file<-read.csv(my_path_sample_dta)
+  sample_file<-read.csv(path)
   check_vect<-group_names %in% sample_file$group
   if(FALSE %in% check_vect){
     message('inputted group names were not found in the provided sample sheet')
@@ -407,6 +407,59 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 
   return(time_object)
 }
+
+
+#' @title Adds experiment data from Kallisto estimated reads in the form of a SummarizedExperiment
+#'
+#' @description A means to add experiment data from Kallisto to TiSA objects.
+#' The function utilizes DESeq2 to convert transcripts to genes along with a
+#' transcript to gene conversion dataframe.
+#' DESeq2 creates a dds object, the necessary elements are extracted and stored into
+#' a timeseries object instead.
+#'
+#' This function, if used, is intended to replace the standard \code{add_experiment_data} function.
+#'
+#'
+#' @param time_object A TimeSeries_Object
+#' @param sample_dta_path String which gives the csv path to the sample data
+#' @param kallisto_files a vector containing the path(s) to the kallisto estimated read
+#' files. Each path must contain the associated sample name.
+#' @param tx2gene_path A path to a csv containing a dataframe showing transcript
+#' to gene conversion (likely ENST to ENSG) The format of the dataframe will depend
+#' on the kallisto files inputed
+#' @param matrix_name Name to be give to the matrix. Default is 'raw'
+#'
+#' @return time_object - the updated timeSeries object
+#'
+#' @import readr
+#' @import tximport
+#' @import tximportData
+#' @import DESeq2
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
+#' @importFrom SummarizedExperiment assays
+#'
+#' @export
+add_exp_data_kallisto<-function(time_object,sample_dta_path,kallisto_files,tx2gene_path,matrix_name='raw'){
+
+  groups<-slot(time_object,'group_names')
+  sample_data<-prep_sample_data(sample_dta_path,groups)
+
+  tx2gene<-read.csv(tx2gene_path)
+
+  txi.kallisto <- tximport(kallisto_files, type = "kallisto", tx2gene = tx2gene, ignoreAfterBar = TRUE)
+  condition<-factor(sample_data$group,levels=rev(time_object@group_names))
+
+  col_data <- data.frame(row.names=colnames(kallisto_files),condition)
+  dds <- DESeqDataSetFromTximport(txi.kallisto, col_data, ~condition)
+
+
+  exp_data<-SummarizedExperiment(assays = assays(dds)$counts,colData = sample_data)
+  names(assays(exp_data))=matrix_name
+
+  time_object@exp_data<-exp_data
+  return(time_object)
+}
+
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
