@@ -1192,13 +1192,12 @@ prepare_top_annotation_PART_heat<-function(object){
   samp_dta_full<-exp_sample_data(object)
   group_cols<-slot(object,'group_colors')
   samp_data<-samp_dta_full[order(match(samp_dta_full$sample,colnames(main_matrix))),]
-
   found_timepoints<-samp_data$timepoint
   found_replicates<-samp_data$replicate
   group_order<-unique(samp_data$group)
-
   col_split<-factor(unname(found_replicates),levels=unique(unname(found_replicates)))
-  num_cols<-table(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))
+  order_for_table<-unique(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))
+  num_cols<-table(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))[order_for_table]
   #Needs to be adatapted using the object graphical parameters
   fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1])),
                               rep(group_cols[[group_order[2]]],unname(num_cols[2]))

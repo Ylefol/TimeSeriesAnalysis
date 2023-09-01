@@ -5,9 +5,10 @@ my_org_sem_sim='org.Hs.eg.db'
 
 log_tp_traj=F
 
-targeted_cluster='C2'
+targeted_cluster='C8'
+ENSG_transcript_adjust=T
 
-target_dir='rmarkdown_method/ATAXIA/TS_results_AT_healthy//'
+target_dir='rmarkdown_method/FOUNDIN-PD/TS_results_SNCA_Healthy/'
 
 dir.create(paste0(target_dir,'/sub_cluster_analysis'))
 sub_analysis_name=paste0(target_dir,'/sub_cluster_analysis/',targeted_cluster,'/')
@@ -26,7 +27,7 @@ sub_TS_object<-compute_PART(TS_object,part_recursion=100,part_min_clust = 10,
 
 sub_TS_object@PART_results$part_matrix<-sub_matrix
 sub_TS_object@Gprofiler_results<-list()
-sub_TS_object<-run_gprofiler_PART_clusters(sub_TS_object)
+sub_TS_object<-run_gprofiler_PART_clusters(sub_TS_object,ENSG_transcript_adjust = ENSG_transcript_adjust)
 
 save(sub_TS_object,file=paste0(sub_analysis_name,'/timeseries_obj_res.Rdata'))
 
@@ -64,15 +65,15 @@ for(ont in select_ontologies){
 }
 
 
-#Dotplot for terms relating to specific ancestors
-#All GOs relating to immune system process
-target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
-                    'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
-                    'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
-                    'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
-                    'GO:0045058','GO:0002507')
-#sensory perception of small and G protein coupled receptor signalling pathway
-# target_ancestors<-c('GO:0007608','GO:0007186')
-
-GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
-wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,target_dir=sub_analysis_name)
+# #Dotplot for terms relating to specific ancestors
+# #All GOs relating to immune system process
+# target_ancestors<-c('GO:0002253','GO:0019882','GO:0002404','GO:0002339','GO:0042386',
+#                     'GO:0035172','GO:0002252','GO:0006955','GO:0002520','GO:0090713',
+#                     'GO:0045321','GO:0001776','GO:0050900','GO:0031294','GO:0002262',
+#                     'GO:0002683','GO:0002684','GO:0002440','GO:0002682','GO:0002200',
+#                     'GO:0045058','GO:0002507')
+# #sensory perception of small and G protein coupled receptor signalling pathway
+# # target_ancestors<-c('GO:0007608','GO:0007186')
+#
+# GOs_ancestors_clust<-find_relation_to_ancestors(target_ancestors,GO_clusters,ontology = 'BP')
+# wrapper_ancestor_curation_plots(GOs_ancestors_clust,sem_data,target_dir=sub_analysis_name)

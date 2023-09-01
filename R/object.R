@@ -98,8 +98,9 @@ TimeSeries_Object<-setClass(
 #' @export
 #'
 prep_sample_data<-function(path, group_names){
-  sample_file<-read.csv(path)
-  if(!group_names %in% sample_file$group){
+  sample_file<-read.csv(my_path_sample_dta)
+  check_vect<-group_names %in% sample_file$group
+  if(FALSE %in% check_vect){
     message('inputted group names were not found in the provided sample sheet')
     message("Group names must be found in the 'group' column, must have the same spelling.")
     return()

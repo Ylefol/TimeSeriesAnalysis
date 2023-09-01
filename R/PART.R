@@ -225,7 +225,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' in the appropriate slot of the time object
 #'
 #' @param object A time series object
-#' @param ENSG_transcript_adjust Boolean indicating if ENSG transcript IDs have been submitted.
+#' @param ENSG_version_adjust Boolean indicating if ENSG version IDs have been submitted.
 #' If this is the case, the decimal and following number must be removed for the gprofiler analysis
 #' as gprofiler recognizes genes, not transcripts.
 #' @param vignette_run Boolean indicating if this function is being run within
@@ -258,7 +258,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' @import GOSemSim
 #'
 #' @export
-run_gprofiler_PART_clusters<-function(object,ENSG_transcript_adjust=FALSE,vignette_run=FALSE){
+run_gprofiler_PART_clusters<-function(object,ENSG_version_adjust=FALSE,vignette_run=FALSE){
 
   #Check if gprofiler results already exists
   if(length(slot(object,'Gprofiler_results'))>0){
@@ -274,8 +274,8 @@ run_gprofiler_PART_clusters<-function(object,ENSG_transcript_adjust=FALSE,vignet
     gene_vect<-as.vector(row.names(gene_vect))
 
 
-    #Adjust for ENSG transcripts
-    if(ENSG_transcript_adjust==TRUE){
+    #Adjust for ENSG version
+    if(ENSG_version_adjust==TRUE){
       ENSG_genes<-gene_vect[startsWith(gene_vect,'ENSG')]
       rem_decimal<-unlist(strsplit(ENSG_genes,'\\.'))[c(T,F)]
       #Remove transcripts from gene vect
