@@ -443,6 +443,8 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' @param DE_type Either conditional or temporal for the type of differential experiment
 #' being plotted
 #' @param show_names boolean indicating if sample names should be put on the pca or not
+#' @param return_plot boolean indicating if the plot should be returned. If FALSE, it will
+#' return the vst and pca_data instead.
 #'
 #' @return the pca_plot
 #'
@@ -460,7 +462,7 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #'
 #' @export
 #'
-plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE){
+plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,return_plot=TRUE){
   samp_dta_full<-exp_sample_data(time_object)
 
   if(DE_type=='all'){
@@ -548,8 +550,12 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE){
       ylab(paste0("PC2: ",percentVar[2],"% variance"))
   }
 
+  if(return_plot==TRUE){
+    return(pca_plot)
+  }else{
+    return(list(vsd,pca_data))
+  }
 
-  return(pca_plot)
 }
 
 

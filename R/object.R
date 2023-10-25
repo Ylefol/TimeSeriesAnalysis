@@ -507,23 +507,31 @@ add_exp_data_kallisto<-function(time_object,sample_dta_path,kallisto_files,tx2ge
 #' @export
 #'
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
-  final_counts<-data.frame(NULL)
-  for(file in list.files(path_to_counts)){
-    sample_name<-strsplit(file,'\\.')[[1]][1]
-    if (sample_name %in% selected_samples){
-      if(endsWith(file,'.csv')==TRUE){
-        temp_df<-read.csv(paste0(path_to_counts,'/',file),header=TRUE)
-      }else{
-        temp_df<-read.delim(paste0(path_to_counts,'/',file),header=FALSE)
-      }
-      colnames(temp_df)=c('gene_id',sample_name)
-      if (nrow(final_counts)==0){
-        final_counts<-temp_df
-      }else{
-        final_counts<-merge(final_counts,temp_df,by='gene_id')
+  #In the event that a tab deliminated text file is submitted.
+  if(endsWith(path_to_counts,'.txt')==TRUE){
+    final_counts<-read.table(path_to_counts,header=T)
+    final_counts<-final_counts[,c('gene_id',selected_samples)]
+  }else{
+    final_counts<-data.frame(NULL)
+    for(file in list.files(path_to_counts)){
+      sample_name<-strsplit(file,'\\.')[[1]][1]
+      if (sample_name %in% selected_samples){
+        if(endsWith(file,'.csv')==TRUE){
+          temp_df<-read.csv(paste0(path_to_counts,'/',file),header=TRUE)
+        }else{
+          temp_df<-read.delim(paste0(path_to_counts,'/',file),header=FALSE)
+        }
+        colnames(temp_df)=c('gene_id',sample_name)
+        if (nrow(final_counts)==0){
+          final_counts<-temp_df
+        }else{
+          final_counts<-merge(final_counts,temp_df,by='gene_id')
+        }
       }
     }
   }
+
+
   #Remove any non-genes (starts with underscore)
   final_counts<-final_counts[!startsWith(final_counts$gene_id,'_'),]
   row.names(final_counts)=final_counts$gene_id

@@ -3,6 +3,19 @@
 #Ignore results from example
 rmarkdown_method/ATAXIA
 rmarkdown_method/FOUNDIN-PD
+rmarkdown_method/TS_results_CoV_Mech
+rmarkdown_method/Nice_res_no_spikeIn
+rmarkdown_method/Nice_res_with_spikeIn
+rmarkdown_method/NICO_comparative_dotplots
+
+
+rmarkdown_method/TS_analysis_CoV_Mech.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO1.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO3.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO15.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO39.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO_vs_WT_no_spike.Rmd
+rmarkdown_method/TS_analysis_Nicola_KO_vs_WT.Rmd
 
 rmarkdown_method/data
 
@@ -18,7 +31,10 @@ data/Diana_data
 data/PBMC
 data/murine
 data/FOUNDIN-PD
+data/Nicola_KO_dta
+data/Nicola_KO_dta_spikeIn
 
+Nicola_NTHL1_KO
 
 #Hide raw data
 data/ATAXIA
@@ -34,6 +50,10 @@ vignettes/TS_results_celegans_example
 extra_scripts/TS_results_single_TP_test
 extra_scripts/PD_clusters.R
 extra_scripts/pathway_analysis.R
+extra_scripts/NICO_barplots.R
+extra_scripts/NICO_comparative_dotplots.R
+
+extra_scripts/WGCNA/blockWiseModules.Rdata
 
 #Ignore extra stuff
 Karola_results

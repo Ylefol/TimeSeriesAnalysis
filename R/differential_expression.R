@@ -265,6 +265,8 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #'
 #' @param time_object The time object with the normalized count matrix included,
 #' as well as the DESeq2 object
+#' @param controlGenes The controlGenes parameter to be passed to DESeq's
+#' estimateSizeFactors function. It allows to normalize on specific identifiers.
 #'
 #' @return The timeseries object with the added normalized count matrix
 #'
@@ -277,7 +279,7 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #'
 #' @export
 #'
-normalize_timeSeries_with_deseq2 <- function(time_object){
+normalize_timeSeries_with_deseq2 <- function(time_object,controlGenes=NULL){
 
   groups<-slot(time_object,'group_names')
   samp_dta_full<-exp_sample_data(time_object)
@@ -291,7 +293,14 @@ normalize_timeSeries_with_deseq2 <- function(time_object){
   #Create a coldata frame and instantiate the DESeqDataSet
   col_data <- data.frame(row.names=colnames(my_matrix),condition)
   dds <- DESeqDataSetFromMatrix(countData=as.matrix(my_matrix), colData=col_data, design=~condition)
-  dds = estimateSizeFactors(dds)
+  if(is.null(controlGenes)==TRUE){
+    dds = estimateSizeFactors(object=dds)
+  }else{
+    numerical_control_index=which(rownames(as.matrix(my_matrix)) %in% controlGenes)
+    dds = estimateSizeFactors(object=dds,controlGenes=numerical_control_index)#Ability to input custom sequences
+  }
+
+
 
   norm_counts <- as.data.frame(counts(dds,normalized=TRUE))
   norm_counts<- na.omit(norm_counts)

@@ -4,11 +4,14 @@
 \alias{normalize_timeSeries_with_deseq2}
 \title{Normalize with DESeq2}
 \usage{
-normalize_timeSeries_with_deseq2(time_object)
+normalize_timeSeries_with_deseq2(time_object, controlGenes = NULL)
 }
 \arguments{
 \item{time_object}{The time object with the normalized count matrix included,
 as well as the DESeq2 object}
+
+\item{controlGenes}{The controlGenes parameter to be passed to DESeq's
+estimateSizeFactors function. It allows to normalize on specific identifiers.}
 }
 \value{
 The timeseries object with the added normalized count matrix

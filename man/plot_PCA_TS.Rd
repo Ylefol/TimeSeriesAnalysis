@@ -4,7 +4,13 @@
 \alias{plot_PCA_TS}
 \title{Plot timeseries PCA}
 \usage{
-plot_PCA_TS(time_object, exp_name = NULL, DE_type = NULL, show_names = TRUE)
+plot_PCA_TS(
+  time_object,
+  exp_name = NULL,
+  DE_type = NULL,
+  show_names = TRUE,
+  return_plot = TRUE
+)
 }
 \arguments{
 \item{time_object}{A timeseries object}
@@ -15,6 +21,9 @@ plot_PCA_TS(time_object, exp_name = NULL, DE_type = NULL, show_names = TRUE)
 being plotted}
 
 \item{show_names}{boolean indicating if sample names should be put on the pca or not}
+
+\item{return_plot}{boolean indicating if the plot should be returned. If FALSE, it will
+return the vst and pca_data instead.}
 }
 \value{
 the pca_plot
