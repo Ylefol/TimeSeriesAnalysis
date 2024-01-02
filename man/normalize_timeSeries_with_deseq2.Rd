@@ -4,7 +4,12 @@
 \alias{normalize_timeSeries_with_deseq2}
 \title{Normalize with DESeq2}
 \usage{
-normalize_timeSeries_with_deseq2(time_object, controlGenes = NULL)
+normalize_timeSeries_with_deseq2(
+  time_object,
+  controlGenes = NULL,
+  use_batch = FALSE,
+  no_condition = FALSE
+)
 }
 \arguments{
 \item{time_object}{The time object with the normalized count matrix included,
@@ -12,6 +17,13 @@ as well as the DESeq2 object}
 
 \item{controlGenes}{The controlGenes parameter to be passed to DESeq's
 estimateSizeFactors function. It allows to normalize on specific identifiers.}
+
+\item{use_batch}{whether or not to add the batch effect to the DESeq2 design. This
+requires a 'batch' column to be present in the sample file}
+
+\item{no_condition}{Boolean incating if the analysis contains no case-control.
+This indicates that the normalization will be performed exclusively on a timepoint
+perspective.}
 }
 \value{
 The timeseries object with the added normalized count matrix

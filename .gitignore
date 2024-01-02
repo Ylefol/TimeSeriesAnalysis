@@ -1,12 +1,14 @@
 #This is the .gitignore file
 
-#Ignore results from example
+#Ignore results from example and other results
+rmarkdown_method/TS_results_PBMC_example
 rmarkdown_method/ATAXIA
 rmarkdown_method/FOUNDIN-PD
 rmarkdown_method/TS_results_CoV_Mech
 rmarkdown_method/Nice_res_no_spikeIn
 rmarkdown_method/Nice_res_with_spikeIn
 rmarkdown_method/NICO_comparative_dotplots
+
 
 
 rmarkdown_method/TS_analysis_CoV_Mech.Rmd
@@ -34,7 +36,7 @@ data/FOUNDIN-PD
 data/Nicola_KO_dta
 data/Nicola_KO_dta_spikeIn
 
-Nicola_NTHL1_KO
+Nicola_NTHL1_KO_data_scripts
 
 #Hide raw data
 data/ATAXIA
@@ -56,8 +58,9 @@ extra_scripts/NICO_comparative_dotplots.R
 extra_scripts/WGCNA/blockWiseModules.Rdata
 
 #Ignore extra stuff
-Karola_results
-Artemis_working_tutorial
+custom_tutorials
+extra_scripts/TS_analysis_single_tp.Rmd
+
 
 #Ignore standard stuff
 .Rproj.user

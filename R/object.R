@@ -139,7 +139,7 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
   #Ensures that the order will follow the grouping order
   selected_samples_1<-samp_data$sample[samp_data$group %in% groups[1]]
   selected_samples_2<-samp_data$sample[samp_data$group %in% groups[2]]
-  selected_samples<-c(selected_samples_1,selected_samples_2)
+  selected_samples<-unique(c(selected_samples_1,selected_samples_2))
 
   #Prepare the matrix according to the differential expression method (affects input)
   DE_method<-slot(time_object,'DE_method')

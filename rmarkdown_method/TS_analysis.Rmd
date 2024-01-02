@@ -47,8 +47,8 @@ diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
 p_val_filter_type<-'padj' #Either padj or pvalue, used to filter for significance
 p_thresh<-0.05 #pvalue or padj value threshold for significance
 l2fc_thresh<-1 #log(2)foldChange threshold for significance
-name_control<-'control' #Name of experiment as seen in the sample file
-name_experiment<-'IgM' #Name of control as seen in the sample file
+name_control<-'LPS' #Name of control as seen in the sample file
+name_experiment<-'IgM' #Name of experiment as seen in the sample file
 graphic_vector<-c("#e31a1c","#1f78b4") #Pre-set colors for the groups
 
 #Declare organism and load library, install if necessary

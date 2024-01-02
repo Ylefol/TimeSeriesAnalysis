@@ -267,6 +267,11 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #' as well as the DESeq2 object
 #' @param controlGenes The controlGenes parameter to be passed to DESeq's
 #' estimateSizeFactors function. It allows to normalize on specific identifiers.
+#' @param use_batch whether or not to add the batch effect to the DESeq2 design. This
+#' requires a 'batch' column to be present in the sample file
+#' @param no_condition Boolean incating if the analysis contains no case-control.
+#' This indicates that the normalization will be performed exclusively on a timepoint
+#' perspective.
 #'
 #' @return The timeseries object with the added normalized count matrix
 #'
@@ -279,20 +284,30 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 #'
 #' @export
 #'
-normalize_timeSeries_with_deseq2 <- function(time_object,controlGenes=NULL){
-
-  groups<-slot(time_object,'group_names')
+normalize_timeSeries_with_deseq2 <- function(time_object,controlGenes=NULL,use_batch=FALSE,no_condition=FALSE){
   samp_dta_full<-exp_sample_data(time_object)
   count_matrix<-exp_matrix(time_object,'raw')
 
-  #Set levels to the inverse of the submitted group names, therefore control is the reference
-  condition<-factor(samp_dta_full$group,levels=rev(time_object@group_names))
+  #If only the temporal aspect is of interest - case and control must be the same name
+  if(no_condition==TRUE){
+    condition<-factor(samp_dta_full$timepoint,levels=rev(unique(samp_dta_full$timepoint)))
+  }else{
+    #Set levels to the inverse of the submitted group names, therefore control is the reference
+    condition<-factor(samp_dta_full$group,levels=rev(time_object@group_names))
+  }
 
   my_matrix<-as.matrix(round(count_matrix))
 
   #Create a coldata frame and instantiate the DESeqDataSet
-  col_data <- data.frame(row.names=colnames(my_matrix),condition)
-  dds <- DESeqDataSetFromMatrix(countData=as.matrix(my_matrix), colData=col_data, design=~condition)
+  if(use_batch==TRUE){
+    batch<-factor(samp_dta_full$batch,levels=unique(samp_dta_full$batch))
+    col_data <- data.frame(row.names=colnames(my_matrix),condition,batch)
+    dds <- DESeqDataSetFromMatrix(countData=as.matrix(my_matrix), colData=col_data, design=~batch+condition)
+  }else{
+    col_data <- data.frame(row.names=colnames(my_matrix),condition)
+    dds <- DESeqDataSetFromMatrix(countData=as.matrix(my_matrix), colData=col_data, design=~condition)
+  }
+
   if(is.null(controlGenes)==TRUE){
     dds = estimateSizeFactors(object=dds)
   }else{

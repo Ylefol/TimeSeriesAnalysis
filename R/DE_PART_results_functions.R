@@ -160,6 +160,8 @@ DE_plots_vignettes<-function(object){
 wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
   clust_order<-unique(cluster_traj_dta[,c('cluster','nGenes')])
   clust_order<-clust_order$cluster[order(-clust_order$nGenes)]
+
+
   num_needed_figures<-ceiling(length(clust_order)/8)
   #Iterate over number of necessary figures
   for (idx in 1:num_needed_figures){
@@ -190,7 +192,14 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
 
     cluster_num<-length(clusters_to_plot)
     number_rows<-ceiling(cluster_num/2)
-    custom_height<-3*number_rows
+
+    #Adjust height if the is no case-control (temporal only)
+    if(slot(object,'group_names')[1]==slot(object,'group_names')[2]){
+      custom_height<-1.5*number_rows
+    }else{
+      custom_height<-3*number_rows
+    }
+
     if (cluster_num==1){
       custom_width<-6
     }else{
@@ -515,7 +524,14 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,ret
     }
     pca_data$group<-factor(pca_data$group,levels=c(groups_for_lvl[1],groups_for_lvl[2]))
   }else{
-    pca_data$group<-factor(pca_data$group,levels=slot(time_object,'group_names'))
+    if(slot(time_object,'group_names')[1]==slot(time_object,'group_names')[2]){
+      #Both case and control are the same, indicating that this is temporal only
+      tp_order<-levels(pca_data$group)[order(levels(pca_data$group))]
+      pca_data$group<-factor(pca_data$group,levels=tp_order)
+    }else{
+      #Put the order (levels) as the order given by the group names
+      pca_data$group<-factor(pca_data$group,levels=slot(time_object,'group_names'))
+    }
   }
   num_shapes<-length(unique(samp_dta_full$timepoint))
   if (is.null(DE_res)==TRUE){
@@ -1205,9 +1221,14 @@ prepare_top_annotation_PART_heat<-function(object){
   order_for_table<-unique(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))
   num_cols<-table(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))[order_for_table]
   #Needs to be adatapted using the object graphical parameters
-  fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1])),
-                              rep(group_cols[[group_order[2]]],unname(num_cols[2]))
-  ))
+  if(length(group_order)==1){ #Temporal only analysis, no case-control (one group)
+    fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1]))
+    ))
+  }else{# Usual case + control (two groups)
+    fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1])),
+                                rep(group_cols[[group_order[2]]],unname(num_cols[2]))
+    ))
+  }
 
   my_cols<-c('#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
   # If possible, use custom colors, otherwise use colorbrewer
@@ -1315,7 +1336,13 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
     }
   }
 
-  group_cols<-slot(object,'group_colors')
+  #Temporal only (no case-control) only use the first group name to avoid duplication
+  if(slot(object,'group_names')[1]==slot(object,'group_names')[2]){
+    group_cols<-slot(object,'group_colors')[1]
+  }else{
+    group_cols<-slot(object,'group_colors')
+  }
+
   #Create the legend for the groups
   lgd = Legend(labels = names(group_cols), title = "groups",
                legend_gp = gpar(fill = unname(group_cols)))
