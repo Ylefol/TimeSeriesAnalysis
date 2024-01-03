@@ -62,7 +62,12 @@ using the DESeq2 normalization.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normalize_timeSeries_with_deseq2</span><span class="op">(</span><span class="va">time_object</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normalize_timeSeries_with_deseq2</span><span class="op">(</span></span>
+<span>  <span class="va">time_object</span>,</span>
+<span>  controlGenes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_batch <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  no_condition <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,6 +75,22 @@ using the DESeq2 normalization.</p>
     <dl><dt>time_object</dt>
 <dd><p>The time object with the normalized count matrix included,
 as well as the DESeq2 object</p></dd>
+
+
+<dt>controlGenes</dt>
+<dd><p>The controlGenes parameter to be passed to DESeq's
+estimateSizeFactors function. It allows to normalize on specific identifiers.</p></dd>
+
+
+<dt>use_batch</dt>
+<dd><p>whether or not to add the batch effect to the DESeq2 design. This
+requires a 'batch' column to be present in the sample file</p></dd>
+
+
+<dt>no_condition</dt>
+<dd><p>Boolean incating if the analysis contains no case-control.
+This indicates that the normalization will be performed exclusively on a timepoint
+perspective.</p></dd>
 
 </dl></div>
     <div id="value">

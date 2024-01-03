@@ -79,7 +79,7 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>TiSA: TimeSeriesAnalysis - Is a transcriptomic analysis tool for both RNA sequencing and microarray data</p>
+<p>TiSA: TimeSeriesAnalysis - A transcriptomic analysis tool for both RNA sequencing and microarray data</p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
@@ -107,7 +107,7 @@
 <p>You can install the stable version of TimeSeriesAnalysis like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis@master"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis@master"</span><span class="op">)</span></span></code></pre></div>
 <p>The development version can be installed by replacing ‘master’ with ‘dev’.</p>
 <p>Devtools is required for the installation of this package. To install Devtools, visit the <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a></p>
 <p>Certain bioconductor packages will have to be installed before installation of TimeSeriesAnalysis. The code snippet below gives the method along with some of the packages that should be installed via this method.</p>
@@ -125,7 +125,7 @@
 <p>TimeSeriesAnalysis was developed with user-friendliness in mind, the core script of the package is a Rmarkdown file with explanations of what each code block performs. Computationally intensive code blocks save their work in order to avoid loss of computation time. TimeSeriesAnalysis comes with a test dataset. Users are recommended to first run the package with the test data to then modify the Rmarkdown script with the necessary information for their purposes (input files, organism, genes of interest etc…). The rmarkdown script and the expected result from an example run can be found and downloaded from this repository, they are located in the ‘rmarkdown_method’ folder. If users prefer a script approach, the equivalent of the rmarkdown report is provided in two scripts, one for the computation tasks and a second for the analyses. These two scripts are found in the ‘script_method’ folder.</p>
 </div>
 <div class="section level2">
-<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+<h2 id="example-data">Example Data<a class="anchor" aria-label="anchor" href="#example-data"></a>
 </h2>
 <p>Three different datasets have been used to test this pipeline, one of which has been preserved as an example datasets for the vignettes of this pipeline. More information on the other datasets can be viewed through the publications listed below.</p>
 <p>The PBMC dataset is a time series experiment with three time points that explores and compares three AICDA/AID (Activation Induced Cytidine DeAminase) activation cocktails. The experiment seeked to identify which activation cocktail properly activated AID through both the expression of the AID gene and the activation of class switch recombination.</p>
@@ -140,8 +140,95 @@
 <h3 id="set-up-of-a-sample-file">Set-up of a sample file<a class="anchor" aria-label="anchor" href="#set-up-of-a-sample-file"></a>
 </h3>
 <p>In order for the pipeline to run properly, a sample file must be provided. Certain requirements ust be met. Column names should be as indicated below, all spaces should be avoided, timepoints should be numerical. It is also important that the sample column contains the same names as the count files provided. Lastly, replicates should always be followed by a ’_#’ as this numbering will be utilized for the organization of the replicates within certain visualizations. Note that in the below example the three files have the same name (ex: C_1). That is to represent the ‘C_1’ sample at its three different time points.</p>
-<p>sample file &lt;- tibble::tribble( ~sample, ~group, ~replicate, ~timepoint, “s-37”, “control”, “C_1”, 1, “s-38”, “control”, “C_1”, 3, “s-39”, “control”, “C_1”, 9, “s-52”, “IgM”, “IgM_1”, 1, “s-53”, “IgM”, “IgM_1”, 3, “s-54”, “IgM”, “IgM_1”, 9, “s-77”, “control”, “C_2”, 1, “s-78”, “control”, “C_2”, 3, “s-79”, “control”, “C_2”, 9, “s-92”, “IgM”, “IgM_2”, 1, “s-93”, “IgM”, “IgM_2”, 3, “s-94”, “IgM”, “IgM_2”, 9 )</p>
-<p>require(knitr) kable(sample file, digits = 3, row.names = FALSE, align = “c”, caption = NULL)</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">sample</th>
+<th align="left">group</th>
+<th align="left">replicate</th>
+<th align="right">timepoint</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">s-37</td>
+<td align="left">control</td>
+<td align="left">C_1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">s-38</td>
+<td align="left">control</td>
+<td align="left">C_1</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">s-39</td>
+<td align="left">control</td>
+<td align="left">C_1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">s-52</td>
+<td align="left">IgM</td>
+<td align="left">IgM_1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">s-53</td>
+<td align="left">IgM</td>
+<td align="left">IgM_1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">s-54</td>
+<td align="left">IgM</td>
+<td align="left">IgM_1</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">s-77</td>
+<td align="left">control</td>
+<td align="left">C_2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">s-78</td>
+<td align="left">control</td>
+<td align="left">C_2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">s-79</td>
+<td align="left">control</td>
+<td align="left">C_2</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">s-92</td>
+<td align="left">IgM</td>
+<td align="left">IgM_2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">s-93</td>
+<td align="left">IgM</td>
+<td align="left">IgM_2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">s-94</td>
+<td align="left">IgM</td>
+<td align="left">IgM_2</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="rnaseq-based-data">RNAseq based data<a class="anchor" aria-label="anchor" href="#rnaseq-based-data"></a>
+</h3>
+<p>TiSA utilizes DESeq2 to process RNAseq data. It therefore requires that the data be in a raw count format. The pipeline can take in multiple count files within a folder provided that the file names match the sample names given in the sample file. These individual files should be tab delineated, contain only two columns (gene ID and associated count), there should be no column header. Additionally each file should end with a ‘.counts’.</p>
+<p>As an alternative, all counts may be within the same text file. In this case the first column should be labeled as ‘gene_id’, and each subsequent column should contain the same sample name as the names found in the sample file. This file should end with ‘.txt’.</p>
+<p>In either case, the given information should be counts (round numbers).</p>
 </div>
 </div>
 <div class="section level2">
@@ -181,6 +268,11 @@
 <h2 id="additional-information">Additional information<a class="anchor" aria-label="anchor" href="#additional-information"></a>
 </h2>
 <p>The ‘clusterGenomics’ package was no longer maintained on CRAN and therefore the necessary scripts were brought over to this package for it’s implementation without the need to download the clusterGenomics package from source. Within this package, in the ‘R/clusterGenomics.R’ code was written by the authors of clusterGenomics. It was imported to TimeSeriesAnalysis by the authors of TimeSeriesAnalysis.</p>
+</div>
+<div class="section level2">
+<h2 id="contact-information">Contact information<a class="anchor" aria-label="anchor" href="#contact-information"></a>
+</h2>
+<p>If you have encountered an error or require assistance running the pipeline, feel free to open a github issue, or email me at <a href="mailto:yohanl@medisin.uio.no" class="email">yohanl@medisin.uio.no</a></p>
 </div>
 </div>
   </div>

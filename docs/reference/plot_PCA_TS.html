@@ -70,7 +70,13 @@ data.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_PCA_TS</span><span class="op">(</span><span class="va">time_object</span>, exp_name <span class="op">=</span> <span class="cn">NULL</span>, DE_type <span class="op">=</span> <span class="cn">NULL</span>, show_names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_PCA_TS</span><span class="op">(</span></span>
+<span>  <span class="va">time_object</span>,</span>
+<span>  exp_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  DE_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_plot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -90,6 +96,11 @@ being plotted</p></dd>
 
 <dt>show_names</dt>
 <dd><p>boolean indicating if sample names should be put on the pca or not</p></dd>
+
+
+<dt>return_plot</dt>
+<dd><p>boolean indicating if the plot should be returned. If FALSE, it will
+return the vst and pca_data instead.</p></dd>
 
 </dl></div>
     <div id="value">
