@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-TiSA: TimeSeriesAnalysis - Is a transcriptomic analysis tool for both RNA sequencing and microarray data
+TiSA: TimeSeriesAnalysis - A transcriptomic analysis tool for both RNA sequencing and microarray data
 
 ## Overview
 
@@ -86,7 +86,7 @@ prefer a script approach, the equivalent of the rmarkdown report is
 provided in two scripts, one for the computation tasks and a second for
 the analyses. These two scripts are found in the ‘script_method’ folder.
 
-## Data
+## Example Data
 
 Three different datasets have been used to test this pipeline, one of which has been
 preserved as an example datasets for the vignettes of this pipeline. More information
@@ -120,25 +120,31 @@ should always be followed by a '_#' as this numbering will be utilized for the o
 certain visualizations. Note that in the below example the three files have the same name (ex: C_1). That is to represent
 the 'C_1' sample at its three different time points.
 
-sample file <- tibble::tribble(
-  ~sample,    ~group, ~replicate, ~timepoint,
-   "s-37", "control",      "C_1",          1,
-   "s-38", "control",      "C_1",          3,
-   "s-39", "control",      "C_1",          9,
-   "s-52",     "IgM",    "IgM_1",          1,
-   "s-53",     "IgM",    "IgM_1",          3,
-   "s-54",     "IgM",    "IgM_1",          9,
-   "s-77", "control",      "C_2",          1,
-   "s-78", "control",      "C_2",          3,
-   "s-79", "control",      "C_2",          9,
-   "s-92",     "IgM",    "IgM_2",          1,
-   "s-93",     "IgM",    "IgM_2",          3,
-   "s-94",     "IgM",    "IgM_2",          9
-  )
+| sample  | group | replicate | timepoint |
+| :------------ |:---------------| :---------------|-: |
+| s-37      | control | C_1 | 1 |
+| s-38      | control | C_1 | 3 |
+| s-39      | control | C_1 | 9 |
+| s-52      | IgM | IgM_1 | 1 |
+| s-53      | IgM | IgM_1 | 3 |
+| s-54      | IgM | IgM_1 | 9 |
+| s-77      | control | C_2 | 1 |
+| s-78      | control | C_2 | 3 |
+| s-79      | control | C_2 | 9 |
+| s-92      | IgM | IgM_2 | 1 |
+| s-93      | IgM | IgM_2 | 3 |
+| s-94      | IgM | IgM_2 | 9 |
 
-require(knitr)
-kable(sample file, digits = 3, row.names = FALSE, align = "c",
-              caption = NULL)
+### RNAseq based data
+TiSA utilizes DESeq2 to process RNAseq data. It therefore requires that the data be in a raw count format.
+The pipeline can take in multiple count files within a folder provided that the file names match the sample
+names given in the sample file. These individual files should be tab delineated, contain only two columns
+(gene ID and associated count), there should be no column header. Additionally each file should end with a '.counts'.
+
+As an alternative, all counts may be within the same text file. In this case the first column should be labeled as 'gene_id',
+and each subsequent column should contain the same sample name as the names found in the sample file. This file should end with '.txt'.
+
+In either case, the given information should be counts (round numbers).
 
 ## Microarray based data
 
@@ -200,3 +206,7 @@ to download the clusterGenomics package from source.
 Within this package, in the 'R/clusterGenomics.R' code was written by the authors of 
 clusterGenomics. It was imported to TimeSeriesAnalysis by the authors of
 TimeSeriesAnalysis.
+
+## Contact information
+If you have encountered an error or require assistance running the pipeline, feel free to open
+a github issue, or email me at yohanl@medisin.uio.no
