@@ -687,6 +687,11 @@ create_clustered_module_dataframe<-function(cluster_df){
 #'
 #' @export
 find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'){
+
+  if(nrow(GOs_to_check)==0){
+    return(data.frame(NULL))
+  }
+
   # Get full list of GOs and ancestors
   # get ancestors
   onto=switch(

@@ -99,11 +99,13 @@ TimeSeries_Object<-setClass(
 #'
 prep_sample_data<-function(path, group_names){
   sample_file<-read.csv(path)
+  colname_check<-c('sample','replicate','timepoint','group')
+  if(all(colname_check %in% colnames(sample_file))==FALSE){
+    stop('The required columns (or column names) were not detected in the sample file\nEnsure that the following names are in the file. Note that there are no capital letters\nsample replicate timepoint group')
+  }
   check_vect<-group_names %in% sample_file$group
   if(FALSE %in% check_vect){
-    message('inputted group names were not found in the provided sample sheet')
-    message("Group names must be found in the 'group' column, must have the same spelling.")
-    return()
+    stop("Inputted group names were not found in the provided sample sheet\nGroup names must be found in the 'group' column, must have the same spelling.")
   }
   sample_file<-sample_file[sample_file$group %in% group_names,]
 
@@ -388,8 +390,6 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
   groups<-slot(time_object,'group_names')
   sample_data<-prep_sample_data(sample_dta_path,groups)
 
-
-
   returned_list<-create_raw_count_matrix(time_object = time_object,path_to_data = count_dta_path,limma_id_replace = limma_ID_replace, samp_data=sample_data)
 
   time_object<-returned_list[[1]]
@@ -509,7 +509,7 @@ add_exp_data_kallisto<-function(time_object,sample_dta_path,kallisto_files,tx2ge
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
   #In the event that a tab deliminated text file is submitted.
   if(endsWith(path_to_counts,'.txt')==TRUE){
-    final_counts<-read.table(path_to_counts,header=T)
+    final_counts<-read.table(my_path_data,header=T,check.names=FALSE)
     final_counts<-final_counts[,c('gene_id',selected_samples)]
   }else{
     final_counts<-data.frame(NULL)

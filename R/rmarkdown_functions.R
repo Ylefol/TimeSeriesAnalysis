@@ -40,6 +40,10 @@ find_most_variable_cluster<-function(time_object,mean_ts_data){
 
   #Retrieve clusters which have gprofiler results
   clusts_interest<-names(slot(time_object,'Gprofiler_results'))
+  if(is.null(clusts_interest)==TRUE){
+    target_clust<-unique(time_object@PART_results$cluster_map$cluster)[1]
+    return(target_clust)
+  }
   mean_ts_data<-mean_ts_data[mean_ts_data$cluster %in% clusts_interest,]
 
   dif_clust<-c()
