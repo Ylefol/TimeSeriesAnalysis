@@ -60,7 +60,8 @@ if (!require("BiocManager", quietly = TRUE))
 bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
 'AnnotationDbi','GenomeInfoDb','GenomicRanges','Biobase','S4Vectors',
 'BiocGenerics','MatrixGenerics','IRanges','BiocFileCache',
-'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db')
+'SummarizedExperiment','org.Hs.eg.db','org.Mm.eg.db','org.Ce.eg.db',
+'tximport','tximportData')
 BiocManager::install(bio_pkgs)
 ```
 
