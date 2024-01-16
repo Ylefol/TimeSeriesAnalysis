@@ -509,7 +509,7 @@ add_exp_data_kallisto<-function(time_object,sample_dta_path,kallisto_files,tx2ge
 prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
   #In the event that a tab deliminated text file is submitted.
   if(endsWith(path_to_counts,'.txt')==TRUE){
-    final_counts<-read.table(my_path_data,header=T,check.names=FALSE)
+    final_counts<-read.table(path_to_counts,header=T,check.names=FALSE)
     final_counts<-final_counts[,c('gene_id',selected_samples)]
   }else{
     final_counts<-data.frame(NULL)
