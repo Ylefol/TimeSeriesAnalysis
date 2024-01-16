@@ -247,8 +247,8 @@ DE_using_DESeq2<-function(time_object,groups,samples_to_use,exp_name,main_key,co
 
   DE_sig<-DE_results[DE_results[filter_type]<pval_thresh & abs(DE_results$log2FoldChange)>l2fc_thresh,]
 
-  # res_list<-list(sub_dds=dds,DE_raw_data=DE_results, DE_sig_data=DE_sig)
-  res_list<-list(DE_raw_data=DE_results, DE_sig_data=DE_sig)
+  res_list<-list(sub_dds=dds,DE_raw_data=DE_results, DE_sig_data=DE_sig)
+  # res_list<-list(DE_raw_data=DE_results, DE_sig_data=DE_sig)
 
   time_object@DE_results[[main_key]][[exp_name]]<-res_list
 
