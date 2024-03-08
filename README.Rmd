@@ -74,7 +74,7 @@ bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
 BiocManager::install(bio_pkgs)
 ```
 
-## Version 1.1.0 changes
+## Version 1.02.01 changes
 * Added several 'checks' within the pipeline in order to let it finish a run even if, for example, no gene ontology results are found.
 * GSEA support via ClusterProfiler was added for differential gene expression results. You can find this small script in the 'extra_scripts' folder.
 * Support added for transcript counts via tximport. This may be useful if quantification was done for transccripts instead of genes (salmon, kallisto etc...).
