@@ -43,6 +43,9 @@ through gprofiler to reveal the biological relevance of each cluster.
 * Nearest ancestor clustering of GOs 
 * GO ancestor queries
 
+Version 1.1.0
+* GSEA of differential gene expression analysis (DESeq2 only)
+
 
 ## Installation
 
@@ -71,6 +74,13 @@ bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
 BiocManager::install(bio_pkgs)
 ```
 
+## Version 1.1.0 changes
+* Added several 'checks' within the pipeline in order to let it finish a run even if, for example, no gene ontology results are found.
+* GSEA support via ClusterProfiler was added for differential gene expression results. You can find this small script in the 'extra_scripts' folder.
+* Support added for transcript counts via tximport. This may be useful if quantification was done for transccripts instead of genes (salmon, kallisto etc...).
+* Better plots for single time point analyses. Previously single timepoint analyses were possible, but certain plots were irrelevant for these. Plots for cluster summaries and individual gene expression have been added for these analyses.
+* Cleaned the rmarkdown format a bit more
+
 ## Rmarkdown format
 
 TimeSeriesAnalysis was developed with user-friendliness in mind, the
@@ -86,6 +96,11 @@ repository, they are located in the ‘rmarkdown_method’ folder. If users
 prefer a script approach, the equivalent of the rmarkdown report is
 provided in two scripts, one for the computation tasks and a second for
 the analyses. These two scripts are found in the ‘script_method’ folder.
+
+A Note on the initial markdown format (TS_analysis.Rmd).
+To use the example data we utilize a function which writes the data to the directory.
+The reason for which this is done instead of just using the pre-loaded data is that it provides
+the user with a way to observe the way the data is formatted to be loaded into the pipeline. 
 
 ## Example Data
 
@@ -211,3 +226,7 @@ TimeSeriesAnalysis.
 ## Contact information
 If you have encountered an error or require assistance running the pipeline, feel free to open
 a github issue, or email me at yohanl@medisin.uio.no
+----------------------------------------------------
+Si vous rencontrez une erreur ou avez besoin d'aide, n'hésitez pas à ouvrir un 'issue', dans tel
+cas il serait préférable d'écrire en anglais. De manière alternative vous pouvez m'envoyez
+un email a yohanl@medisin.uio.no ou je pourrais répondre soit en anglais ou en français

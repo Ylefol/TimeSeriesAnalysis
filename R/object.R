@@ -409,9 +409,9 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 }
 
 
-#' @title Adds experiment data from Kallisto estimated reads in the form of a SummarizedExperiment
+#' @title Adds experiment data from tximport estimated reads in the form of a SummarizedExperiment
 #'
-#' @description A means to add experiment data from Kallisto to TiSA objects.
+#' @description A means to add experiment data from Kallisto or Salmon to TiSA objects.
 #' The function utilizes DESeq2 to convert transcripts to genes along with a
 #' transcript to gene conversion dataframe.
 #' DESeq2 creates a dds object, the necessary elements are extracted and stored into
@@ -422,11 +422,13 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #'
 #' @param time_object A TimeSeries_Object
 #' @param sample_dta_path String which gives the csv path to the sample data
-#' @param kallisto_files a vector containing the path(s) to the kallisto estimated read
+#' @param alt_files a vector containing the path(s) to the txfile reads
 #' files. Each path must contain the associated sample name.
 #' @param tx2gene_path A path to a csv containing a dataframe showing transcript
-#' to gene conversion (likely ENST to ENSG) The format of the dataframe will depend
+#' to gene conversion. The format of the dataframe will depend
 #' on the kallisto files inputed
+#' @param tx_type A string detailing from what tool the experiment comes from. For
+#' example, 'salmon', or 'kallisto'
 #' @param matrix_name Name to be give to the matrix. Default is 'raw'
 #'
 #' @return time_object - the updated timeSeries object
@@ -439,17 +441,20 @@ add_experiment_data<-function(time_object,sample_dta_path,count_dta_path,limma_I
 #' @importFrom SummarizedExperiment assays
 #'
 #' @export
-add_exp_data_kallisto<-function(time_object,sample_dta_path,kallisto_files,tx2gene_path,matrix_name='raw'){
+add_exp_data_tximport<-function(time_object,sample_dta_path,alt_files,tx2gene_path,tx_type,matrix_name='raw'){
 
   groups<-slot(time_object,'group_names')
   sample_data<-prep_sample_data(sample_dta_path,groups)
 
+  target_samples<-sample_data$sample
+  alt_files<-alt_files[target_samples]
+
   tx2gene<-read.csv(tx2gene_path)
 
-  txi.kallisto <- tximport(kallisto_files, type = "kallisto", tx2gene = tx2gene, ignoreAfterBar = TRUE)
+  txi.kallisto <- tximport(alt_files, type = tx_type, tx2gene = tx2gene, ignoreAfterBar = TRUE)
   condition<-factor(sample_data$group,levels=rev(time_object@group_names))
 
-  col_data <- data.frame(row.names=colnames(kallisto_files),condition)
+  col_data <- data.frame(row.names=colnames(alt_files),condition)
   dds <- DESeqDataSetFromTximport(txi.kallisto, col_data, ~condition)
 
 
@@ -550,6 +555,10 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' Having these files written as tab delimited and csv allows users to open them
 #' and see the formatting expected by TimeSeriesAnalysis
 #'
+#' Three example datasets are available. The choice is done via the data_name parameter.
+#'
+#' @param data_name Name of the data to be written to the directory. Either 'PBMC',
+#' 'murine', or 'celegans'
 #' @param target_dir Where the saves should be located, if NULL, it will be saved
 #' to the main directory
 #'
@@ -567,10 +576,23 @@ prep_RNAseq_matrix<-function(path_to_counts,selected_samples){
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #'
 #' @export
-write_example_data_to_dir<-function(target_dir=NULL){
-  full_counts<-assay(PBMC_TS_data)
-  sample_data<-data.frame(PBMC_TS_data@colData)
-  save_name<-'PBMC'
+write_example_data_to_dir<-function(data_name='PBMC',target_dir=NULL){
+  if(data_name=='PBMC'){
+    full_counts<-assay(PBMC_TS_data)
+    sample_data<-data.frame(PBMC_TS_data@colData)
+    save_name<-'PBMC'
+  }else if(data_name=='murine'){
+    full_counts<-assay(murine_TS_data)
+    sample_data<-data.frame(murine_TS_data@colData)
+    save_name<-'murine'
+  }else if(data_name=='celegans'){
+    full_counts<-assay(Celegans_TS_data)
+    sample_data<-data.frame(Celegans_TS_data@colData)
+    save_name<-'celegans'
+  }else{
+    print("The specified data name does not exist\n Please input 'PBMC', 'murine', or 'celegans'")
+  }
+
 
   if(is.null(target_dir)==FALSE){
     data_folder_loc<-paste0(target_dir,'/data/')

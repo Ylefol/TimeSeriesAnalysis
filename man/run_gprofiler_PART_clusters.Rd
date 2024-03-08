@@ -6,14 +6,15 @@
 \usage{
 run_gprofiler_PART_clusters(
   object,
-  ENSG_version_adjust = FALSE,
+  transcript_version_adjust = NULL,
   vignette_run = FALSE
 )
 }
 \arguments{
 \item{object}{A time series object}
 
-\item{ENSG_version_adjust}{Boolean indicating if ENSG version IDs have been submitted.
+\item{transcript_version_adjust}{str indicating if transcript version IDs have been submitted.
+The string should reflect the pre-script of the IDs, for example, ENSG or ENSMUST.
 If this is the case, the decimal and following number must be removed for the gprofiler analysis
 as gprofiler recognizes genes, not transcripts.}
 

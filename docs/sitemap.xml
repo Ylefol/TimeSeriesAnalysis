@@ -58,6 +58,9 @@
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_exp_data_kallisto.html</loc>
   </url>
   <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_exp_data_tximport.html</loc>
+  </url>
+  <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/add_experiment_data.html</loc>
   </url>
   <url>
@@ -224,6 +227,9 @@
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_custom_DE_heatmap.html</loc>
+  </url>
+  <url>
+    <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_gene_traj_single_tp.html</loc>
   </url>
   <url>
     <loc>http://Ylefol.github.io/TimeSeriesAnalysis/reference/plot_single_gene_traj.html</loc>

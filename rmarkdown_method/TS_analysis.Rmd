@@ -21,9 +21,6 @@ library(SummarizedExperiment)
 library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
 
-#COMMENT OUT IF NOT USING EXAMPLES
-# write_example_data_to_dir('PBMC')
-
 ```
 
 # TimeSeries analysis
@@ -33,14 +30,18 @@ Set the below parameters for the downstream analysis
 
 ```{r parameter_setup}
 
+#This writes example data to directory
+#Use 'PBMC', 'murine', or 'celegans' to load the different experimental data
+#Note that celegans is a heavy dataset and will take time to write to directory.
+write_example_data_to_dir('PBMC')
+
 #Give names to saved object and name of results repository
 name_result_folder<-'TS_results_PBMC_example/'
 obj_name<-'timeSeries_obj_PBMC_example.Rdata'
 
 #Path to count data and sample data respectively
-#Not needed if using example data
-my_path_data<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/PBMC/raw_counts_TS'
-my_path_sample_dta<-'~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/data/PBMC/sample_file.csv'
+my_path_data<-'data/PBMC/raw_counts_TS'
+my_path_sample_dta<-'data/PBMC/sample_file.csv'
 
 #Set-up time series object parameters
 diff_exp_type<-'DESeq2' #package used for DE – can also be 'limma'
@@ -120,7 +121,6 @@ TS_object <- new('TimeSeries_Object',
                  DE_p_filter=p_val_filter_type,DE_p_thresh=p_thresh,DE_l2fc_thresh=l2fc_thresh,
                  PART_l2fc_thresh=PART_l2fc,sem_sim_org=org_sem_sim,Gpro_org=my_org_gpro)
 
-# TS_object <- TS_load_example_data(TS_object,'PBMC')
 TS_object <- add_experiment_data(TS_object,sample_dta_path=my_path_sample_dta,count_dta_path=my_path_data)
 TS_object <- add_semantic_similarity_data(TS_object,my_ont_sem_sim)
 }else{
@@ -306,7 +306,7 @@ gene_matrix_interest<-count_matrix_norm[row.names(count_matrix_norm) %in% genes_
 if(nrow(gene_matrix_interest)>0){
   var_vect <- apply(gene_matrix_interest, 1, stats::var)
   selected_gene<-names(sort(var_vect,decreasing=TRUE))[1]
-  target_file<-paste0(name_result_folder,'genes_of_interest/',selected_gene,'_trajectory.png')
+  target_file<-paste0(name_result_folder,'genes_of_interest/',selected_gene,'.png')
   knitr::include_graphics(target_file)
 }else{
   selected_gene<-row.names(slot(TS_object,'PART_results')$cluster_map)[1]
@@ -351,14 +351,18 @@ ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scale
 mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 
 #Function which determines the number of SVG files to plot all cluster trajectories
-wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,log_TP=log_tp_traj,plot_name=paste0(name_result_folder,'/PART_results/Ctraj'))
+wrapper_cluster_trajectory(TS_object,ts_data,mean_ts_data,yaxis_name='scaled mean counts',log_TP=log_tp_traj,plot_name=paste0(name_result_folder,'/PART_results/Ctraj'))
 
 #find the most variable cluster, subset necessary data and plot it on a single column
 #The function will also filter for a cluster which has gprofiler results
 target_clust<-find_most_variable_cluster(TS_object,mean_ts_data)
-sub_ts<-ts_data[ts_data$cluster==target_clust,]
-sub_mean<-mean_ts_data[mean_ts_data$cluster==target_clust,]
-plt_clust<-plot_cluster_traj(object = TS_object,ts_data = sub_ts,ts_mean_data = sub_mean, num_col=1,rem_legend_axis=TRUE,log_TP=log_tp_traj)
+if(length(unique(ts_data$timepoint))==1){
+  plt_clust<-plot_cluster_traj(object = TS_object,ts_data = ts_data,ts_mean_data = mean_ts_data,yaxis_name='scaled mean counts', num_col=1,rem_legend_axis=TRUE,log_TP=log_tp_traj)
+}else{
+  sub_ts<-ts_data[ts_data$cluster==target_clust,]
+  sub_mean<-mean_ts_data[mean_ts_data$cluster==target_clust,]
+  plt_clust<-plot_cluster_traj(object = TS_object,ts_data = sub_ts,ts_mean_data = sub_mean,yaxis_name='scaled mean counts', num_col=1,rem_legend_axis=TRUE,log_TP=log_tp_traj)
+}
 cluster_map_sum<-t(as.data.frame(table(slot(TS_object,'PART_results')$cluster_map[,c(1)])))
 row.names(cluster_map_sum)=c('Cluster name','Number of genes')
 colnames(cluster_map_sum)=NULL

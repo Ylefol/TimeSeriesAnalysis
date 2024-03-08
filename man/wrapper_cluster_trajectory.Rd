@@ -8,6 +8,7 @@ wrapper_cluster_trajectory(
   object,
   cluster_traj_dta,
   mean_cluster_traj_dta,
+  yaxis_name,
   log_TP = FALSE,
   plot_name = "Ctraj"
 )
@@ -20,6 +21,8 @@ The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 
 \item{mean_cluster_traj_dta}{The mean value for each clusters trajectory,
 the data is calculated/obtained from \code{calculated_mean_cluster_traj} function}
+
+\item{yaxis_name}{Name given to the y axis - used to adjust if the data is scaled or not}
 
 \item{log_TP}{Boolean indicating if timepoints (x axis) should be log10 transformed}
 

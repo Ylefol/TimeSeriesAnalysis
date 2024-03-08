@@ -2,22 +2,10 @@
 
 #Ignore results from example and other results
 rmarkdown_method/TS_results_PBMC_example
-rmarkdown_method/ATAXIA
-rmarkdown_method/FOUNDIN-PD
-rmarkdown_method/TS_results_CoV_Mech
-rmarkdown_method/Nice_res_no_spikeIn
-rmarkdown_method/Nice_res_with_spikeIn
-rmarkdown_method/NICO_comparative_dotplots
+rmarkdown_method/TS_results_GRKO_CX
+rmarkdown_method/TS_analysis_P301L_GR-KO.Rmd
+results_folder/
 
-
-
-rmarkdown_method/TS_analysis_CoV_Mech.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO1.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO3.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO15.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO39.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO_vs_WT_no_spike.Rmd
-rmarkdown_method/TS_analysis_Nicola_KO_vs_WT.Rmd
 
 rmarkdown_method/data
 
@@ -35,6 +23,7 @@ data/murine
 data/FOUNDIN-PD
 data/Nicola_KO_dta
 data/Nicola_KO_dta_spikeIn
+data/P301L_GR-KO_project/
 
 Nicola_NTHL1_KO_data_scripts
 

@@ -4,9 +4,12 @@
 \alias{write_example_data_to_dir}
 \title{Prep example data in directory}
 \usage{
-write_example_data_to_dir(target_dir = NULL)
+write_example_data_to_dir(data_name = "PBMC", target_dir = NULL)
 }
 \arguments{
+\item{data_name}{Name of the data to be written to the directory. Either 'PBMC',
+'murine', or 'celegans'}
+
 \item{target_dir}{Where the saves should be located, if NULL, it will be saved
 to the main directory}
 }
@@ -20,6 +23,8 @@ they must provide for the TimeSeriesAnalysis pipeline as well as their format.
 
 Having these files written as tab delimited and csv allows users to open them
 and see the formatting expected by TimeSeriesAnalysis
+
+Three example datasets are available. The choice is done via the data_name parameter.
 }
 \examples{
 path <- tempfile()

@@ -152,12 +152,23 @@ DE_plots_vignettes<-function(object){
 #' @param mean_cluster_traj_dta The mean value for each clusters trajectory,
 #' the data is calculated/obtained from \code{calculated_mean_cluster_traj} function
 #' @param log_TP Boolean indicating if timepoints (x axis) should be log10 transformed
+#' @param yaxis_name Name given to the y axis - used to adjust if the data is scaled or not
 #' @param plot_name The name given to the plot file as it is saved
 #'
 #' @return None
 #'
 #' @export
-wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,log_TP=FALSE,plot_name='Ctraj'){
+wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_dta,yaxis_name,log_TP=FALSE,plot_name='Ctraj'){
+
+  if(length(unique(ts_data$timepoint))==1){
+    save_name<-paste0(plot_name,'.svg')
+    the_plot<-plot_cluster_traj(object,cluster_traj_dta,mean_cluster_traj_dta,yaxis_name=yaxis_name)
+    svg(save_name,width=6,height=3)
+    print(the_plot)
+    dev.off()
+    return(invisible(NULL))
+  }
+
   clust_order<-unique(cluster_traj_dta[,c('cluster','nGenes')])
   clust_order<-clust_order$cluster[order(-clust_order$nGenes)]
 
@@ -213,8 +224,7 @@ wrapper_cluster_trajectory<-function(object,cluster_traj_dta,mean_cluster_traj_d
       sub_ts_means$log10_timepoint[sub_ts_means$log10_timepoint=='-Inf']<-0
 
     }
-
-    the_plot<-plot_cluster_traj(object,sub_ts_data,sub_ts_means)
+    the_plot<-plot_cluster_traj(object,sub_ts_data,sub_ts_means,yaxis_name=yaxis_name)
     svg(save_name,width=custom_width,height=custom_height)
     print(the_plot)
     dev.off()
@@ -1595,6 +1605,7 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #' The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 #' @param ts_mean_data The trajectory data for all clusters being calculated
 #' The data is calculated/obtained from \code{calculate_cluster_traj_data} function
+#' @param yaxis_name Name given to the yaxis, by default, scaled expression
 #' @param num_col Integer stating the number of columns for the plots.
 #' @param rem_legend_axis Boolean indicating if the legend and axis titles should be removed
 #' @param log_TP Boolean indicating if timepoints should be log transformed
@@ -1629,32 +1640,47 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' @export
 #'
-plot_cluster_traj<-function(object,ts_data,ts_mean_data,num_col=4,rem_legend_axis=FALSE,log_TP=FALSE,title_text_size=14){
+plot_cluster_traj<-function(object,ts_data,ts_mean_data,yaxis_name='scaled expression',num_col=4,rem_legend_axis=FALSE,log_TP=FALSE,title_text_size=14){
 
-  if(log_TP==TRUE){
-    ts_data$log10_timepoint<-log10(ts_data$timepoint)
-    ts_data$log10_timepoint[ts_data$log10_timepoint=='-Inf']<-0
-    ts_mean_data$log10_timepoint<-log10(ts_mean_data$timepoint)
-    ts_mean_data$log10_timepoint[ts_mean_data$log10_timepoint=='-Inf']<-0
-  }
+  if(length(unique(ts_data$timepoint))==1){
+    cluster_factor_level<-paste0('C',order(unique(ts_mean_data$cluster)))
+    ts_mean_data$cluster<-factor(ts_mean_data$cluster,levels=cluster_factor_level)
 
-
-  if('log10_timepoint' %in% colnames(ts_data)){
-    plt <- ggplot(ts_data, aes(y = trans_mean , x = `log10_timepoint`, color = group))
+    plt<-ggplot(data=ts_mean_data, aes(x=cluster, y=trans_mean,fill=group)) +
+      geom_bar(stat="identity", width = 0.5,position=position_dodge())+
+      scale_fill_manual(values=object@group_colors)+
+      ylab(yaxis_name)+
+      xlab('Clusters')+
+      theme(axis.text.x = element_text(size=8))
   }else{
-    plt <- ggplot(ts_data, aes(y = trans_mean , x = timepoint, color = group))
+    if(log_TP==TRUE){
+      ts_data$log10_timepoint<-log10(ts_data$timepoint)
+      ts_data$log10_timepoint[ts_data$log10_timepoint=='-Inf']<-0
+      ts_mean_data$log10_timepoint<-log10(ts_mean_data$timepoint)
+      ts_mean_data$log10_timepoint[ts_mean_data$log10_timepoint=='-Inf']<-0
+    }
+
+
+    if('log10_timepoint' %in% colnames(ts_data)){
+      plt <- ggplot(ts_data, aes(y = trans_mean , x = `log10_timepoint`, color = group))
+    }else{
+      plt <- ggplot(ts_data, aes(y = trans_mean , x = timepoint, color = group))
+    }
+    plt <- plt + scale_color_manual(values=slot(object,'group_colors')) +
+      geom_line(aes(group = gene_id), alpha = 0.4) +
+      geom_point() +
+      geom_line(
+        data = ts_mean_data, lwd = 1.5, color = "grey50",
+        aes(group = group)
+      ) +
+      scale_x_continuous(expand = c(0, 0)) +
+      # scale_y_continuous(expand = c(0, 0))+
+      ylab(yaxis_name) +
+      facet_wrap(~labels, scales = 'free_x', ncol = num_col)
   }
-  plt <- plt + scale_color_manual(values=slot(object,'group_colors')) +
-    geom_line(aes(group = gene_id), alpha = 0.4) +
-    geom_point() +
-    geom_line(
-      data = ts_mean_data, lwd = 1.5, color = "grey50",
-      aes(group = group)
-    ) +
-    scale_x_continuous(expand = c(0, 0)) +
-    # scale_y_continuous(expand = c(0, 0))+
-    ylab('scaled expression') +
-    facet_wrap(~labels, scales = 'free_x', ncol = num_col)
+
+
+
 
   if(rem_legend_axis==TRUE){
     plt<-plt + theme(legend.position = "none") +
@@ -1721,6 +1747,48 @@ calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#' @title Calculate trajectory of a single gene with no timepoints
+#'
+#' @description Function takes in a target gene and will show the genes value for
+#' each sample of the matrix.
+#'
+#' @param time_object A timeseries object
+#' @param target_gene String indicating the gene
+#' @param return_data Boolean indicating of both data and plot should be returned
+#'
+#' @return dataframe with the trajectory data for the requested gene
+#'
+#' @examples
+#' TS_object<-create_example_object_for_R()
+#' TS_object <- normalize_timeSeries_with_deseq2(time_object=TS_object)
+#' #Perform conditional differential gene expression analysis
+#' TS_object<-conditional_DE_wrapper(TS_object,vignette_run=TRUE)
+#' aicda_traj_dta<-calculate_gene_traj_data(TS_object,'AICDA')
+#'
+#' @export
+plot_gene_traj_single_tp<-function(time_object,target_gene,return_data=FALSE){
+  #Create a list of genes of interest
+  my_dta<-exp_matrix(time_object,'norm')[target_gene,]
+
+  samp_dta<-exp_sample_data(time_object)
+
+  my_dta<-cbind(samp_dta[,c('sample','group','replicate')],t(my_dta[target_gene,]))
+  colnames(my_dta)=c('sample','group','replicate','gene')
+
+  plt<-ggplot(data=my_dta, aes(x=sample, y=gene,fill=group)) +
+    geom_bar(stat="identity", width = 0.5,position=position_dodge())+
+    scale_fill_manual(values=time_object@group_colors)+
+    ylab('counts - number of reads')+
+    xlab('sample name')+
+    ggtitle(target_gene)+
+    theme(axis.text.x = element_text(size=8,angle = 90, vjust = 0.5, hjust=1))
+  if(return_data==TRUE){
+    return(list(my_dta,plt))
+  }
+}
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 
 #' @title Plot gene trajectory
@@ -1858,7 +1926,12 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
       list_interest[[exp]]<-sig_df
     }
   }
-
+  sample_data<-exp_sample_data(object)
+  if(length(unique(sample_data$timepoint))==1){
+    single_tp<-TRUE
+  }else{
+    single_tp<-FALSE
+  }
   for (gene in genes_of_interest){
     gene_df<-data.frame(NULL)
     for (exp in names(list_interest)){
@@ -1882,10 +1955,16 @@ create_tables_genes_of_interest_DE<-function(object,genes_of_interest,save_locat
     }
     #Plot gene trajectory if gene is in time object
     if(gene %in% row.names(count_matrix)){
-      gene_traj_dta<-calculate_gene_traj_data(object,gene,log_tp)
-      gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(object,'group_colors'))
+      if(single_tp==TRUE){
+        get_dta=plot_gene_traj_single_tp(object,gene,return_data=TRUE)
+        gene_traj_plot=get_dta[[2]]
+      }else{
+        gene_traj_dta<-calculate_gene_traj_data(object,gene,log_tp)
+        gene_traj_plot<-plot_single_gene_traj(gene_traj_dta,slot(object,'group_colors'))
+      }
+
       #May cause LOESS warnings if there are too few datapoints
-      ggsave(plot=gene_traj_plot,filename = paste0(save_location,gene,'_trajectory.png'))
+      ggsave(plot=gene_traj_plot,filename = paste0(save_location,gene,'.png'))
     }
   }
   upstream_save_loc<-strsplit(save_location,'/')[[1]][1]

@@ -8,6 +8,7 @@ plot_cluster_traj(
   object,
   ts_data,
   ts_mean_data,
+  yaxis_name = "scaled expression",
   num_col = 4,
   rem_legend_axis = FALSE,
   log_TP = FALSE,
@@ -22,6 +23,8 @@ The data is calculated/obtained from \code{calculate_cluster_traj_data} function
 
 \item{ts_mean_data}{The trajectory data for all clusters being calculated
 The data is calculated/obtained from \code{calculate_cluster_traj_data} function}
+
+\item{yaxis_name}{Name given to the yaxis, by default, scaled expression}
 
 \item{num_col}{Integer stating the number of columns for the plots.}
 

@@ -348,6 +348,10 @@ find_merged_color<-function(group){
 #'
 #' @export
 find_clusters_from_termdist<-function(GO_df,semantic_data){
+  if (nrow(GO_df)<=1){
+    print('No clusters found')
+    return(NULL)
+  }
   dist=as.dist(1-mgoSim(GO_df$term_id,GO_df$term_id,semData=semantic_data,measure='Wang',combine=NULL))
 
   #Set-up pre-defined parameters for dendrogram
@@ -1457,6 +1461,9 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=
 #'
 #' @export
 wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_dir='TS_results/gprofiler_results/',return_plot=FALSE,term_type_gg=FALSE){
+  if(nrow(GO_clusters)<=1){
+    return()
+  }
   plot_data<-calculate_and_format_MDS(GO_clusters,sem_data)
   plot_data<-merge_duplicate_modules(plot_data)
   my_plot<-plot_MDS(plot_data,term_type_gg)
