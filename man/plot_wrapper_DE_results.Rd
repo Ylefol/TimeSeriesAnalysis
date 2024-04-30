@@ -10,7 +10,8 @@ plot_wrapper_DE_results(
   genes_of_interest = c(),
   results_folder = "TS_results/",
   adjust_missing_temp_samples = TRUE,
-  do_SVGs = TRUE
+  do_SVGs = TRUE,
+  do_heatmap = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ compensated for (NA introduced). Currently, there is no reason to have this set 
 False.}
 
 \item{do_SVGs}{Boolean indicating if SVGs should be saved for the heatmaps}
+
+\item{do_heatmap}{Boolean indicating if the custom heatmap should be performed}
 }
 \value{
 None

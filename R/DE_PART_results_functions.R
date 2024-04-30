@@ -37,22 +37,27 @@
 #' compensated for (NA introduced). Currently, there is no reason to have this set to
 #' False.
 #' @param do_SVGs Boolean indicating if SVGs should be saved for the heatmaps
+#' @param do_heatmap Boolean indicating if the custom heatmap should be performed
 #'
 #' @import ggplot2
 #'
 #' @return None
 #'
 #' @export
-plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',adjust_missing_temp_samples=TRUE,do_SVGs=TRUE){
+plot_wrapper_DE_results<-function(object,DE_type,genes_of_interest=c(),results_folder='TS_results/',
+                                  adjust_missing_temp_samples=TRUE,do_SVGs=TRUE,do_heatmap=TRUE){
   #Create path to DE type and create directory
   main_path<-paste0(results_folder,'DE_results_',DE_type,'/')
   dir.create(main_path)
 
-  message('Creating summary heat map')
-  #Create a overview heatmap of the differential expression results for that type
-  custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=TRUE,
-                         plot_file_name = paste0(main_path,'custom_heat_',DE_type),
-                         adjust_missing_temp_samples,do_SVGs=do_SVGs)
+  if(do_heatmap==TRUE){
+    message('Creating summary heat map')
+    #Create a overview heatmap of the differential expression results for that type
+    custom_heatmap_wrapper(object,DE_type=DE_type,log_transform=TRUE,
+                           plot_file_name = paste0(main_path,'custom_heat_',DE_type),
+                           adjust_missing_temp_samples,do_SVGs=do_SVGs)
+  }
+
 
   DE_res<-slot(object,'DE_results')[[DE_type]]
 

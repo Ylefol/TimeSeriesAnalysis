@@ -229,6 +229,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' The string should reflect the pre-script of the IDs, for example, ENSG or ENSMUST.
 #' If this is the case, the decimal and following number must be removed for the gprofiler analysis
 #' as gprofiler recognizes genes, not transcripts.
+#' @param gpro_sig whether all or only statistically significant results should be returned.
 #' @param vignette_run Boolean indicating if this function is being run within
 #' vignettes, if so it will bypass a network connection error and load mock data
 #' otherwise the error will terminate the script and send the error back to the user.
@@ -259,7 +260,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #' @import GOSemSim
 #'
 #' @export
-run_gprofiler_PART_clusters<-function(object,transcript_version_adjust=NULL,vignette_run=FALSE){
+run_gprofiler_PART_clusters<-function(object,transcript_version_adjust=NULL,gpro_sig=TRUE,vignette_run=FALSE){
 
   #Check if gprofiler results already exists
   if(length(slot(object,'Gprofiler_results'))>0){
@@ -292,7 +293,7 @@ run_gprofiler_PART_clusters<-function(object,transcript_version_adjust=NULL,vign
       return(object)
     }else{#Vignette_run == FALSE
       message(paste0('Gprofiler for ',clust))
-      gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'))
+      gostres <- gost(query = gene_vect,organism = slot(object,'Gpro_org'),significant=gpro_sig)
     }
     if (is.null(gostres)==FALSE){
       object@Gprofiler_results[[clust]]<-gostres

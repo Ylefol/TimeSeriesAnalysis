@@ -987,8 +987,18 @@ plot_ancestor_clust_MDS<-function(the_data,ggplot_version=FALSE){
 #' @export
 plot_clustered_mds<-function(main_matrix,cluster_info,ggplot_version=FALSE){
   # run MDS
-  res.mds <-cmdscale(as.dist(main_matrix), eig = TRUE, k = 2)
+  tryCatch(
+    {
+      res.mds <-cmdscale(as.dist(calculated_SS), eig = TRUE, k = 2)
+    },
+    error= function(cond){
+      message('Could not cluster found MDS terms')
+    }
+  )
 
+  if(exists('res.mds')==FALSE){
+    return(NULL)
+  }
   # extract point values
   res.mds<-res.mds$points
 
@@ -1345,6 +1355,7 @@ plot_MDS<-function(the_data,ggplot_version=FALSE){
 #' @param file_loc The location where the files are to be saved
 #' @param target_ontology The targeted ontology ex: 'REAC' or 'GO:BP'
 #' @param top_n The number of top GOs to plot per cluster
+#' @param sig_only If only significant GOs should be included.
 #' @param custom_width A custom value for the width of the plot
 #' @param custom_height A custom value for the height of the plot
 #' @param return_plot Boolean indicating if the plot should be returned
@@ -1377,8 +1388,11 @@ plot_MDS<-function(the_data,ggplot_version=FALSE){
 #' @import ggplot2
 #'
 #' @export
-GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,custom_width=NULL,custom_height=NULL,return_plot=FALSE){
+GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,sig_only=TRUE,custom_width=NULL,custom_height=NULL,return_plot=FALSE){
   GO_top_cluster<-read_gprofiler_results(object,target_ontology,top_n)
+  if(sig_only==TRUE){
+    GO_top_cluster<-GO_top_cluster[GO_top_cluster$p_value<0.05,]
+  }
   if(nrow(GO_top_cluster)>0){
     GO_top_cluster <- GO_top_cluster[order(GO_top_cluster[,'term_id'],-GO_top_cluster[,'-log10(padj)']),]
     # GO_top_cluster <- GO_top_cluster[!duplicated(GO_top_cluster$term_id),]
@@ -1477,8 +1491,10 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
   if(is.null(target_dir)==FALSE){
     saveWidget(as_widget(my_plot), paste0(target_dir,"MDS_GO_terms.html"))
     unlink(paste0(target_dir,"MDS_GO_terms_files"),recursive = TRUE)
-    saveWidget(as_widget(clust_plot), paste0(target_dir,"MDS_GO_clusters.html"))
-    unlink(paste0(target_dir,"MDS_GO_clusters_files"),recursive = TRUE)
+    if(is.null(clust_plot)==FALSE){
+      saveWidget(as_widget(clust_plot), paste0(target_dir,"MDS_GO_clusters.html"))
+      unlink(paste0(target_dir,"MDS_GO_clusters_files"),recursive = TRUE)
+    }
   }
   if(return_plot==TRUE){
     return(list(MDS_term=my_plot,MDS_clust=clust_plot))

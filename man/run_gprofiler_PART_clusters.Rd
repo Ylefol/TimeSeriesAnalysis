@@ -7,6 +7,7 @@
 run_gprofiler_PART_clusters(
   object,
   transcript_version_adjust = NULL,
+  gpro_sig = TRUE,
   vignette_run = FALSE
 )
 }
@@ -17,6 +18,8 @@ run_gprofiler_PART_clusters(
 The string should reflect the pre-script of the IDs, for example, ENSG or ENSMUST.
 If this is the case, the decimal and following number must be removed for the gprofiler analysis
 as gprofiler recognizes genes, not transcripts.}
+
+\item{gpro_sig}{whether all or only statistically significant results should be returned.}
 
 \item{vignette_run}{Boolean indicating if this function is being run within
 vignettes, if so it will bypass a network connection error and load mock data

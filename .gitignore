@@ -43,6 +43,7 @@ extra_scripts/PD_clusters.R
 extra_scripts/pathway_analysis.R
 extra_scripts/NICO_barplots.R
 extra_scripts/NICO_comparative_dotplots.R
+extra_scripts/compare_experiments_functions.R
 
 extra_scripts/WGCNA/blockWiseModules.Rdata
 

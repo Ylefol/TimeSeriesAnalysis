@@ -9,6 +9,7 @@ GO_dotplot_wrapper(
   file_loc,
   target_ontology,
   top_n,
+  sig_only = TRUE,
   custom_width = NULL,
   custom_height = NULL,
   return_plot = FALSE
@@ -22,6 +23,8 @@ GO_dotplot_wrapper(
 \item{target_ontology}{The targeted ontology ex: 'REAC' or 'GO:BP'}
 
 \item{top_n}{The number of top GOs to plot per cluster}
+
+\item{sig_only}{If only significant GOs should be included.}
 
 \item{custom_width}{A custom value for the width of the plot}
 
