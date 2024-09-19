@@ -124,6 +124,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   }
 
   PART_res<-slot(object,'PART_results')
+
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){
     #check if PART has already been calculated
@@ -137,7 +138,8 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   }else{
     main_matrix<-custom_matrix
   }
-
+  num_genes<-nrow(main_matrix)
+  message(paste0('There are ',num_genes, ' in the matrix. If the computing time takes too long consider increasing the PART_l2fc_threshold.'))
   tic()#Start a timer for PART computation
 
   #Calculates the clustering using the 'part' algorithm
