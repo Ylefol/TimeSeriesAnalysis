@@ -1228,6 +1228,8 @@ prepare_top_annotation_PART_heat<-function(object){
   main_matrix<-slot(object,'PART_results')$part_matrix
   samp_dta_full<-exp_sample_data(object)
   group_cols<-slot(object,'group_colors')
+
+
   samp_data<-samp_dta_full[order(match(samp_dta_full$sample,colnames(main_matrix))),]
   found_timepoints<-samp_data$timepoint
   found_replicates<-samp_data$replicate
@@ -1235,14 +1237,14 @@ prepare_top_annotation_PART_heat<-function(object){
   col_split<-factor(unname(found_replicates),levels=unique(unname(found_replicates)))
   order_for_table<-unique(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))
   num_cols<-table(sapply(strsplit(levels(col_split),"_[0-9]"), `[`, 1))[order_for_table]
-  #Needs to be adatapted using the object graphical parameters
-  if(length(group_order)==1){ #Temporal only analysis, no case-control (one group)
-    fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1]))
-    ))
-  }else{# Usual case + control (two groups)
-    fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[1]]],unname(num_cols[1])),
-                                rep(group_cols[[group_order[2]]],unname(num_cols[2]))
-    ))
+
+  fill_set_groups<-c()
+  for(g in 1:length(group_order)){
+    if(length(fill_set_groups)==0){
+      fill_set_groups=gpar(fill=c(rep(group_cols[[group_order[g]]],unname(num_cols[g]))))
+    }else{
+      fill_set_groups$fill<-c(fill_set_groups$fill,rep(group_cols[[group_order[g]]],unname(num_cols[g])))
+    }
   }
 
   my_cols<-c('#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026')
@@ -1466,15 +1468,19 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #' @export
 #'
 calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
+
+  #Checks if it is a timeseries object, if not it expects a list with a specific
+  #structure
+
   PART_res<-slot(object,'PART_results')
-  samp_dta_full<-exp_sample_data(object)
   if (is.null(custom_cmap)==TRUE){
     my_cmap<-PART_res$cluster_map
   }else{
     my_cmap<-custom_cmap
   }
-
+  samp_dta_full<-exp_sample_data(object)
   norm_mat<-exp_matrix(object,'norm')[row.names(my_cmap),]
+
 
   ts_df<-data.frame(gene_id=NULL,group=NULL,timepoint=NULL,mean_reads=NULL)
   df_list<-list()
@@ -1721,17 +1727,21 @@ plot_cluster_traj<-function(object,ts_data,ts_mean_data,yaxis_name='scaled expre
 #'
 #' @export
 calculate_gene_traj_data<-function(time_object,target_gene,log_timepoint=FALSE){
-  #Create a list of genes of interest
+
   my_dta<-exp_matrix(time_object,'norm')[target_gene,]
+  DE_method<-slot(time_object,'DE_method')
+  sample_data<-exp_sample_data(time_object)
+
 
   my_dta<-melt(my_dta,id.vars = NULL)
   my_dta$sample<-row.names(my_dta)
-  if(slot(time_object,'DE_method')=='limma'){
+  if(DE_method=='limma'){
     colnames(my_dta)=c('reads','sample')
   }else{
     colnames(my_dta)=c('sample','reads')
   }
-  sample_data<-exp_sample_data(time_object)
+
+
   my_dta<-merge(my_dta,sample_data,by='sample')
   mean_data_list<-list()
   for (group in unique(my_dta$group)){

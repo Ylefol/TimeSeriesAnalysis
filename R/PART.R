@@ -123,10 +123,9 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
     return(object)
   }
 
-  PART_res<-slot(object,'PART_results')
-
   #check if custom matrix was given
   if(is.null(custom_matrix)==TRUE){
+    PART_res<-slot(object,'PART_results')
     #check if PART has already been calculated
     if('part_data' %in% names(PART_res)==TRUE){
       message('PART results already exists')
