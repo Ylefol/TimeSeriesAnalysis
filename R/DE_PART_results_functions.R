@@ -657,15 +657,30 @@ custom_heatmap_wrapper<-function(time_object,DE_type,log_transform=TRUE,plot_fil
   }else{
     legend_val<-'counts'
   }
+
+  color_vector<-unname(time_object@group_colors)
+  if(DE_type=='temporal'){#Use custom colors for exp-control of temporal heatmap -- avoid confusion
+    col_keep<-c()
+    temp_col_vect<-c("#a6cee3", "#b2df8a","#1f78b4","#33a02c")
+    for(col in temp_col_vect){# Check that custom colors are not set as group colors
+      if(!col %in% color_vector){
+        col_keep<-c(col_keep,col)
+      }
+      if(length(col_keep)==2){
+        break
+      }
+    }
+    color_vector<-col_keep
+  }
   if(is.null(plot_file_name)==TRUE){
     heat_plot<- plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,
-                                       my_l2fc_vect,log_transform = log_transform,
+                                       my_l2fc_vect,log_transform = log_transform,color_vect=color_vector,
                                        legend_value=legend_val, plot_file_name = plot_file_name,
                                        do_SVG=do_SVGs)
     return(heat_plot)
   }else{
     plot_custom_DE_heatmap(my_heat_mat,my_region_split,my_group_split,my_l2fc_vect,log_transform = log_transform,
-                           legend_value=legend_val, plot_file_name = plot_file_name,do_SVG=do_SVGs)
+                           color_vect=color_vector,legend_value=legend_val, plot_file_name = plot_file_name,do_SVG=do_SVGs)
   }
 
 }
@@ -1047,6 +1062,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @param col_split The named vector used to split the columns into it's segments
 #' @param row_splits The named vector used to split the rows into the two groups
 #' @param l2fc_col The log2foldchange vector used to create the histogram
+#' @param color_vect A vector for the colors to be used in the heatmap
 #' @param log_transform boolean indicating if the results were log transformed or not
 #' @param legend_value string indicating the type of value used
 #' (counts for RNAseq, intensity value for microarray)
@@ -1076,7 +1092,7 @@ log_transform_l2fc_vect <-function(l2fc_vector){
 #' @importFrom grid gpar
 #' @export
 #'
-plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_transform,
+plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_transform,color_vect,
                                   legend_value='counts', plot_file_name='custom_heatmap',
                                   custom_width=15,custom_height=5,do_SVG=TRUE){
 
@@ -1099,7 +1115,7 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
   fill_set_regions=gpar(fill=2:(length(unique(col_split))+1))
   top_annot = HeatmapAnnotation(foo = anno_block(gp = fill_set_regions, labels = rep(NULL,length(unique(col_split)))))
 
-  fill_set_groups=gpar(fill = c("#998ec3", "#f1a340"))
+  fill_set_groups=gpar(fill = color_vect)
   left_annot = rowAnnotation(foo = anno_block(gp = fill_set_groups, labels = unique(row_splits)))
 
 

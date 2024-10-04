@@ -23,7 +23,7 @@ library('org.Hs.eg.db')
 TS_object <- new('TimeSeries_Object',
                  group_names=c('IgM','LPS'),group_colors=graphic_vector,DE_method='DESeq2',
                  DE_p_filter='padj',DE_p_thresh=0.05,DE_l2fc_thresh=1,
-                 PART_l2fc_thresh=1,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
+                 PART_l2fc_thresh=4,sem_sim_org='org.Hs.eg.db',Gpro_org='hsapiens')
 
 TS_object <- add_experiment_data(TS_object,sample_dta_path='data/PBMC/sample_file.csv',count_dta_path='data/PBMC/raw_counts_TS')
 TS_object <- add_semantic_similarity_data(TS_object,'BP')

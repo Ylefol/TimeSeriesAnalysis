@@ -10,6 +10,7 @@ plot_custom_DE_heatmap(
   row_splits,
   l2fc_col,
   log_transform,
+  color_vect,
   legend_value = "counts",
   plot_file_name = "custom_heatmap",
   custom_width = 15,
@@ -27,6 +28,8 @@ plot_custom_DE_heatmap(
 \item{l2fc_col}{The log2foldchange vector used to create the histogram}
 
 \item{log_transform}{boolean indicating if the results were log transformed or not}
+
+\item{color_vect}{A vector for the colors to be used in the heatmap}
 
 \item{legend_value}{string indicating the type of value used
 (counts for RNAseq, intensity value for microarray)}
