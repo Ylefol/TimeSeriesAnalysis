@@ -1,0 +1,35 @@
+[2024-11-06 10:10:30] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:10:30] [INFO]    [OmnipathR] Initialized cache: `/home/yohanl/.cache/OmnipathR`.
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2024-11-06 10:10:30] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:10:31] [INFO]    [OmnipathR] Loading database `Ensembl and OMA organism names`.
+[2024-11-06 10:10:31] [INFO]    [OmnipathR] Looking up in cache `https://www.ensembl.org/info/about/species.html`: key=7332486db7400730697234bad76ca0c8e4d00799, latest version=1.
+[2024-11-06 10:10:31] [TRACE]   [OmnipathR] Cache file path: /home/yohanl/.cache/OmnipathR/7332486db7400730697234bad76ca0c8e4d00799-1.html
+[2024-11-06 10:10:31] [TRACE]   [OmnipathR] Looking up in cache: `https://omabrowser.org/All/oma-species.txt`.
+[2024-11-06 10:10:31] [TRACE]   [OmnipathR] Loaded data from RDS `/home/yohanl/.cache/OmnipathR/30e690cbb55dfc63b5903ab337f34ffc2f4be397-1.rds`.
+[2024-11-06 10:10:31] [INFO]    [OmnipathR] Loaded database `Ensembl and OMA organism names`.
+[2024-11-06 10:10:32] [TRACE]   [OmnipathR] Looking up in cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=collectri&organisms=9606&dorothea_levels=A,B&fields=evidences,sources,references,curation_effort&loops=yes&license=academic`
+[2024-11-06 10:10:33] [TRACE]   [OmnipathR] Loaded data from RDS `/home/yohanl/.cache/OmnipathR/82abc02990e13a4b0186ba97e7e04cb7c5c780b2-1.rds`.
+[2024-11-06 10:10:34] [INFO]    [OmnipathR] Loaded from cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=collectri&organisms=9606&dorothea_levels=A,B&fields=evidences,sources,references,curation_effort&loops=yes&license=academic`
+[2024-11-06 10:10:34] [TRACE]   [OmnipathR] Converting JSON column `evidences` to list.
+[2024-11-06 10:10:39] [TRACE]   [OmnipathR] Restricting interaction records to datasets: collectri; and resources: any
+[2024-11-06 10:10:44] [TRACE]   [OmnipathR] Filtering evidence columns: positive, negative, directed, undirected; to datasets: collectri; and resources: any; excluding resources: none
+[2024-11-06 10:12:06] [SUCCESS] [OmnipathR] Downloaded 64958 interactions.
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Reading JSON from `https://omnipathdb.org/resources` (encoding: UTF-8).
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Looking up in cache: `https://omnipathdb.org/interactions?genesymbols=yes&resources=CollecTRI&datasets=tf_mirna&organisms=9606&fields=evidences,sources,references,curation_effort&license=academic`
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Loaded data from RDS `/home/yohanl/.cache/OmnipathR/f7d34500401ba98803b7d2b26c48f64cee1eea1b-1.rds`.
+[2024-11-06 10:12:07] [INFO]    [OmnipathR] Loaded from cache: `https://omnipathdb.org/interactions?genesymbols=yes&resources=CollecTRI&datasets=tf_mirna&organisms=9606&fields=evidences,sources,references,curation_effort&license=academic`
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Converting JSON column `evidences` to list.
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Restricting interaction records to datasets: tf_mirna; and resources: CollecTRI
+[2024-11-06 10:12:07] [TRACE]   [OmnipathR] Filtering evidence columns: positive, negative, directed, undirected; to datasets: tf_mirna; and resources: CollecTRI; excluding resources: none
+[2024-11-06 10:12:09] [SUCCESS] [OmnipathR] Downloaded 232 interactions.
+[2024-11-06 13:12:12] [TRACE]   [OmnipathR] Removing database `Ensembl and OMA organism names` (not used in the past 10800 seconds)

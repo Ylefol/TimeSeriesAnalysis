@@ -1,2 +1,17 @@
-CHANGES IN VERSION 1.0.0
+CHANGES IN VERSION 1.01.01
 ------------------------
+* Single time point analysis (standard differential gene expression) added to extra scripts
+
+CHANGES IN VERSION 1.02.01
+------------------------
+* GSEA using ClusterProfiler added to extra scripts
+* Added several 'checks' within the pipeline in order to let it finish a run even if, for example, no gene ontology results are found.
+* Support added for transcript counts via tximport. This may be useful if quantification was done for transcripts instead of genes (salmon, kallisto etc...).
+* Better plots for single time point analyses. Previously single timepoint analyses were possible, but certain plots were irrelevant for these. Plots for cluster summaries and individual gene expression have been added for these analyses.
+* Cleaned the rmarkdown format a bit more
+
+CHANGES IN VERSION 1.03.01
+------------------------
+* Added a parameter to plot_PCA_TS function enabling the creation of all possible PCs
+* Added multiple group comparison scripts and functions to extra scripts
+* Added the transcription factor analysis pipeline to extra scripts

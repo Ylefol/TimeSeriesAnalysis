@@ -38,16 +38,13 @@ vignettes/TS_results_PBMC_example
 vignettes/TS_results_celegans_example
 
 #Ignore part of extra scripts
-extra_scripts/TS_results_single_TP_test
-extra_scripts/PD_clusters.R
-extra_scripts/pathway_analysis.R
-
-
-extra_scripts/WGCNA/blockWiseModules.Rdata
+extra_scripts/normalize_function_with_filter.R
+extra_scripts/archive
+extra_scripts/WGCNA
+extra_scripts/.Rhistory
 
 #Ignore extra stuff
 custom_tutorials
-extra_scripts/TS_analysis_single_tp.Rmd
 
 
 #Ignore standard stuff

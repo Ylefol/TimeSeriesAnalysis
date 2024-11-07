@@ -9,7 +9,8 @@ plot_PCA_TS(
   exp_name = NULL,
   DE_type = NULL,
   show_names = TRUE,
-  return_plot = TRUE
+  return_plot = TRUE,
+  pcsToUse = 1:2
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ being plotted}
 
 \item{return_plot}{boolean indicating if the plot should be returned. If FALSE, it will
 return the vst and pca_data instead.}
+
+\item{pcsToUse}{vector of two integers indicating which PCs to plot. The first value will
+be the xaxis while the second will be the yaxis.}
 }
 \value{
 the pca_plot

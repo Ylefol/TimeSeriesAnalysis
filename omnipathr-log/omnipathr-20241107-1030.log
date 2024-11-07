@@ -1,0 +1,12 @@
+[2024-11-07 10:30:41] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-07 10:30:41] [INFO]    [OmnipathR] Initialized cache: `/home/yohanl/.cache/OmnipathR`.
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] Reading JSON from `/home/yohanl/R/x86_64-pc-linux-gnu-library/4.4/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2024-11-07 10:30:41] [TRACE]   [OmnipathR] JSON validation successful: TRUE

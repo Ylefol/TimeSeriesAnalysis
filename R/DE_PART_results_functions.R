@@ -469,6 +469,8 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #' @param show_names boolean indicating if sample names should be put on the pca or not
 #' @param return_plot boolean indicating if the plot should be returned. If FALSE, it will
 #' return the vst and pca_data instead.
+#' @param pcsToUse vector of two integers indicating which PCs to plot. The first value will
+#' be the xaxis while the second will be the yaxis.
 #'
 #' @return the pca_plot
 #'
@@ -486,8 +488,15 @@ maplot_alt <- function(DE_res,genes_of_interest=c(),filter_choice,l2FC_thresh=1,
 #'
 #' @export
 #'
-plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,return_plot=TRUE){
+plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,return_plot=TRUE,pcsToUse=1:2){
   samp_dta_full<-exp_sample_data(time_object)
+
+  #Convert pcstouse to clean vector
+  vector_PCs<-paste0('PC',pcsToUse)
+  if(length(vector_PCs)>2){
+    message('Please only select two PCs to use, the maximum PC is 12')
+    return(NULL)
+  }
 
   if(DE_type=='all'){
     DE_res<-NULL
@@ -502,13 +511,13 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,ret
       dds<-DE_res[['sub_dds']]
     }
     vsd <- vst(dds, blind=FALSE)
-    pca_data <- plotPCA(vsd, intgroup=c('condition'), returnData = TRUE)
+    pca_data <- plotPCA(vsd, intgroup=c('condition'), returnData = TRUE,pcsToUse=pcsToUse)
     percentVar <- round(100 * attr(pca_data, "percentVar"))
 
     samp_dta<-samp_dta_full[samp_dta_full$sample %in% pca_data$name,]
     timepoints_used<-samp_dta$timepoint[order(match(samp_dta$sample,pca_data$name))]
     pca_data$timepoint<-factor(timepoints_used,levels=unique(timepoints_used))
-
+    colnames(pca_data)[1:2]<-c('xaxis','yaxis')
   }else if(DE_meth=='limma'){
     if (is.null(DE_res)==TRUE){
       samples_interest<-colnames(exp_matrix(time_object,'norm'))
@@ -526,7 +535,8 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,ret
 
     percentVar<-c(axis_labels[1],axis_labels[2])
 
-    pca_data<-data.frame(PC1=pca_res$x[,'PC1'],PC2=pca_res$x[,'PC2'],
+
+    pca_data<-data.frame(xaxis=pca_res$x[,vector_PCs[1]],yaxis=pca_res$x[,vector_PCs[1]],
                          group=sample_data_used$group,
                          timepoint=factor(sample_data_used$timepoint,levels=unique(sample_data_used$timepoint)),
                          name=sample_data_used$sample)
@@ -550,36 +560,24 @@ plot_PCA_TS<-function(time_object,exp_name=NULL,DE_type=NULL,show_names=TRUE,ret
   }
   num_shapes<-length(unique(samp_dta_full$timepoint))
   if (is.null(DE_res)==TRUE){
-    if(show_names==TRUE){
-      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint,label = name)) +
-        geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
-                         box.padding = unit(0.35, "lines"),
-                         point.padding = unit(0.5, "lines"),
-                         segment.color = 'grey50')
-    }else{
-      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=timepoint))
-    }
-      pca_plot<-pca_plot+
-      scale_shape_manual(values=1:num_shapes) +
-      geom_point(size=2, stroke = 2) +
-      xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-      ylab(paste0("PC2: ",percentVar[2],"% variance"))
+    use_shape='timepoint'
   }else{
-    if(show_names==TRUE){
-      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=group,label = name)) +
-        geom_label_repel(aes(PC1, PC2, label = name), fontface = 'bold',
-                         box.padding = unit(0.35, "lines"),
-                         point.padding = unit(0.5, "lines"),
-                         segment.color = 'grey50')
-    }else{
-      pca_plot <- ggplot(pca_data, aes(PC1, PC2, color=group, shape=group))
-    }
-      pca_plot<-pca_plot+
-      scale_shape_manual(values=1:num_shapes) +
-      geom_point(size=2, stroke = 2) +
-      xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-      ylab(paste0("PC2: ",percentVar[2],"% variance"))
+    use_shape='group'
   }
+  if(show_names==TRUE){
+    pca_plot <- ggplot(pca_data, aes(xaxis, yaxis, color=group, shape=!!sym(use_shape),label = name)) +
+      geom_label_repel(aes(xaxis, yaxis, label = name), fontface = 'bold',
+                       box.padding = unit(0.35, "lines"),
+                       point.padding = unit(0.5, "lines"),
+                       segment.color = 'grey50')
+  }else{
+    pca_plot <- ggplot(pca_data, aes(xaxis, yaxis, color=group, shape=!!sym(use_shape)))
+  }
+  pca_plot<-pca_plot+
+    scale_shape_manual(values=1:num_shapes) +
+    geom_point(size=2, stroke = 2) +
+    xlab(paste0(vector_PCs[1],": ",percentVar[1],"% variance")) +
+    ylab(paste0(vector_PCs[2],": ",percentVar[2],"% variance"))
 
   if(return_plot==TRUE){
     return(pca_plot)

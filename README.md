@@ -33,8 +33,20 @@ through gprofiler to reveal the biological relevance of each cluster.
 - Nearest ancestor clustering of GOs
 - GO ancestor queries
 
-Version 1.1.0 \* GSEA of differential gene expression analysis (DESeq2
-only)
+## Extra scripts
+
+Additional scripts and functions were written to allow for alternate
+uses of TimeSeriesAnalysis as well as utilizing other common pipelines
+from a TimeSeries object. Note that additional package installations may
+be required.
+
+- Script (non R-markdown) for the standard TiSA pipeline
+- GSEA using ClusterProfiler
+- Single timepoint analysis (standard_DEA_no_temporal)
+- Multiple group comparisons - compare the results of multiple runs of
+  TiSA
+- DecouplR + JASPAR transcription factor analysis pipeline (only
+  available for mouse and human data)
 
 ## Installation
 
@@ -67,22 +79,6 @@ bio_pkgs <- c('DESeq2','GOSemSim','GO.db','limma','ComplexHeatmap',
 'tximport','tximportData')
 BiocManager::install(bio_pkgs)
 ```
-
-## Version 1.02.01 changes
-
-- Added several ‘checks’ within the pipeline in order to let it finish a
-  run even if, for example, no gene ontology results are found.
-- GSEA support via ClusterProfiler was added for differential gene
-  expression results. You can find this small script in the
-  ‘extra_scripts’ folder.
-- Support added for transcript counts via tximport. This may be useful
-  if quantification was done for transccripts instead of genes (salmon,
-  kallisto etc…).
-- Better plots for single time point analyses. Previously single
-  timepoint analyses were possible, but certain plots were irrelevant
-  for these. Plots for cluster summaries and individual gene expression
-  have been added for these analyses.
-- Cleaned the rmarkdown format a bit more
 
 ## Rmarkdown format
 

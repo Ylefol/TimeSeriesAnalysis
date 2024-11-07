@@ -4,7 +4,7 @@ library(TimeSeriesAnalysis)
 library(ggplot2)
 library(stringr)
 library(DESeq2)
-source('~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/temp_functions.R')
+source('~/A_Projects/EpiGen/R_Work_Folder/TimeSeriesAnalysis/group_comparison_functions.R')
 
 
 ##### EXPLANATION
