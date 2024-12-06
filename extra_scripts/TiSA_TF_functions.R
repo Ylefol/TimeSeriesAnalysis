@@ -485,8 +485,8 @@ plot_standard_TF_heatmap<-function(heat_data){
   palette_length = 100
   my_color = colorRampPalette(c("Darkblue", "white","red"))(palette_length)
 
-  my_breaks <- c(seq(-3, 0, length.out=ceiling(palette_length/2) + 1),
-                 seq(0.05, 3, length.out=floor(palette_length/2)))
+  my_breaks <- c(seq(max(heat_data), 0, length.out=ceiling(palette_length/2) + 1),
+                 seq(0.05, min(heat_data), length.out=floor(palette_length/2)))
 
   # Plot - Measure of variability in the counts
   heat_plot<-pheatmap::pheatmap(as.matrix(heat_data), border_color = NA, color=my_color, breaks = my_breaks)
@@ -699,7 +699,7 @@ create_deg_TF_heatmap<-function(DE_list,heat_data,custom_group_names,custom_colo
     }
   }
   row.names(formatted_data)=formatted_data$TFs
-  formatted_data<-formatted_data[,c(2:ncol(formatted_data))]
+  formatted_data<-formatted_data[,c(2:ncol(formatted_data)),drop=F]
 
   #Replace names
   if(is.null(custom_group_names)==FALSE){

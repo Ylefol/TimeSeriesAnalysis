@@ -46,6 +46,8 @@ extra_scripts/.Rhistory
 #Ignore extra stuff
 custom_tutorials
 
+#Ignore ominipath
+omnipathr-log
 
 #Ignore standard stuff
 .Rproj.user
