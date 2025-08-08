@@ -158,6 +158,16 @@ create_raw_count_matrix<-function(time_object,samp_data,path_to_data=NULL,limma_
     final_counts<-prep_limma_matrix(Elist_obj=Elist,replace_rows_with = limma_id_replace)
     slot_storage<-'norm' #Stored as norm as the data is expected to be normalized already
   }
+
+  #Check if all the expected samples are present in the matrix
+  if(all(selected_samples %in% colnames(final_counts))==FALSE){
+    missing_samps<-selected_samples[!selected_samples %in% colnames(final_counts)]
+    message("The following samples were not found in the count matrix, it could be that the files
+            are missing from the counts data location or that the sample names don't match with the
+            names in the sample sheet. \n Missing samples: ")
+    stop(paste(as.character(missing_samps),collapse=', '))
+  }
+
   #Re-organize samples to be in order of groups
   final_counts<-final_counts[,selected_samples]
 
