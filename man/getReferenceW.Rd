@@ -2,41 +2,34 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{getReferenceW}
 \alias{getReferenceW}
-\title{getReferenceW}
+\title{Generate Reference Within-Cluster Dispersion Matrices}
 \usage{
 getReferenceW(X, Kmax, B, ref.gen, ...)
 }
 \arguments{
-\item{X}{matrix of values}
+\item{X}{Numeric data matrix (observations × variables) to generate reference datasets from.}
 
-\item{Kmax}{maximum number of clusters}
+\item{Kmax}{Maximum number of clusters to compute W for.}
 
-\item{B}{Number of recursions}
+\item{B}{Number of reference datasets to generate.}
 
-\item{ref.gen}{Type of transformation}
+\item{ref.gen}{Reference generation method:
+- `"PC"`: uses PCA-based transformation for preserving variance structure
+- any other value: generates uniform reference data per variable.}
 
-\item{...}{Extra parameters to be given to the function}
+\item{...}{Additional arguments passed on to other functions (e.g., `dist.method` for distance calculation, `cl.method` for clustering method, `linkage`, `cor.method`, `nstart`).}
 }
 \value{
 calculated Wb
 }
 \description{
-Generate reference data sets and find Wb:
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-dX <- getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method)
-cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
-#Find W: vector containing W_K for all choices of K
-W <- findW(dX=dX,K=10,cl.lab=cl.lab)
-#Generate reference data sets and find Wb:
-Wb <- getReferenceW(X,Kmax=10,B=10,ref.gen='PC',fixed.par)
+`getReferenceW()` generates multiple reference datasets and calculates the
+within-cluster dispersion \(W_b\) for each, across 1 to Kmax clusters.
+
+Reference datasets can be generated either:
+- Uniformly within the original data range for each variable (`ref.gen="uniform"`)
+- Using a principal components transformation to preserve variance structure (`ref.gen="PC"`)
+
+This function is used in the computation of the Gap statistic to compare
+the observed clustering dispersion to what is expected under a null reference.
 }

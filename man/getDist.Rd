@@ -2,27 +2,33 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{getDist}
 \alias{getDist}
-\title{getDist}
+\title{Compute a Distance Matrix for PART}
 \usage{
 getDist(X, dist.method, cor.method = "pearson")
 }
 \arguments{
-\item{X}{Matrix used to calculate the distance}
+\item{X}{A numeric data matrix where rows represent observations and columns represent
+features.}
 
-\item{dist.method}{The distance method to use in the calculation}
+\item{dist.method}{A character string specifying which distance metric to use. Supported options:
+* `"sq.euclidean"` — squared Euclidean distance,
+* `"cor"` — correlation-based distance,
+* any other string accepted by `stats::dist()` (e.g., `"euclidean"`,
+  `"manhattan"`, `"maximum"`, etc.).}
 
-\item{cor.method}{The correlation method to use. 'pearson' is the default,}
-}
-\value{
-the found distance
+\item{cor.method}{Method for computing correlations when `dist.method = "cor"`.
+Passed to `stats::cor()`. Options include `"pearson"` (default),
+`"spearman"`, or `"kendall"`.}
 }
 \description{
-Compute distance matrix for given distance measure; note: distance between rows!
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Get distance matrix
-dX <- getDist(X,dist.method='euclidean',cor.method='pearson')
+`getDist()` computes a distance matrix from a data matrix `X` using either
+standard Euclidean-based distances or correlation-based distances.
+The function supports:
+* squared Euclidean distance,
+* standard distances from `stats::dist()`, and
+* correlation-based distances, computed as `1 - cor(X)` with user-specified
+  correlation methods.
 
+This helper function is used throughout the PART algorithm to construct
+distance matrices for hierarchical clustering and threshold computations.
 }

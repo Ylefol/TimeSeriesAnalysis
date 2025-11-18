@@ -73,8 +73,10 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #' to put them together. We first order using hierarchical clustering for visual purposes.
 #'
 #' @param object A timeseries object
-#' @param part_recursion The number of recursions for PART calculation
+#' @param part_bootstrap The number of reference datasets used for the GAP statistic
+#' A higher number means less noise
 #' @param part_min_clust The minimum number of genes per cluster
+#' @param q Tuning parameter for how distinguished clusters must be from each other. Default is 0.25
 #' @param dist_param The distance parameter for clustering
 #' @param hclust_param The hierarchical clustering method/parameter to be used
 #' @param custom_seed The seed inputed (if any)
@@ -104,7 +106,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #'
 #' @import tictoc
 #' @importFrom tibble add_column
@@ -114,7 +116,7 @@ prep_counts_for_PART <-function(object,target_genes,scale,target_samples){
 #'
 #' @export
 #'
-compute_PART<-function(object,part_recursion=100,part_min_clust=10,
+compute_PART<-function(object,part_bootstrap=100,part_min_clust=10,q=0.25,
                        dist_param="euclidean", hclust_param="average",
                        custom_seed=NULL, custom_matrix=NULL,return_as_object=TRUE,
                        vignette_run=FALSE){
@@ -142,7 +144,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
   tic()#Start a timer for PART computation
 
   #Calculates the clustering using the 'part' algorithm
-  calculated_clusters = part(main_matrix,B=part_recursion,minSize=part_min_clust,linkage=hclust_param)
+  calculated_clusters = part(main_matrix,q=q,B=part_bootstrap,minSize=part_min_clust,linkage=hclust_param)
   rowclust = hclust(dist(main_matrix,method=dist_param),method=hclust_param)
 
   clust_ordered <- unique(as.character(calculated_clusters$lab.hatK[rowclust$order]))
@@ -196,7 +198,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 
   PART_computation_time<-capture.output(toc())
 
-  PART_params<-list(part_recursion=part_recursion, part_min_clust=part_min_clust,
+  PART_params<-list(part_bootstrap=part_bootstrap, part_min_clust=part_min_clust,
                     dist_param=dist_param, hclust_param=hclust_param, custom_seed=custom_seed)
 
   if(return_as_object==TRUE){
@@ -254,7 +256,7 @@ compute_PART<-function(object,part_recursion=100,part_min_clust=10,
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE)
 #'
 #' @import gprofiler2

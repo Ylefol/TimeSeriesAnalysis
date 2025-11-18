@@ -1227,7 +1227,7 @@ plot_custom_DE_heatmap <-function(heat_mat,col_split,row_splits,l2fc_col, log_tr
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' top_annot<-prepare_top_annotation_PART_heat(TS_object)
 #'
 #' @importFrom ComplexHeatmap HeatmapAnnotation
@@ -1307,6 +1307,7 @@ prepare_top_annotation_PART_heat<-function(object){
 #' @param object A time series object
 #' @param heat_name The file name given to the saved heatmap
 #'
+#' @import circlize
 #' @importFrom ComplexHeatmap rowAnnotation Heatmap draw
 #' @importFrom grid gpar
 #'
@@ -1330,7 +1331,7 @@ prepare_top_annotation_PART_heat<-function(object){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' #Heatmap will be saved to main directory
 #' PART_heat<-PART_heat_map(TS_object,NULL) #Create a summary heatmap
 #'
@@ -1340,12 +1341,18 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 
   #Cluster illustration stored as rowAnnotation
   PART_res<-slot(object,'PART_results')
-  row_annot <- rowAnnotation(gene_cluster = PART_res$part_data$gene_cluster,
-                             col = list(gene_cluster=PART_res$cluster_info[['colored_clust_rows']]),
-                             show_annotation_name=FALSE,
-                             annotation_legend_param = list(title = "clusters", at = unique(PART_res$part_data$gene_cluster),
-                                                            labels = unique(PART_res$cluster_map$cluster)))
+  # Determine unique clusters and corresponding colors
+  clusters <- unique(PART_res$part_data$gene_cluster)
+  colors <- PART_res$cluster_info[['colored_clust_rows']][match(clusters, names(PART_res$cluster_info[['colored_clust_rows']]))]
 
+  # Create row annotation using cluster blocks
+  row_annot <- rowAnnotation(
+    cluster_block = anno_block(
+      gp = gpar(fill = colors),
+      labels = NULL,
+      labels_gp = gpar(fontsize = 8)
+    )
+  )
   #Create top annotations
   top_annot_results<-prepare_top_annotation_PART_heat(object)
   top_annot_labels<-top_annot_results[[1]]
@@ -1379,8 +1386,17 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
                legend_gp = gpar(fill = unname(group_cols)))
 
 
+  # Manually create a legend for clusters
+  cluster_lgd <- Legend(
+    labels = clusters,
+    title = "clusters",
+    legend_gp = gpar(fill = colors)
+  )
+
+
   #Extract matrix for plotting
   sorted_matrix<-as.matrix(PART_res$part_data[,3:ncol(PART_res$part_data)])
+  target_Z<-ceiling(max(abs(max(sorted_matrix)),abs(min(sorted_matrix))))
 
   #If save location is NULL, return the plot instead of saving
   if(is.null(heat_name)==TRUE){
@@ -1389,12 +1405,20 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
       Heatmap(
         sorted_matrix, name = "Z-score", cluster_columns = FALSE,
         cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
+        row_split = PART_res$part_data$gene_cluster,
+        row_gap = unit(0.1, "mm"),
         show_column_dend = TRUE,show_row_dend = FALSE,
         row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
         row_order = row.names(PART_res$part_data),
-        show_row_names = FALSE,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
+        show_row_names = FALSE,row_title = NULL,
+        show_heatmap_legend = FALSE,
+        top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
         column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
-      annotation_legend_list = lgd
+    heatmap_legend_list = list(
+      Legend(title = "Z-score", col_fun = colorRamp2(c(-target_Z,0,target_Z), c("blue","white","red"))),
+      cluster_lgd
+    ),
+    annotation_legend_list = list(lgd)
     )
     dev.off()
     return(PART_plot)
@@ -1411,12 +1435,20 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
     Heatmap(
       sorted_matrix, name = "Z-score", cluster_columns = FALSE,
       cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
+      row_split = PART_res$part_data$gene_cluster,
+      row_gap = unit(0.1, "mm"),
       show_column_dend = TRUE,show_row_dend = FALSE,
       row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
       row_order = row.names(PART_res$part_data),
-      show_row_names = TRUE,top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = TRUE,
+      show_row_names = TRUE,row_title = NULL,
+      show_heatmap_legend = FALSE,
+      top_annotation = top_annot_labels,column_split = col_split,cluster_column_slices = TRUE,
       column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
-    annotation_legend_list = lgd
+  heatmap_legend_list = list(
+    Legend(title = "Z-score", col_fun = colorRamp2(c(-target_Z,0,target_Z), c("blue","white","red"))),
+    cluster_lgd
+  ),
+  annotation_legend_list = list(lgd)
   )
   trash<-capture.output(dev.off())#Capture output to prevent print
 
@@ -1426,12 +1458,20 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
     Heatmap(
       sorted_matrix, name = "Z-score", cluster_columns = FALSE,
       cluster_rows=FALSE,#PART_res$cluster_info[['clustered_rows']],
+      row_split = PART_res$part_data$gene_cluster,
+      row_gap = unit(0.1, "mm"),
       show_column_dend = TRUE,show_row_dend = FALSE,
       row_names_gp = gpar(fontsize = 8), left_annotation = row_annot,
       row_order = row.names(PART_res$part_data),
-      show_row_names = FALSE,top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
+      show_row_names = FALSE,row_title = NULL,
+      show_heatmap_legend = FALSE,
+      top_annotation = top_annot_no_labels,column_split = col_split,cluster_column_slices = TRUE,
       column_gap = unit(gap_vect, "mm"),show_column_names = FALSE,border=FALSE,column_title = NULL),
-    annotation_legend_list = lgd
+  heatmap_legend_list = list(
+    Legend(title = "Z-score", col_fun = colorRamp2(c(-target_Z,0,target_Z), c("blue","white","red"))),
+    cluster_lgd
+  ),
+  annotation_legend_list = list(lgd)
   )
   trash<-capture.output(dev.off())#Capture output to prevent print
 }
@@ -1472,7 +1512,7 @@ PART_heat_map<-function(object, heat_name='custom_heat_map'){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #'
 #' @importFrom reshape2 melt
@@ -1584,7 +1624,7 @@ calculate_cluster_traj_data<-function(object,custom_cmap=NULL,scale_feat=TRUE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #'
@@ -1656,7 +1696,7 @@ calculate_mean_cluster_traj<-function(clust_traj_dta){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' ts_data<-calculate_cluster_traj_data(TS_object,scale_feat=TRUE) #Calculate scaled gene values for genes of clusters
 #' mean_ts_data<-calculate_mean_cluster_traj(ts_data) #Calculate the mean scaled values for each cluster
 #' clust_traj<-plot_cluster_traj(TS_object,ts_data,mean_ts_data)

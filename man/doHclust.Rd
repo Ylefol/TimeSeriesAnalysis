@@ -2,35 +2,26 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{doHclust}
 \alias{doHclust}
-\title{doHclust}
+\title{Wrapper for Hierarchical Clustering}
 \usage{
 doHclust(d, k, linkage)
 }
 \arguments{
-\item{d}{a dissimilarity structure as produced by dist.}
+\item{d}{A distance object (typically produced by `dist()` or `getDist()`) representing
+pairwise distances between observations.}
 
-\item{k}{an integer scalar or vector with the desired number of groups}
+\item{k}{Integer specifying the number of clusters to extract from the dendrogram
+using `stats::cutree()`.}
 
-\item{linkage}{the agglomeration method to be used.}
-}
-\value{
-list of clusters and labels
+\item{linkage}{The hierarchical clustering linkage method. Must be a valid method for
+`stats::hclust()`, such as `"average"` (default in PART), `"ward.D2"`,
+`"complete"`, `"single"`, etc.}
 }
 \description{
-Perform hierarchical clustering with given linkage, and apply horizontal cutting of tree into k clusters
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
-gap.res <- gap(X=X,Kmax=10,cl.lab=cl.lab,B=fixed.par$B,ref.gen=fixed.par$ref.gen,fixed.par=fixed.par)
-hc.res <- doHclust(getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method),k=1,linkage=fixed.par$linkage)$cl    #(k is irrelevant here, only specified because doHclust needs it)
+`doHclust()` performs hierarchical clustering using a specified linkage method
+and returns both the full `hclust` object and the cluster labels obtained
+by cutting the dendrogram into `k` clusters.
 
+This wrapper is used throughout PART to standardize calls to hierarchical
+clustering and ensure consistent linkage and cutting behavior.
 }

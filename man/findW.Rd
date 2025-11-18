@@ -2,36 +2,36 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{findW}
 \alias{findW}
-\title{findW}
+\title{Compute Within-Cluster Dispersion for Multiple Clusterings}
 \usage{
 findW(dX, K, cl.lab)
 }
 \arguments{
-\item{dX}{matrix for cluster}
+\item{dX}{A distance object (`dist`) or a symmetric matrix of pairwise distances
+between observations.}
 
-\item{K}{current cluster}
+\item{K}{Maximum number of clusters to compute dispersions for.}
 
-\item{cl.lab}{cluster labels}
+\item{cl.lab}{A list of integer vectors, where `cl.lab[[k]]` contains cluster labels
+for `k` clusters.}
 }
 \value{
 The within cluster distribution
 }
 \description{
-Calulates the total within-cluster dispersion (W_K) for a k=1,...,K:
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-dX <- getDist(X,dist.method=fixed.par$dist.method,cor.method=fixed.par$cor.method)
-cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
-#Find W: vector containing W_K for all choices of K
-W <- findW(dX=dX,K=10,cl.lab=cl.lab)
+`findW()` calculates the within-cluster dispersion \(W_k\) for a distance
+matrix `dX` and cluster labels for different numbers of clusters.
+*****
+Within-cluster dispersion tells us how ‘tight’ each cluster is.
+Tighter clusters are better. We use it to decide if we should split
+clusters further, and to figure out the optimal number of clusters.
+*****
 
+For each `k = 1, …, K`, the function sums the pairwise distances between
+points within each cluster and scales by the cluster size:
+
+When `k = 1`, `W_1` is simply the sum of all pairwise distances divided by
+twice the number of points.
+
+This function is typically used within Gap statistic computations.
 }

@@ -2,32 +2,59 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{part}
 \alias{part}
-\title{part}
+\title{Perform Recursive Partitioning Using the PART Algorithm}
 \usage{
 part(X, Kmax = 10, minSize = 8, minDist = NULL, cl.lab = NULL, ...)
 }
 \arguments{
-\item{X}{matrix of values}
+\item{X}{A numeric data matrix with observations in rows and variables in columns.
+This is the dataset to be clustered.}
 
-\item{Kmax}{maximum number of clusters}
+\item{Kmax}{The maximum number of clusters to consider during the *initial*, global PART
+run. Recursive subdivision uses its own upper limit (`Kmax.rec`) provided via
+`...`. Default is 10.}
 
-\item{minSize}{minimum cluster size}
+\item{minSize}{The minimum number of observations allowed in a cluster in order for that
+cluster to be considered for further recursive splitting. Clusters smaller
+than `minSize` are treated as terminal. Default is 8.}
 
-\item{minDist}{Minimum distance between clusters}
+\item{minDist}{Minimum required separation (in dendrogram height units) between subclusters
+for a recursive split to be accepted. If `NULL`, a separation threshold is
+computed automatically using `get.threshold()` based on the user-specified
+value of `q` (passed via `...`). Default is `NULL`.}
 
-\item{cl.lab}{cluster labels}
+\item{cl.lab}{Optional list of precomputed cluster label vectors. If supplied, the list
+should contain the cluster assignments for `k = 1, …, Kmax`, typically
+produced by hierarchical clustering. If `NULL`, cluster labels are generated
+internally. Default is `NULL`.}
 
-\item{...}{Extra parameters to be given}
-}
-\value{
-list of identified clusters
+\item{...}{Additional arguments controlling the PART algorithm. These override the
+internal defaults defined in the function. Common parameters include:
+\itemize{
+  \item `q` — proportion of dendrogram height used to compute the stopping
+  threshold when `minDist` is not supplied. Default: `0.25`.
+  \item `Kmax.rec` — maximum number of clusters evaluated at each recursive
+  splitting step. Default: `5`.
+  \item `B` — number of bootstrap samples used in the Gap statistic. Default:
+  `100`.
+  \item `ref.gen` — method used to generate reference datasets for the Gap
+  statistic (“PC” by default).
+  \item `dist.method` — distance metric used for hierarchical clustering.
+  \item `cl.method` — clustering method (“hclust” or “kmeans”).
+  \item `linkage` — linkage method if hierarchical clustering is used.
+  \item `cor.method` — correlation type if correlation distance is selected.
+  \item `nstart` — number of random initializations if k-means is used.
+}}
 }
 \description{
-Main function for PART:
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-PART_results<-part(X,B=5,minSize = 2)
+The `part()` function performs clustering using the PART algorithm
+(Partitioning Algorithm based on Recursive Thresholding). The method begins
+with a global clustering of the data and then recursively evaluates potential
+subclusters. At each recursive step, it applies the Gap statistic and a
+separation threshold (`minDist`) to determine whether a cluster should be
+further split. The procedure is designed to detect both major cluster
+structure and finer substructure while guarding against spurious splits.
 
+The function returns the estimated number of clusters, cluster labels for all
+observations, and a list of samples flagged as potential outliers.
 }

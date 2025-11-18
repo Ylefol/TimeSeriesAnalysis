@@ -2,32 +2,22 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{get.threshold}
 \alias{get.threshold}
-\title{get.threshold}
+\title{Compute Stopping Threshold for Recursive Clustering}
 \usage{
 get.threshold(X, q, ...)
 }
 \arguments{
-\item{X}{value matrix}
+\item{X}{Numeric data matrix (observations × variables) to calculate distances from.}
 
-\item{q}{q}
+\item{q}{Quantile parameter (0 < q < 1). The threshold is set as the (1-q) quantile
+of all dendrogram heights. Higher q → lower threshold → more splitting.}
 
-\item{...}{Extra parameters to be given to the function}
-}
-\value{
-threshold
+\item{...}{Additional parameters passed on to distance and clustering functions (e.g.,
+`dist.method`, `linkage`, `cor.method`).}
 }
 \description{
-Help-functions only used by part:
-Find a stopping threshold given the percentage of heights to be used in the dendrogram
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-
+`get.threshold()` calculates a threshold distance used to decide whether
+a cluster should be split further in recursive clustering (e.g., PART).
+The threshold is based on the hierarchical clustering dendrogram of the
+data and a quantile parameter `q`.
 }

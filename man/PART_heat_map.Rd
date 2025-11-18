@@ -43,7 +43,7 @@ samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #Heatmap will be saved to main directory
 PART_heat<-PART_heat_map(TS_object,NULL) #Create a summary heatmap
 

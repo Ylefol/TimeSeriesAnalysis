@@ -2,36 +2,38 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{findPartition}
 \alias{findPartition}
-\title{findPartition}
+\title{Generate Cluster Partitions for K = 1, …, Kmax}
 \usage{
 findPartition(X, Kmax, dX = NULL, ...)
 }
 \arguments{
-\item{X}{of values}
+\item{X}{A numeric data matrix where rows correspond to observations and columns to
+features. Used directly for k-means and for computing distances when needed.}
 
-\item{Kmax}{max number of clusters}
+\item{Kmax}{Maximum number of clusters to generate. Partitions for all `k` from `1` to
+`Kmax` are returned.}
 
-\item{dX}{distance measure}
+\item{dX}{Optional precomputed distance object. If `NULL` and the clustering method is
+hierarchical (`"hclust"`), the distance matrix is computed internally using
+`getDist()`. Ignored when `cl.method = "kmeans"`.}
 
-\item{...}{extra values to be given}
+\item{...}{Additional parameters passed from higher-level PART functions, provided as a
+list (typically `fixed.par`). Relevant values include `cl.method`, `linkage`,
+`nstart`, `dist.method`, and `cor.method`.}
 }
 \value{
 list of cluster labels
 }
 \description{
-Obtain partitions of the data into k=1,...,Kmax clusters
-gives the clustering method, distance measure, and other parameters to be used in the clustering
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
+`findPartition()` computes cluster assignments for a sequence of cluster
+counts `k = 1, …, Kmax` using either hierarchical clustering or k-means,
+depending on the method specified in the `...` argument list.
 
+For hierarchical clustering, a distance matrix is computed (unless provided),
+and `cutree()` is applied at each level `k`.
+For k-means, the algorithm is run independently for each `k`, using Euclidean
+distance.
+
+The function returns a list where each element `cl.lab[[k]]` contains a vector
+of cluster labels corresponding to the partition with `k` clusters.
 }

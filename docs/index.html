@@ -119,7 +119,7 @@
 <p>You can install the stable version of TimeSeriesAnalysis like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis@master"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Ylefol/TimeSeriesAnalysis@master"</span><span class="op">)</span></span></code></pre></div>
 <p>The development version can be installed by replacing ‘master’ with ‘dev’.</p>
 <p>Devtools is required for the installation of this package. To install Devtools, visit the <a href="https://www.r-project.org/nosvn/pandoc/devtools.html" class="external-link">Devtools main page</a></p>
 <p>Certain bioconductor packages will have to be installed before installation of TimeSeriesAnalysis. The code snippet below gives the method along with some of the packages that should be installed via this method.</p>
@@ -156,80 +156,80 @@
 </h3>
 <p>In order for the pipeline to run properly, a sample file must be provided. Certain requirements ust be met. Column names should be as indicated below, all spaces should be avoided, timepoints should be numerical. It is also important that the sample column contains the same names as the count files provided. Lastly, replicates should always be followed by a ’_#’ as this numbering will be utilized for the organization of the replicates within certain visualizations. Note that in the below example the three files have the same name (ex: C_1). That is to represent the ‘C_1’ sample at its three different time points.</p>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th align="left">sample</th>
 <th align="left">group</th>
 <th align="left">replicate</th>
 <th align="right">timepoint</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td align="left">s-37</td>
 <td align="left">control</td>
 <td align="left">C_1</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-38</td>
 <td align="left">control</td>
 <td align="left">C_1</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">s-39</td>
 <td align="left">control</td>
 <td align="left">C_1</td>
 <td align="right">9</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-52</td>
 <td align="left">IgM</td>
 <td align="left">IgM_1</td>
 <td align="right">1</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">s-53</td>
 <td align="left">IgM</td>
 <td align="left">IgM_1</td>
 <td align="right">3</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-54</td>
 <td align="left">IgM</td>
 <td align="left">IgM_1</td>
 <td align="right">9</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">s-77</td>
 <td align="left">control</td>
 <td align="left">C_2</td>
 <td align="right">1</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-78</td>
 <td align="left">control</td>
 <td align="left">C_2</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">s-79</td>
 <td align="left">control</td>
 <td align="left">C_2</td>
 <td align="right">9</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-92</td>
 <td align="left">IgM</td>
 <td align="left">IgM_2</td>
 <td align="right">1</td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">s-93</td>
 <td align="left">IgM</td>
 <td align="left">IgM_2</td>
 <td align="right">3</td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">s-94</td>
 <td align="left">IgM</td>
 <td align="left">IgM_2</td>
@@ -318,7 +318,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Yohan Lefol <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Yohan Lefol <br><small class="roles"> Author, maintainer </small>   </li>
 </ul>
 </div>
 
@@ -335,7 +335,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>

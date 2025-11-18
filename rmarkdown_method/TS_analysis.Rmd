@@ -76,9 +76,9 @@ my_org_gpro='hsapiens' #Set the species for the gprofiler analysis
 # this link: https://www.r-bloggers.com/2018/07/%F0%9F%8C%B1-setting-a-seed-in-r-when-using-parallel-simulation/
 PART_seed=123456
 
-PART_l2fc<-5 #log(2)foldChange threshold for PART clustering
+PART_l2fc<-2 #log(2)foldChange threshold for PART clustering
 PART_min_clust<-50 #Minimum cluster size for PART
-PART_recursion<-100 #Number of recursions, default is 100, using 10 for example
+part_bootstrap<-100 #Number of recursions, default is 100, using 10 for example
 
 log_tp_traj<-FALSE #Defines if timepoints should be log transformed for illustration purposes
 
@@ -179,7 +179,7 @@ if (is.null(PART_seed)==FALSE){
   set.seed(as.character(PART_seed))
 }
 
-TS_object<-compute_PART(TS_object,part_recursion=PART_recursion,part_min_clust=PART_min_clust,
+TS_object<-compute_PART(TS_object,part_bootstrap=part_bootstrap,part_min_clust=PART_min_clust,
                         custom_seed=PART_seed,dist_param="euclidean", hclust_param="average")
 #Save the TimeSeries object to the directory to prevent loss of data in the event
 #of a downstream error
@@ -241,7 +241,7 @@ row.names(sample_dta)=NULL
 
 **PART parameters used\:**
   **PART log(2)FoldChange significance threshold\:** `r slot(TS_object,'PART_l2fc_thresh')`
-**number of recursions\:** `r slot(TS_object,'PART_results')$params_used$part_recursion`
+**number of recursions\:** `r slot(TS_object,'PART_results')$params_used$part_bootstrap`
 **minimum cluster size\:** `r slot(TS_object,'PART_results')$params_used$part_min_clust`
 **distance parameter\:** `r slot(TS_object,'PART_results')$params_used$dist_param`
 **hclust parameter\:** `r slot(TS_object,'PART_results')$params_used$hclust_param`

@@ -48,7 +48,7 @@
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -159,7 +159,7 @@ gprofiler_cluster_analysis<-function(object,ontology,save_path=NULL,return_speci
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -229,7 +229,7 @@ calculate_and_format_MDS<-function(GO_df,semantic_data,measure='Wang'){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -334,7 +334,7 @@ find_merged_color<-function(group){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -432,7 +432,7 @@ find_clusters_from_termdist<-function(GO_df,semantic_data){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -583,7 +583,7 @@ SS_GO_clusters<-function(semantic_data,the_clusters,selected_ont,distance,measur
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -670,7 +670,7 @@ create_clustered_module_dataframe<-function(cluster_df){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Save path set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -786,7 +786,7 @@ find_relation_to_ancestors<-function(target_ancestors,GOs_to_check,ontology='BP'
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -868,7 +868,7 @@ read_gprofiler_results<-function(object,ont='REAC',top_n=NULL){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -964,7 +964,7 @@ plot_ancestor_clust_MDS<-function(the_data,ggplot_version=FALSE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to null to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1118,7 +1118,7 @@ plot_clustered_mds<-function(main_matrix,cluster_info,ggplot_version=FALSE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Save path set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1217,7 +1217,7 @@ dotplot_ancestors<-function(ancestor_df,use_names=FALSE,enrichment_dta=TRUE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to NULL to not save results
 #'
@@ -1284,7 +1284,7 @@ custom_gpro_dotplot<-function(GO_clusters,ont,top_n){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1379,7 +1379,7 @@ plot_MDS<-function(the_data,ggplot_version=FALSE){
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1461,7 +1461,7 @@ GO_dotplot_wrapper<-function(object,file_loc,target_ontology,top_n,sig_only=TRUE
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Results saved to created directory
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)
@@ -1541,7 +1541,7 @@ wrapper_MDS_and_MDS_clusters<-function(GO_clusters,sem_data,sem_ontology,target_
 #'
 #' #Create the matrix that will be used for PART clustering
 #' TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-#' TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+#' TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 #' TS_object<-run_gprofiler_PART_clusters(TS_object,vignette_run=TRUE) #Run the gprofiler analysis
 #' #Save path set to NULL to not save results
 #' gpro_res<-gprofiler_cluster_analysis(TS_object,'GO:BP',save_path=NULL)

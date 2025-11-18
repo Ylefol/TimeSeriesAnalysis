@@ -6,8 +6,9 @@
 \usage{
 compute_PART(
   object,
-  part_recursion = 100,
+  part_bootstrap = 100,
   part_min_clust = 10,
+  q = 0.25,
   dist_param = "euclidean",
   hclust_param = "average",
   custom_seed = NULL,
@@ -19,9 +20,12 @@ compute_PART(
 \arguments{
 \item{object}{A timeseries object}
 
-\item{part_recursion}{The number of recursions for PART calculation}
+\item{part_bootstrap}{The number of reference datasets used for the GAP statistic
+A higher number means less noise}
 
 \item{part_min_clust}{The minimum number of genes per cluster}
+
+\item{q}{Tuning parameter for how distinguished clusters must be from each other. Default is 0.25}
 
 \item{dist_param}{The distance parameter for clustering}
 
@@ -65,6 +69,6 @@ samps_1<-sample_data$sample[sample_data$group==TS_groups[1]]
 
 #Create the matrix that will be used for PART clustering
 TS_object<-prep_counts_for_PART(object=TS_object,target_genes=signi_genes,scale=TRUE,target_samples=c(samps_2,samps_1))
-TS_object<-compute_PART(TS_object,part_recursion=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
+TS_object<-compute_PART(TS_object,part_bootstrap=10,part_min_clust=10,dist_param="euclidean", hclust_param="average",vignette_run=TRUE)
 
 }

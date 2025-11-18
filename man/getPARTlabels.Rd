@@ -2,33 +2,22 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{getPARTlabels}
 \alias{getPARTlabels}
-\title{getPARTlabels}
+\title{Assign Final Cluster Labels in PART}
 \usage{
 getPARTlabels(clusters, minSize)
 }
 \arguments{
-\item{clusters}{The found clusters}
+\item{clusters}{A matrix (or vector) indicating the tentative clusters from PART. Each column
+corresponds to a recursive split, with 1 indicating membership in that subcluster.}
 
-\item{minSize}{The parameter for minimum cluster size}
+\item{minSize}{Minimum number of observations required for a cluster to be considered valid.
+Clusters smaller than this are treated as outliers.}
 }
 \value{
-PART labels
+An integer vector of cluster labels for each observation. Outliers are labeled 0.
 }
 \description{
-Retrives the labels for the clusters found by PART
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=10,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-clusters = PartRec(X,Kmax=10,ind=rep(1,nrow(X)),cl.lab=NULL,fixed.par)
-#Check for possible outliers and assign cluster labels
-label <- getPARTlabels(clusters,minSize=2)
-
+`getPARTlabels()` takes the output of the recursive clustering (PART)
+and assigns final cluster labels to each observation. Clusters smaller
+than `minSize` are labeled as 0 (treated as outliers).
 }

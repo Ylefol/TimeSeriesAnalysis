@@ -2,37 +2,45 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{PartRec}
 \alias{PartRec}
-\title{PartRec}
+\title{Recursive Splitting Step of the PART Algorithm}
 \usage{
 PartRec(X, Kmax, ind, cl.lab = NULL, ...)
 }
 \arguments{
-\item{X}{Matrix of values}
+\item{X}{A numeric data matrix containing the observations in the cluster currently
+under consideration.}
 
-\item{Kmax}{max number of cluster}
+\item{Kmax}{Maximum number of clusters to consider for the *current* (non-recursive)
+partitioning step.}
 
-\item{ind}{number of clusters}
+\item{ind}{A binary index vector of the same length as the number of rows in the
+original dataset. Values of `1` indicate membership in the current subset and
+`0` indicate exclusion. This index is updated recursively to track cluster
+identities across all levels of the dendrogram.}
 
-\item{cl.lab}{cluster label}
+\item{cl.lab}{Optional list containing pre-computed cluster label vectors for
+`K = 1, …, Kmax`. If supplied, these labels are used instead of recomputing
+partitions. If `NULL`, labels are obtained through `findPartition()`. Default
+is `NULL`.}
 
-\item{...}{Extra parameters to be used}
-}
-\value{
-Either cluster results or recursion elements
+\item{...}{Additional parameters passed from the top-level `part()` function, provided as
+a list in `fixed.par`. Important values include `minSize`, `minDist`,
+`Kmax.rec`, `dist.method`, `cl.method`, `linkage`, `cor.method`, and others
+controlling the clustering algorithm and recursive stopping rules.}
 }
 \description{
-The recursive function used by PART clustering
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=10,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-clusters = PartRec(X,Kmax=10,ind=rep(1,nrow(X)),cl.lab=NULL,fixed.par)
+`PartRec()` performs the recursive splitting step of the PART clustering
+algorithm. Given a subset of observations and a maximum number of clusters to
+evaluate, the function:
 
+1. Checks whether the current subset is large enough to split at all.
+2. Computes candidate partitions for `K = 1, …, Kmax` using a user-specified
+   clustering method.
+3. Selects the optimal number of clusters (`hatK`) using the Gap statistic.
+4. Applies size constraints (`minSize`) to ensure meaningful splits.
+5. When a split is accepted, recursively applies PART to each subcluster.
+
+The output is either:
+* a vector representing an unsplit terminal cluster, or
+* a matrix whose columns represent recursively generated subclusters.
 }

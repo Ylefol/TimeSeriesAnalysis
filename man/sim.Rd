@@ -2,23 +2,20 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{sim}
 \alias{sim}
-\title{sim}
+\title{Generate Uniform Reference Data for a Single Variable}
 \usage{
 sim(Xcol)
 }
 \arguments{
-\item{Xcol}{Feature vector}
+\item{Xcol}{A numeric vector. The simulated values are drawn uniformly from the interval
+spanning `min(Xcol)` to `max(Xcol)`.}
 }
 \value{
 Simulated uniform distribution
 }
 \description{
-helper-functions only used by GAP:
-Simulate from a uniform distribution according to min and max of the feature vector:
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-Z <- apply(X,2,sim)
-
+`sim()` generates a univariate reference sample by drawing values uniformly
+between the minimum and maximum of the input vector `Xcol`.
+This is used when creating reference datasets for computing the Gap statistic
+and other resampling-based clustering criteria.
 }

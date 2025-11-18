@@ -2,40 +2,51 @@
 % Please edit documentation in R/clusterGenomics.R
 \name{gap}
 \alias{gap}
-\title{gap}
+\title{Compute Gap Statistic for Selecting the Number of Clusters}
 \usage{
 gap(X, Kmax = 10, B = 100, ref.gen = "PC", cl.lab = NULL, ...)
 }
 \arguments{
-\item{X}{matrix of values}
+\item{X}{A numeric data matrix where rows are observations and columns are features.}
 
-\item{Kmax}{maximum number of clusters}
+\item{Kmax}{Maximum number of clusters to evaluate. If `Kmax` exceeds the number of
+observations, it is reduced appropriately.}
 
-\item{B}{number of recursions}
+\item{B}{Number of Monte Carlo reference datasets to generate for estimating the
+reference dispersion `W^*_k`.}
 
-\item{ref.gen}{reference gen}
+\item{ref.gen}{Method used to generate reference datasets. Typically `"PC"` (principal
+components) but may include other options supported by `getReferenceW()`.}
 
-\item{cl.lab}{cluster labels}
+\item{cl.lab}{Optional list of cluster label vectors for `k = 1, …, Kmax`. If `NULL`,
+labels are computed by `findPartition()`.}
 
-\item{...}{Extra parameters to be given to the function}
+\item{...}{Additional tuning parameters for clustering and distance computation.
+These may be supplied as a `fixed.par` list (when called from PART) or as
+individual named arguments (for stand-alone usage). Relevant fields include
+`cl.method`, `dist.method`, `linkage`, `cor.method`, and others.}
 }
 \value{
 list of gaps found
 }
 \description{
-gap finds the optimal number of clusters based on the "gap statistic" (Tibshirani et al. 2001)
-}
-\examples{
-example_dta<-create_example_data_for_R()
-X=as.matrix(example_dta$counts)
-#Default ... values:
-default.par <- list(q=0.25,Kmax.rec=5,B=100,ref.gen="PC",dist.method="euclidean",cl.method="hclust",linkage="average",cor.method="pearson",nstart=10)
-#Check for user modifications:
-fixed.par <- c(minDist=NULL,minSize=2,modifyList(default.par,list(cor.method='pearson',linkage='average')))
-#Find stopping threshold if minDist is NULL
-minDist <- get.threshold(X,q=fixed.par$q,fixed.par)
-fixed.par$minDist <- minDist
-cl.lab <- findPartition(X=X,Kmax=10,dX=NULL,fixed.par)
-gap.res <- gap(X=X,Kmax=10,cl.lab=cl.lab,B=fixed.par$B,ref.gen=fixed.par$ref.gen,fixed.par=fixed.par)
+`gap()` computes the Gap statistic of Tibshirani et al. (2001) for a dataset
+`X` over candidate cluster numbers `K = 1, …, Kmax`.
 
+The procedure evaluates:
+* `W_k` — within-cluster dispersion for the observed dataset,
+* `W^*_k` — reference dispersions from `B` Monte Carlo samples generated
+   according to the reference distribution (`ref.gen`),
+* `gap_k = mean(log W^*_k) − log W_k`,
+* the standard error `sk`, and
+* the Gap selection criterion:
+    select the smallest `k` such that
+     `gap_k ≥ gap_{k+1} − sk_{k+1}`.
+
+The function returns both the selected number of clusters `hatK` and the
+corresponding cluster labels.
+
+The function can be called internally by PART—where parameters are passed via
+`fixed.par`—or used independently, in which case arguments in `...` override
+default values directly.
 }
